@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HeyFYViewModel @Inject constructor(
     heyFYAppNavigator: HeyFYAppNavigator,
 ): ViewModel() {
     val navigationChannel = heyFYAppNavigator.navigationChannel

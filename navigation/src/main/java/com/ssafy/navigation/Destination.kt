@@ -1,8 +1,6 @@
 package com.ssafy.navigation
 
-import com.ssafy.navigation.DestinationType.HOME
-import com.ssafy.navigation.DestinationType.ID
-import com.ssafy.navigation.DestinationType.FINANCE
+import com.ssafy.navigation.DestinationType.MAIN
 
 sealed class Destination(protected val route: String, vararg params: String) {
 
@@ -16,11 +14,7 @@ sealed class Destination(protected val route: String, vararg params: String) {
         operator fun invoke(): String = route
     }
 
-    data object Home : NoArgumentsDestination(HOME)
-
-    data object Id : NoArgumentsDestination(ID)
-
-    data object Finance : NoArgumentsDestination(FINANCE)
+    data object Main : NoArgumentsDestination(MAIN)
 }
 
 

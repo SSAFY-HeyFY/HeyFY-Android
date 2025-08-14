@@ -1,47 +1,108 @@
 package com.ssafy.heyfy
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ssafy.heyfy.ui.theme.HeyfyTheme
+import com.ssafy.navigation.Destination
+import com.ssafy.navigation.HeyFYNavHost
+import com.ssafy.navigation.NavigationIntent
+import com.ssafy.navigation.heyFYComposable
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            HeyfyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            HeyFYScreen()
+        }
+    }
+
+    @Composable
+    private fun HeyFYScreen(
+        heyFYViewModel: HeyFYViewModel = hiltViewModel(),
+    ) {
+        val navController = rememberNavController()
+
+        NavigationEffects(
+            navigationChannel = heyFYViewModel.navigationChannel,
+            navHostController = navController
+        )
+
+        HeyfyTheme {
+            HeyFYNavHost(
+                navController = navController,
+                startDestination = Destination.Main,
+                modifier = Modifier
+            ) {
+                heyFYComposable(Destination.Main) {
+                    MainScreen(navController)
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    @Composable
+    private fun NavigationEffects(
+        navigationChannel: Channel<NavigationIntent>,
+        navHostController: NavHostController,
+    ) {
+        val activity = (LocalContext.current as? Activity)
+        LaunchedEffect(activity, navHostController, navigationChannel) {
+            navigationChannel.receiveAsFlow().collect { intent ->
+                if (activity == null || activity.isFinishing) {
+                    return@collect
+                }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HeyfyTheme {
-        Greeting("Android")
+                when (intent) {
+                    is NavigationIntent.NavigateBack -> {
+                        navigateBackToRoute(intent, navHostController)
+                    }
+
+                    is NavigationIntent.NavigateTo -> {
+                        navigateToRoute(intent, navHostController)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun navigateBackToRoute(
+        intent: NavigationIntent.NavigateBack,
+        navHostController: NavHostController,
+    ) {
+        intent.route?.let { route ->
+            navHostController.popBackStack(route, intent.inclusive)
+        } ?: navHostController.popBackStack()
+    }
+
+    private fun navigateToRoute(
+        intent: NavigationIntent.NavigateTo,
+        navHostController: NavHostController,
+    ) {
+        navHostController.navigate(intent.route) {
+            launchSingleTop = intent.isSingleTop
+
+            if (intent.isBackStackCleared) {
+                popUpTo(0) { inclusive = intent.inclusive }
+            } else {
+                intent.popUpToRoute?.let { popUpToRoute ->
+                    popUpTo(popUpToRoute) { inclusive = intent.inclusive }
+                }
+            }
+        }
     }
 }
