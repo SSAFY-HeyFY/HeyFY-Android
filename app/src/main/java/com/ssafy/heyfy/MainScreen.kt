@@ -1,69 +1,52 @@
 package com.ssafy.heyfy
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-
+import androidx.compose.ui.unit.sp
+import com.ssafy.common.R as commonR
 
 @Composable
-internal fun MainScreen(navController: NavController) {
-
-    BottomMenuScreen(navController = navController)
+internal fun MainScreen() {
+    BottomMenuScreen()
 }
 
 @Composable
-fun BottomMenuScreen(navController: NavController) {
-    val navMenus = listOf(
-        NavigationData("Home", FaIcons.HOME),
-        NavigationData("ID", FaIcons.ID),
-        NavigationData("Finance", FaIcons.FINANCE),
-    )
+private fun BottomMenuScreen() {
+    val navMenus = remember {
+        listOf(
+            NavigationData("Home", commonR.drawable.icon_home),
+            NavigationData("ID", commonR.drawable.icon_id),
+            NavigationData("Finance", commonR.drawable.icon_finance),
+        )
+    }
 
     var selectedItem by remember { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
-            BottomAppBar {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    navMenus.forEachIndexed { index, menu ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .clickable { selectedItem = index }
-                        ) {
-
-
-                            Spacer(modifier = Modifier.padding(2.dp))
-
-                            Text(
-                                text = menu.title,
-                                )
-                        }
-                    }
-
-                }
-            }
+            BottomNavigationBar(
+                menus = navMenus,
+                selectedIndex = selectedItem,
+                onItemSelected = { selectedItem = it }
+            )
         }
     ) { paddingValues ->
         Box(
@@ -79,11 +62,72 @@ fun BottomMenuScreen(navController: NavController) {
     }
 }
 
-data class NavigationData(
-    val title: String,
-    val icon: FaIcons,
-)
-
-enum class FaIcons {
-    HOME, ID, FINANCE
+@Composable
+private fun BottomNavigationBar(
+    menus: List<NavigationData>,
+    selectedIndex: Int,
+    onItemSelected: (Int) -> Unit
+) {
+    BottomAppBar {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .border(1.dp, Color(0xFFE5E7EB)),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            menus.forEachIndexed { index, menu ->
+                val isSelected = selectedIndex == index
+                NavigationItem(
+                    title = menu.title,
+                    iconRes = menu.icon,
+                    isSelected = isSelected,
+                    onClick = { onItemSelected(index) }
+                )
+            }
+        }
+    }
 }
+
+@Composable
+private fun NavigationItem(
+    title: String,
+    @DrawableRes iconRes: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val color = if (isSelected) Color(0xFF9333EA) else Color(0xFF9CA3AF)
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .clickable(onClick = onClick)
+    ) {
+        Icon(
+            modifier = Modifier.size(20.dp),
+            painter = painterResource(id = iconRes),
+            contentDescription = null,
+            tint = color
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = title,
+            style = TextStyle(
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
+                fontFamily = FontFamily(Font(commonR.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = color,
+                textAlign = TextAlign.Center
+            )
+        )
+    }
+}
+
+private data class NavigationData(
+    val title: String,
+    @DrawableRes val icon: Int,
+)

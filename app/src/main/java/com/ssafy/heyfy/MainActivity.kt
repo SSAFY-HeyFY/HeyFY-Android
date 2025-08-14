@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier
             ) {
                 heyFYComposable(Destination.Main) {
-                    MainScreen(navController)
+                    MainScreen()
                 }
             }
         }
