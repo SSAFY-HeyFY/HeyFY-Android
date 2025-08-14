@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "heyfy"
 include(":app")
 include(":common")
+include(":navigation")
