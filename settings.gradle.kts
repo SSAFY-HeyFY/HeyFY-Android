@@ -23,4 +23,5 @@ rootProject.name = "heyfy"
 include(":app")
 include(":common")
 include(":navigation")
-include(":featrue")
+include(":feature")
+include(":feature:home")
