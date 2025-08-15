@@ -1,7 +1,9 @@
 package com.ssafy.id
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -31,5 +33,9 @@ private fun IdContent(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ResidenceCard()
+
+        Spacer(Modifier.height(12.dp))
+
+        WorkCard()
     }
 }
