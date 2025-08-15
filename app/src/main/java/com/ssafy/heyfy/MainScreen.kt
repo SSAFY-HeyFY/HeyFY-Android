@@ -1,7 +1,6 @@
 package com.ssafy.heyfy
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.home.HomeScreen
+import com.ssafy.id.IdScreen
 import com.ssafy.common.R as commonR
 
 @Composable
