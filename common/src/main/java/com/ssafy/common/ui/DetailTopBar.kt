@@ -3,6 +3,7 @@ package com.ssafy.common.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,9 +32,10 @@ fun DetailTopBar(
         ) {
             Icon(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
+                    .fillMaxHeight()
                     .align(Alignment.CenterStart)
-                    .clickable { onBack() },
+                    .clickable { onBack() }
+                    .padding(horizontal = 20.dp),
                 painter = painterResource(id = R.drawable.icon_back),
                 contentDescription = null,
                 tint = Color.Black
