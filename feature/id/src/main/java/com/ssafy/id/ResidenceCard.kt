@@ -1,11 +1,14 @@
 package com.ssafy.id
 
+import android.os.Build.VERSION.SDK_INT
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,12 +21,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
+import coil.size.Size
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.R as commonR
 
@@ -36,47 +44,73 @@ internal fun ResidenceCard(
             .fillMaxWidth()
             .height(200.dp)
             .clip(RoundedCornerShape(12.dp))
-            .paint(
-                painter = painterResource(commonR.drawable.image_residence_card),
-                contentScale = ContentScale.FillBounds
-            )
-            .padding(12.dp)
+
     ) {
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TitleSection()
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFF3F4F6))
-            IdItem(
-                title = "외국인등록번호",
-                englishTitle = "Registration No.",
-                content = "123456-1234567",
-            )
-            IdItem(
-                title = "성명",
-                englishTitle = "Name",
-                content = "JOHN SMITH"
-            )
-            IdItem(
-                title = "국가 / 지역",
-                englishTitle = "Country / Region",
-                content = "REPUBLIC OF UTOPIA"
-            )
-            IdItem(
-                title = "체류 자격",
-                englishTitle = "Status",
-                content = "기업투자(D-8)"
-            )
-        }
+        val context = LocalContext.current
+        val imageLoader = ImageLoader.Builder(context)
+            .components {
+                if (SDK_INT >= 28) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+            }
+            .build()
+        Image(
+            painter = rememberAsyncImagePainter(
+                ImageRequest.Builder(context)
+                    .data(data = commonR.drawable.gif_residence_card_background)
+                    .apply(block = {
+                        size(Size.ORIGINAL)
+                    }).build(),
+                imageLoader = imageLoader
+            ),
+            contentDescription = null,
+            modifier = modifier
+                .fillMaxSize(),
+            contentScale = ContentScale.FillWidth,
+        )
 
-        // TODO 이미지 삽입
         Box(
             modifier = Modifier
-                .size(width = 90.dp, height = 110.dp)
-                .background(Color.White, RoundedCornerShape(8.dp))
-                .align(Alignment.TopEnd)
-        )
+                .padding(12.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TitleSection()
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFF3F4F6))
+                IdItem(
+                    title = "외국인등록번호",
+                    englishTitle = "Registration No.",
+                    content = "123456-1234567",
+                )
+                IdItem(
+                    title = "성명",
+                    englishTitle = "Name",
+                    content = "JOHN SMITH"
+                )
+                IdItem(
+                    title = "국가 / 지역",
+                    englishTitle = "Country / Region",
+                    content = "REPUBLIC OF UTOPIA"
+                )
+                IdItem(
+                    title = "체류 자격",
+                    englishTitle = "Status",
+                    content = "기업투자(D-8)"
+                )
+            }
+
+            // TODO 이미지 삽입
+            Box(
+                modifier = Modifier
+                    .size(width = 90.dp, height = 110.dp)
+                    .background(Color.White, RoundedCornerShape(8.dp))
+                    .align(Alignment.TopEnd)
+            )
+        }
     }
 }
 

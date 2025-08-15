@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.compose.gif)
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
