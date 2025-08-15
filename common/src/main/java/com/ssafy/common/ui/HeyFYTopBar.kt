@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
@@ -27,11 +28,12 @@ fun HeyFYTopBar(
     Column {
         Box(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(56.dp),
             contentAlignment = Alignment.CenterStart,
         ) {
             Text(
-                modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp),
+                modifier = Modifier.padding(horizontal = 20.dp),
                 text = "HeyFY",
                 style = TextStyle(
                     fontSize = 24.sp,
