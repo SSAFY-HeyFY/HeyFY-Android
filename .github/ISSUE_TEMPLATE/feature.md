@@ -2,8 +2,8 @@
 name: Feature
 about: 새로운 기능
 title: ''
-labels: ''
-assignees: ''
+labels: feat
+assignees: prk4224
 
 ---
 
