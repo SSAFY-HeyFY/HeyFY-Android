@@ -1,5 +1,6 @@
 package com.ssafy.navigation
 
+import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.MAIN
 
 sealed class Destination(protected val route: String, vararg params: String) {
@@ -15,6 +16,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     }
 
     data object Main : NoArgumentsDestination(MAIN)
+
+    data object CardDetail : Destination(CARD_DETAIL)
 }
 
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYNavHost
@@ -52,6 +53,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 heyFYComposable(Destination.Main) {
                     MainScreen()
+                }
+
+                heyFYComposable(Destination.CardDetail) {
+                    CardDetailScreen()
                 }
             }
         }
