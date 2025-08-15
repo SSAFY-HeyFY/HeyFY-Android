@@ -62,6 +62,7 @@ internal fun UniversityCard(
 
         Row {
 
+            // TODO 사진 삽입
             Box(
                 modifier = Modifier
                     .width(80.dp)
