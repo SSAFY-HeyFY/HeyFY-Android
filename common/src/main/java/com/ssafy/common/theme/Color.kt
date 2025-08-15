@@ -1,4 +1,4 @@
-package com.ssafy.heyfy.ui.theme
+package com.ssafy.common.theme
 
 import androidx.compose.ui.graphics.Color
 

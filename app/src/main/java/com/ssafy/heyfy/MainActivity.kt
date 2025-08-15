@@ -5,14 +5,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ssafy.heyfy.ui.theme.HeyfyTheme
+import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
@@ -42,11 +44,11 @@ class MainActivity : ComponentActivity() {
             navHostController = navController
         )
 
-        HeyfyTheme {
+        HeyFYTheme {
             HeyFYNavHost(
                 navController = navController,
                 startDestination = Destination.Main,
-                modifier = Modifier
+                modifier = Modifier.background(Color.White)
             ) {
                 heyFYComposable(Destination.Main) {
                     MainScreen()

@@ -14,13 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.home.HomeScreen
 import com.ssafy.common.R as commonR
 
@@ -42,13 +37,17 @@ private fun BottomMenuScreen() {
     var selectedItem by remember { mutableIntStateOf(0) }
 
     Scaffold(
+        modifier = Modifier
+            .systemBarsPadding(),
+
         bottomBar = {
             BottomNavigationBar(
                 menus = navMenus,
                 selectedIndex = selectedItem,
                 onItemSelected = { selectedItem = it }
             )
-        }
+        },
+        containerColor = Color.White,
     ) { paddingValues ->
         Box(
             modifier = Modifier.padding(paddingValues),
@@ -69,12 +68,15 @@ private fun BottomNavigationBar(
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit
 ) {
-    BottomAppBar {
+    BottomAppBar(
+        modifier = Modifier
+            .border(1.dp, Color(0xFFE5E7EB)),
+        containerColor = Color.White,
+        contentPadding = PaddingValues(0.dp)
+    ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .border(1.dp, Color(0xFFE5E7EB)),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             menus.forEachIndexed { index, menu ->
@@ -116,14 +118,8 @@ private fun NavigationItem(
 
         Text(
             text = title,
-            style = TextStyle(
-                fontSize = 12.sp,
-                lineHeight = 16.sp,
-                fontFamily = FontFamily(Font(commonR.font.pretendard_regular)),
-                fontWeight = FontWeight(400),
-                color = color,
-                textAlign = TextAlign.Center
-            )
+            style = HeyFYTheme.typography.bodyS2,
+            color = color,
         )
     }
 }
