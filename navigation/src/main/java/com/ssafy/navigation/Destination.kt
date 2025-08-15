@@ -17,7 +17,7 @@ sealed class Destination(protected val route: String, vararg params: String) {
 
     data object Main : NoArgumentsDestination(MAIN)
 
-    data object CardDetail : Destination(CARD_DETAIL)
+    data object CardDetail : NoArgumentsDestination(CARD_DETAIL)
 }
 
 

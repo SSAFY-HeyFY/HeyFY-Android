@@ -12,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.HeyFYTopBar
 import com.ssafy.common.R as commonR
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
+) {
 
     Scaffold(
         modifier = Modifier
@@ -28,7 +31,8 @@ fun HomeScreen() {
         containerColor = Color.White,
     ) { innerPadding ->
         HomeContent(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            goToCardDetail = viewModel::goToCardDetail
         )
     }
 }
@@ -40,6 +44,7 @@ private fun HomeContent(
     studentNumber: String = "2024123456",
     name: String = "John Smith",
     major: String = "Computer Science",
+    goToCardDetail: () -> Unit = {},
 ) {
     Column(
         modifier
@@ -81,6 +86,8 @@ private fun HomeContent(
 
         Spacer(Modifier.weight(1f))
 
-        RecommendationCard()
+        RecommendationCard(
+            onCardClick = goToCardDetail
+        )
     }
 }
