@@ -3,6 +3,7 @@ package com.ssafy.card
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
@@ -27,6 +29,9 @@ import com.ssafy.common.R as commonR
 
 @Composable
 fun CardDetailScreen() {
+
+    val uriHandler = LocalUriHandler.current
+
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
@@ -43,7 +48,8 @@ fun CardDetailScreen() {
                     .fillMaxWidth()
                     .padding(20.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFF9333EA)),
+                    .background(Color(0xFF9333EA))
+                    .clickable { uriHandler.openUri("https://www.shinhancard.com/pconts/html/card/apply/check/1229908_2206.html") },
                 contentAlignment = Alignment.Center
 
             ) {
