@@ -60,7 +60,7 @@ internal fun AccountCard(
         Spacer(Modifier.height(8.dp))
 
         Row(
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.CenterVertically
         ) {
             val currencyUnit = if (isFX) "USD($)" else "KRW(₩)"
 
