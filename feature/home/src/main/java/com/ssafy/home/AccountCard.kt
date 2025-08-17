@@ -1,6 +1,7 @@
 package com.ssafy.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ internal fun AccountCard(
     isFX: Boolean,
     account: String = "103-124-34412384",
     currency: String = "1,227,000",
+    goToSendMoney: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -88,7 +90,8 @@ internal fun AccountCard(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White),
+                    .background(Color.White)
+                    .clickable { goToSendMoney() },
                 contentAlignment = Alignment.Center,
             ) {
 

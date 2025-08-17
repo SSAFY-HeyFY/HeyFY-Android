@@ -20,4 +20,12 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToSendMoney() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.SendMoney(),
+            )
+        }
+    }
 }

@@ -32,7 +32,8 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeContent(
             modifier = Modifier.padding(innerPadding),
-            goToCardDetail = viewModel::goToCardDetail
+            goToCardDetail = viewModel::goToCardDetail,
+            goToSendMoney = viewModel::goToSendMoney
         )
     }
 }
@@ -45,13 +46,16 @@ private fun HomeContent(
     name: String = "John Smith",
     major: String = "Computer Science",
     goToCardDetail: () -> Unit = {},
+    goToSendMoney: () -> Unit = {}
 ) {
     Column(
         modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        SwipePagerWithIndicator()
+        SwipePagerWithIndicator(
+            goToSendMoney = goToSendMoney
+        )
 
         Row(
             modifier = Modifier
