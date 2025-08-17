@@ -21,19 +21,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.ssafy.common.theme.HeyFYTheme
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
 import kotlinx.coroutines.delay
 
 @Composable
-fun AccountScreen() {
+fun AccountScreen(
+    viewModel: AccountViewModel = hiltViewModel<AccountViewModel>(),
+) {
     var currentStep by remember { mutableIntStateOf(1) }
     var accountNumber by remember { mutableStateOf("") }
     var verificationCode by remember { mutableStateOf(listOf("", "", "", "")) }
     var timeRemaining by remember { mutableIntStateOf(180) }
     val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(currentStep) {
         if (currentStep == 2) {
@@ -50,7 +53,7 @@ fun AccountScreen() {
         topBar = {
             DetailTopBar(
                 title = "Account",
-                onBack = { /* TODO: 뒤로가기 처리 */ }
+                isBack = false,
             )
         },
         bottomBar = {
@@ -65,7 +68,11 @@ fun AccountScreen() {
                     )
                 } else {
                     AccountVerificationBottomBar(
-                        verificationCode = verificationCode
+                        verificationCode = verificationCode,
+                        onClick = {
+                            keyboardController?.hide()
+                            viewModel.goToMain()
+                        }
                     )
                 }
             }
@@ -106,17 +113,5 @@ fun AccountScreen() {
                 )
             }
         }
-    }
-}
-
-@Preview(
-    name = "AccountScreen - Step 1",
-    showBackground = true,
-    backgroundColor = 0xFFF9FAFB
-)
-@Composable
-private fun AccountScreenStep1Preview() {
-    HeyFYTheme {
-        AccountScreen()
     }
 }

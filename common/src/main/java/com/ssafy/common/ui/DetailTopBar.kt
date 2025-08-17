@@ -22,6 +22,7 @@ import com.ssafy.common.theme.HeyFYTheme
 @Composable
 fun DetailTopBar(
     title: String = "Detail Top Bar",
+    isBack: Boolean = true,
     onBack: () -> Unit = {},
 ) {
     Column {
@@ -30,16 +31,18 @@ fun DetailTopBar(
                 .fillMaxWidth()
                 .height(56.dp),
         ) {
-            Icon(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .align(Alignment.CenterStart)
-                    .clickable { onBack() }
-                    .padding(horizontal = 20.dp),
-                painter = painterResource(id = R.drawable.icon_back),
-                contentDescription = null,
-                tint = Color.Black
-            )
+            if (isBack) {
+                Icon(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .align(Alignment.CenterStart)
+                        .clickable { onBack() }
+                        .padding(horizontal = 20.dp),
+                    painter = painterResource(id = R.drawable.icon_back),
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
 
             Text(
                 modifier = Modifier

@@ -15,9 +15,10 @@ import com.ssafy.common.theme.HeyFYTheme
 @Composable
 fun AccountVerificationBottomBar(
     verificationCode: List<String>,
+    onClick: () -> Unit = {},
 ) {
     Button(
-        onClick = { /* TODO: 계속하기 처리 */ },
+        onClick = { onClick() },
         enabled = verificationCode.all { it.isNotEmpty() },
         modifier = Modifier
             .fillMaxWidth()
