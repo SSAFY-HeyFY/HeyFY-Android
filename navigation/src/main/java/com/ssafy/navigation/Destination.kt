@@ -4,6 +4,7 @@ import com.ssafy.navigation.DestinationType.ACCOUNT
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
+import com.ssafy.navigation.DestinationType.MENTO_CLUB
 import com.ssafy.navigation.DestinationType.SEND_MONEY
 import com.ssafy.navigation.DestinationType.SIGN_UP
 import com.ssafy.navigation.DestinationType.SPLASH
@@ -36,6 +37,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object SendMoney : NoArgumentsDestination(SEND_MONEY)
 
     data object Transaction : NoArgumentsDestination(TRANSACTION)
+
+    data object MentoClub : NoArgumentsDestination(MENTO_CLUB)
 }
 
 

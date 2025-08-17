@@ -9,4 +9,5 @@ object DestinationType {
     const val CARD_DETAIL = "CARD_DETAIL"
     const val SEND_MONEY = "SEND_MONEY"
     const val TRANSACTION = "TRANSACTION"
+    const val MENTO_CLUB = "MENTO_CLUB"
 }

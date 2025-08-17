@@ -18,6 +18,7 @@ import com.ssafy.account.AccountScreen
 import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.login.LoginScreen
+import com.ssafy.mento_club.MentoClubScreen
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
@@ -87,6 +88,10 @@ class MainActivity : ComponentActivity() {
                 }
                 heyFYComposable(Destination.Transaction) {
                     TransactionScreen()
+                }
+                
+                heyFYComposable(Destination.MentoClub) {
+                    MentoClubScreen()
                 }
             }
         }
