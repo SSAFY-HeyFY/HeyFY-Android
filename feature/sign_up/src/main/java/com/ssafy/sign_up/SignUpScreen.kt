@@ -10,8 +10,6 @@ import com.ssafy.common.ui.DetailTopBar
 
 @Composable
 fun SignUpScreen() {
-
-
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
