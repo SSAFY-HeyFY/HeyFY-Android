@@ -117,7 +117,7 @@ internal fun AccountCard(
                 Text(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
-                    text = "Send Money",
+                    text = "Exchange",
                     style = HeyFYTheme.typography.labelL,
                     color = Color(0xFF9784ED)
                 )

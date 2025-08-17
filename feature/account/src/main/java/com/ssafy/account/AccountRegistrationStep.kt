@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import text.HeyFYVisualTransformation
 import com.ssafy.common.R as commonR
 
 @Composable
@@ -87,7 +88,7 @@ internal fun AccountRegistrationStep(
                         onAccountNumberChange(input)
                     }
                 },
-                visualTransformation = AccountVisualTransformation("000-000-000000", '0'),
+                visualTransformation = HeyFYVisualTransformation("000-000-000000", '0'),
                 placeholder = {
                     Text(
                         text = "000-000-000000",

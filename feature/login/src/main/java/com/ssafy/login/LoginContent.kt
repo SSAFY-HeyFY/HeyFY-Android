@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +42,7 @@ internal fun LoginContent(
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    
+
     val passwordFocusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -63,6 +64,7 @@ internal fun LoginContent(
             onValueChange = { studentId = it },
             placeholder = "Enter your student ID",
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(

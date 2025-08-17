@@ -1,4 +1,4 @@
-package com.ssafy.account
+package text
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
-class AccountVisualTransformation(val mask: String, val maskNumber: Char) : VisualTransformation {
+class HeyFYVisualTransformation(val mask: String, val maskNumber: Char) : VisualTransformation {
 
     private val maxLength = mask.count { it == maskNumber }
 
@@ -29,12 +29,12 @@ class AccountVisualTransformation(val mask: String, val maskNumber: Char) : Visu
             }
         }
 
-        return TransformedText(annotatedString, AccountOffsetMapper(mask, maskNumber))
+        return TransformedText(annotatedString, HeyFYOffsetMapper(mask, maskNumber))
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is AccountVisualTransformation) return false
+        if (other !is HeyFYVisualTransformation) return false
         if (mask != other.mask) return false
         if (maskNumber != other.maskNumber) return false
         return true
@@ -45,7 +45,7 @@ class AccountVisualTransformation(val mask: String, val maskNumber: Char) : Visu
     }
 }
 
-private class AccountOffsetMapper(val mask: String, val numberChar: Char) : OffsetMapping {
+private class HeyFYOffsetMapper(val mask: String, val numberChar: Char) : OffsetMapping {
 
     override fun originalToTransformed(offset: Int): Int {
         var noneDigitCount = 0
