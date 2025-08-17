@@ -49,9 +49,8 @@ fun RecommendJobs(
         repeat(6) {
             JobItem()
             Spacer(
-                Modifier.height(8.dp)
+                Modifier.height(16.dp)
             )
-
         }
     }
 }
