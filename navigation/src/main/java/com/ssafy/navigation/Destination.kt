@@ -1,5 +1,6 @@
 package com.ssafy.navigation
 
+import com.ssafy.navigation.DestinationType.ACCOUNT
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
@@ -23,6 +24,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object Login : NoArgumentsDestination(LOGIN)
 
     data object SignUp : NoArgumentsDestination(SIGN_UP)
+
+    data object Account : NoArgumentsDestination(ACCOUNT)
 
     data object Main : NoArgumentsDestination(MAIN)
 
