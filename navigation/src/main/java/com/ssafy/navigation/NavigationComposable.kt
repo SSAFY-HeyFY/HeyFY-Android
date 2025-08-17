@@ -3,6 +3,8 @@ package com.ssafy.navigation
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NamedNavArgument
@@ -61,6 +63,33 @@ fun NavGraphBuilder.heyFYComposable(
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(300)
+            )
+        },
+    )
+}
+
+fun NavGraphBuilder.heyFYComposableWithFade(
+    destination: Destination,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
+) {
+    composable(
+        route = destination.fullRoute,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        content = content,
+        enterTransition = {
+            fadeIn(
+                animationSpec = tween(300)
+            )
+        },
+
+        exitTransition = null,
+
+        popExitTransition = {
+            fadeOut(
+
             )
         },
     )

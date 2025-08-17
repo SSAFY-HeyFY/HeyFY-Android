@@ -16,10 +16,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.login.LoginScreen
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
+import com.ssafy.navigation.heyFYComposableWithFade
 import com.ssafy.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
@@ -60,8 +62,12 @@ class MainActivity : ComponentActivity() {
                     CardDetailScreen()
                 }
 
-                heyFYComposable(Destination.Splash) {
+                heyFYComposableWithFade(Destination.Splash) {
                     SplashScreen()
+                }
+
+                heyFYComposableWithFade(Destination.Login) {
+                    LoginScreen()
                 }
             }
         }
