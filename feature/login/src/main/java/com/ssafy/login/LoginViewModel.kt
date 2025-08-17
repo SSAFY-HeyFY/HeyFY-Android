@@ -20,4 +20,13 @@ class LoginViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToAccount() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Account(),
+                isBackStackCleared = true,
+            )
+        }
+    }
 }

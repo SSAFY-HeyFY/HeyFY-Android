@@ -17,7 +17,8 @@ fun LoginScreen(
     Scaffold(
         bottomBar = {
             LoginBottomSection(
-                goToSignUp = { viewModel.goToSignUp() }
+                goToSignUp = { viewModel.goToSignUp() },
+                goToAccount = { viewModel.goToAccount() }
             )
         },
         containerColor = Color.White

@@ -23,14 +23,20 @@ import com.ssafy.common.theme.HeyFYTheme
 internal fun LoginBottomSection(
     modifier: Modifier = Modifier,
     goToSignUp: () -> Unit = {},
+    goToAccount: () -> Unit = {}
 ) {
+    Text(
+        text = "Sign In",
+        style = HeyFYTheme.typography.labelL,
+        color = Color.White
+    )
     Column(
         modifier = modifier
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { /* TODO: 로그인 처리 */ },
+            onClick = { goToAccount() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
