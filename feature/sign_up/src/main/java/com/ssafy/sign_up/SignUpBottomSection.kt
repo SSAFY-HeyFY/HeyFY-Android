@@ -1,4 +1,4 @@
-package com.ssafy.login
+package com.ssafy.sign_up
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
-internal fun LoginBottomSection(
+internal fun SignUpBottomSection(
     modifier: Modifier = Modifier,
-    goToSignUp: () -> Unit = {},
+    goToSignIn: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -40,7 +40,7 @@ internal fun LoginBottomSection(
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                text = "Sign In",
+                text = "Create Account",
                 style = HeyFYTheme.typography.labelL,
                 color = Color.White
             )
@@ -53,17 +53,17 @@ internal fun LoginBottomSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Don't have an account? ",
+                text = "Already have an account? ",
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF6B7280)
             )
 
             Text(
-                text = "Sign Up",
+                text = "Sign in",
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF1B45F5),
                 modifier = Modifier.clickable {
-                    goToSignUp()
+                    goToSignIn()
                 }
             )
         }
