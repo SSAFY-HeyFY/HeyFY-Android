@@ -35,7 +35,6 @@ fun AccountScreen() {
     var timeRemaining by remember { mutableIntStateOf(180) }
     val scrollState = rememberScrollState()
 
-    // Timer for countdown
     LaunchedEffect(currentStep) {
         if (currentStep == 2) {
             while (timeRemaining > 0) {

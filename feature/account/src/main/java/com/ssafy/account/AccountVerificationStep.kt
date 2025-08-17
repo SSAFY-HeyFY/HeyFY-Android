@@ -47,7 +47,6 @@ internal fun AccountVerificationStep(
     val timeString = String.format("%02d:%02d", minutes, seconds)
 
     Column {
-        // Icon and title section
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -87,7 +86,6 @@ internal fun AccountVerificationStep(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Account number display (read-only)
         Column {
             Text(
                 text = "Account Number",
@@ -161,8 +159,6 @@ internal fun AccountVerificationStep(
                         onValueChange = { value ->
                             if (value.length <= 1 && value.all { it.isDigit() }) {
                                 onVerificationCodeChange(index, value)
-
-                                // 값이 입력되면 다음 필드로 포커스 이동
                                 if (value.isNotEmpty() && index < 3) {
                                     focusRequesters[index + 1].requestFocus()
                                 }

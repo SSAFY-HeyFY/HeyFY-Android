@@ -43,7 +43,6 @@ internal fun ProgressIndicator(currentStep: Int) {
                 )
             }
 
-            // Connection line
             Box(
                 modifier = Modifier
                     .width(48.dp)
@@ -51,7 +50,6 @@ internal fun ProgressIndicator(currentStep: Int) {
                     .background(Color(0xFFE5E7EB))
             )
 
-            // Step 2
             Box(
                 modifier = Modifier
                     .size(32.dp)
