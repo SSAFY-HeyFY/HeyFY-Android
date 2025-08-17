@@ -7,4 +7,5 @@ object DestinationType {
     const val ACCOUNT = "ACCOUNT"
     const val MAIN = "MAIN"
     const val CARD_DETAIL = "CARD_DETAIL"
+    const val SEND_MONEY = "SEND_MONEY"
 }

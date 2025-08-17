@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:id"))
     implementation(project(":feature:card"))
+    implementation(project(":feature:send_money"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

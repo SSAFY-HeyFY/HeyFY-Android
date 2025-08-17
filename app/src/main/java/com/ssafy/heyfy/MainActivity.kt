@@ -23,6 +23,7 @@ import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
 import com.ssafy.navigation.heyFYComposableWithFade
+import com.ssafy.send_money.SendMoneyScreen
 import com.ssafy.sign_up.SignUpScreen
 import com.ssafy.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +79,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.Account) {
                     AccountScreen()
+                }
+
+                heyFYComposable(Destination.SendMoney) {
+                    SendMoneyScreen()
                 }
             }
         }
