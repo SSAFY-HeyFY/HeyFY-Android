@@ -3,6 +3,7 @@ package com.ssafy.home
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ internal fun HomeItem(
     @DrawableRes imageResId: Int,
     content: String,
     type: String,
+    onClick: () -> Unit = {},
 ) {
     val (color, buttonText) = when (type) {
         "Mentoring" -> Pair(Color(0xFF1B45F5), "Match")
@@ -68,6 +70,7 @@ internal fun HomeItem(
                 .fillMaxWidth(0.8f)
                 .clip(RoundedCornerShape(8.dp))
                 .border(1.dp, color, RoundedCornerShape(8.dp))
+                .clickable { onClick() }
                 .padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {

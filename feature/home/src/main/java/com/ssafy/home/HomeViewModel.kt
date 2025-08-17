@@ -36,4 +36,12 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToMentoClub() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.MentoClub(),
+            )
+        }
+    }
 }

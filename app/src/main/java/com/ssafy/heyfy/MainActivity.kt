@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                 heyFYComposable(Destination.Transaction) {
                     TransactionScreen()
                 }
-                
+
                 heyFYComposable(Destination.MentoClub) {
                     MentoClubScreen()
                 }

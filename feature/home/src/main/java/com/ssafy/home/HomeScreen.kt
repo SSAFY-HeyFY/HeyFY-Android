@@ -34,7 +34,8 @@ fun HomeScreen(
             modifier = Modifier.padding(innerPadding),
             goToCardDetail = viewModel::goToCardDetail,
             goToSendMoney = viewModel::goToSendMoney,
-            goToTransaction = viewModel::goToTransaction
+            goToTransaction = viewModel::goToTransaction,
+            goToMentoClub = viewModel::goToMentoClub,
         )
     }
 }
@@ -49,6 +50,7 @@ private fun HomeContent(
     goToCardDetail: () -> Unit = {},
     goToSendMoney: () -> Unit = {},
     goToTransaction: () -> Unit = {},
+    goToMentoClub: () -> Unit = {},
 ) {
     Column(
         modifier
@@ -69,7 +71,8 @@ private fun HomeContent(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_mentoring,
                 content = "1 on 1\nKorean Culture\nMentoring",
-                type = "Mentoring"
+                type = "Mentoring",
+                onClick = goToMentoClub
             )
 
             Spacer(Modifier.width(6.dp))
@@ -78,7 +81,8 @@ private fun HomeContent(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_club,
                 content = "Recommended\nClubs\nFor You",
-                type = "Club"
+                type = "Club",
+                onClick = goToMentoClub
             )
 
             Spacer(Modifier.width(6.dp))
