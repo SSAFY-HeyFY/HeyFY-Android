@@ -3,6 +3,7 @@ package com.ssafy.navigation
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
+import com.ssafy.navigation.DestinationType.SIGN_UP
 import com.ssafy.navigation.DestinationType.SPLASH
 
 sealed class Destination(protected val route: String, vararg params: String) {
@@ -20,6 +21,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object Splash : NoArgumentsDestination(SPLASH)
 
     data object Login : NoArgumentsDestination(LOGIN)
+
+    data object SignUp : NoArgumentsDestination(SIGN_UP)
 
     data object Main : NoArgumentsDestination(MAIN)
 

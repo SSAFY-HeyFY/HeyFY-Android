@@ -22,6 +22,7 @@ import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
 import com.ssafy.navigation.heyFYComposableWithFade
+import com.ssafy.sign_up.SignUpScreen
 import com.ssafy.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
@@ -68,6 +69,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposableWithFade(Destination.Login) {
                     LoginScreen()
+                }
+
+                heyFYComposable(Destination.SignUp) {
+                    SignUpScreen()
                 }
             }
         }
