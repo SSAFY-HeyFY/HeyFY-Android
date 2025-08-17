@@ -1,8 +1,80 @@
 package com.ssafy.mento_club
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.ssafy.common.ui.DetailTopBar
+
+data class Mentor(
+    val id: String,
+    val name: String,
+    val title: String,
+    val description: String,
+    val imageUrl: String,
+)
 
 @Composable
 fun MentoClubScreen() {
+    val mentors = listOf(
+        Mentor(
+            id = "1",
+            name = "Sarah Johnson",
+            title = "Senior Product Manager at Google",
+            description = "with 8+ years of experience in tech. Specialized in product strategy, user experience, and team leadership.",
+            imageUrl = "http://localhost:3845/assets/b4ab72641176b0cc2e1ef990a1352b26e77f7de1.png"
+        ),
+        Mentor(
+            id = "2",
+            name = "Michael Chen",
+            title = "Software Engineering Manager at Microsoft",
+            description = "Expert in full-stack development, cloud architecture, and engineering leadership.",
+            imageUrl = "http://localhost:3845/assets/1cf761465086d7cb3a73b008fbed9cfb1012fe69.png"
+        ),
+        Mentor(
+            id = "3",
+            name = "Emily Rodriguez",
+            title = "Marketing Director at Spotify",
+            description = "Specializes in digital marketing, brand strategy, and growth hacking for tech startups.",
+            imageUrl = "http://localhost:3845/assets/eed0fd1a80730f9ecae8e4bd22c4209fc9fc3100.png"
+        ),
+        Mentor(
+            id = "4",
+            name = "David Kim",
+            title = "UX Design Lead at Airbnb",
+            description = "10+ years of experience in user research, design systems, and creating intuitive digital experiences.",
+            imageUrl = "http://localhost:3845/assets/c77b5c00685bb3b77655ab2ec29bcdd937de69a8.png"
+        )
+    )
 
+    Scaffold(
+        modifier = Modifier.systemBarsPadding(),
+        topBar = {
+            DetailTopBar(
+                title = "1:1 Mentoring",
+                onBack = { /* TODO: 뒤로가기 처리 */ }
+            )
+        },
+        containerColor = Color(0xFFF9FAFB)
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(mentors) { mentor ->
+                MentorCard(mentor = mentor)
+            }
+        }
+    }
 }
