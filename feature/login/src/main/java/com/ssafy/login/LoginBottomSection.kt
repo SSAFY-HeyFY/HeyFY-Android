@@ -73,7 +73,5 @@ internal fun LoginBottomSection(
                 }
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
