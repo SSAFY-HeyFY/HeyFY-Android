@@ -22,6 +22,7 @@ import com.ssafy.common.theme.HeyFYTheme
 @Composable
 internal fun LoginBottomSection(
     modifier: Modifier = Modifier,
+    goToSignUp: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -61,7 +62,9 @@ internal fun LoginBottomSection(
                 text = "Sign Up",
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF1B45F5),
-                modifier = Modifier.clickable { /* TODO: 회원가입 화면으로 이동 */ }
+                modifier = Modifier.clickable {
+                    goToSignUp()
+                }
             )
         }
 

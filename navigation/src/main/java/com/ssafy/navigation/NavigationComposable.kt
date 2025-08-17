@@ -81,15 +81,21 @@ fun NavGraphBuilder.heyFYComposableWithFade(
         content = content,
         enterTransition = {
             fadeIn(
+                animationSpec = tween(1000)
+            )
+        },
+
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(300)
             )
         },
 
-        exitTransition = null,
-
-        popExitTransition = {
-            fadeOut(
-
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(300)
             )
         },
     )
