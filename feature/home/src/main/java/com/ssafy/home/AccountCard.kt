@@ -30,6 +30,7 @@ internal fun AccountCard(
     account: String = "103-124-34412384",
     currency: String = "1,227,000",
     goToSendMoney: () -> Unit = {},
+    goToTransaction: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -44,6 +45,7 @@ internal fun AccountCard(
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(20.dp)
+            .clickable { goToTransaction() },
     ) {
         Text(
             text = if (isFX) "FX Account - USD" else "Accout",

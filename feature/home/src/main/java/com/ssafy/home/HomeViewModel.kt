@@ -28,4 +28,12 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToTransaction() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Transaction(),
+            )
+        }
+    }
 }

@@ -26,7 +26,8 @@ import kotlin.math.absoluteValue
 @Composable
 internal fun SwipePagerWithIndicator(
     modifier: Modifier = Modifier,
-    goToSendMoney: () -> Unit = {}
+    goToSendMoney: () -> Unit = {},
+    goToTransaction: () -> Unit = {},
 ) {
     val pageCount = 3
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -64,12 +65,14 @@ internal fun SwipePagerWithIndicator(
                     modifier = modifierPager,
                     isFX = false,
                     goToSendMoney = goToSendMoney,
+                    goToTransaction = goToTransaction,
                 )
 
                 2 -> AccountCard(
                     modifier = modifierPager,
                     isFX = true,
                     goToSendMoney = goToSendMoney,
+                    goToTransaction = goToTransaction,
                 )
             }
         }
