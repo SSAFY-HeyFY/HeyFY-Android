@@ -55,6 +55,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":navigation"))
+    implementation(project(":feature:splash"))
     implementation(project(":feature:home"))
     implementation(project(":feature:id"))
     implementation(project(":feature:card"))

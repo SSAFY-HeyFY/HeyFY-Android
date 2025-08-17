@@ -20,6 +20,7 @@ import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYNavHost
 import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
+import com.ssafy.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
         HeyFYTheme {
             HeyFYNavHost(
                 navController = navController,
-                startDestination = Destination.Main,
+                startDestination = Destination.Splash,
                 modifier = Modifier.background(Color.White)
             ) {
                 heyFYComposable(Destination.Main) {
@@ -57,6 +58,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.CardDetail) {
                     CardDetailScreen()
+                }
+
+                heyFYComposable(Destination.Splash) {
+                    SplashScreen()
                 }
             }
         }
