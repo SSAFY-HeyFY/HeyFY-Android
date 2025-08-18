@@ -21,4 +21,13 @@ class SplashViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToMain() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Main(),
+                isBackStackCleared = true
+            )
+        }
+    }
 }

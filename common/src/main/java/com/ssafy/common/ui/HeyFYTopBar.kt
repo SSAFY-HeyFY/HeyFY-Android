@@ -27,7 +27,7 @@ fun HeyFYTopBar(
 ) {
     Column {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(56.dp),
             contentAlignment = Alignment.CenterStart,

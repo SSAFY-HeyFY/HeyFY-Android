@@ -8,6 +8,8 @@ fun SplashScreen(
     valModel: SplashViewModel = hiltViewModel<SplashViewModel>(),
 ) {
     SplashContent(
-        goToLogin = { valModel.goToLogin() }
+        isHome = true,
+        goToLogin = { valModel.goToLogin() },
+        goToMain = { valModel.goToMain() },
     )
 }

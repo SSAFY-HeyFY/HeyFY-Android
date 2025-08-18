@@ -27,13 +27,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ssafy.common.R as commonR
 import kotlinx.coroutines.delay
+import com.ssafy.common.R as commonR
 
 @Composable
 internal fun SplashContent(
     modifier: Modifier = Modifier,
+    isHome: Boolean = true,
     goToLogin: () -> Unit = {},
+    goToMain: () -> Unit = {},
 ) {
     val fullTextF = "Foreigner"
     val shortTextF = "F"
@@ -87,6 +89,30 @@ internal fun SplashContent(
         ),
         label = "offset_y"
     )
+    val offsetYForMain by animateFloatAsState(
+        targetValue = if (startMoveUp) -330f else 0f,
+        animationSpec = tween(
+            durationMillis = 1000,
+        ),
+        label = "offset_y"
+    )
+
+    val offsetXForMain by animateFloatAsState(
+        targetValue = if (startMoveUp) -120f else 0f,
+        animationSpec = tween(
+            durationMillis = 1000,
+        ),
+        label = "offset_y"
+    )
+
+    val sizeForMain by animateFloatAsState(
+        targetValue = if (startMoveUp) 24f else 40f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "font_size"
+    )
 
     LaunchedEffect(Unit) {
         delay(1500)
@@ -94,8 +120,12 @@ internal fun SplashContent(
         delay(500)
         startMoveUp = true
         delay(1000)
-        goToLogin()
+        if (isHome) goToMain() else goToLogin()
     }
+
+    val y = if (isHome) offsetYForMain else offsetY
+    val x = if (isHome) offsetXForMain else 0f
+    val size = if (isHome && startMoveUp) sizeForMain else fontSize
 
     Box(
         modifier = modifier
@@ -103,12 +133,16 @@ internal fun SplashContent(
             .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
+
         Row(
-            modifier = Modifier.offset(y = offsetY.dp)
+            modifier = Modifier.offset(
+                y = y.dp,
+                x = x.dp,
+            )
         ) {
             Text(
                 text = "Hey",
-                fontSize = fontSize.sp,
+                fontSize = size.sp,
                 fontFamily = FontFamily(Font(commonR.font.pretendard_black)),
                 fontWeight = FontWeight(900),
                 color = Color(0xFF9784ED).copy(alpha = alpha)
@@ -119,7 +153,7 @@ internal fun SplashContent(
             Text(
                 text = fullTextF.take(visibleCharsF) +
                         shortTextF.drop(visibleCharsF.coerceAtMost(shortTextF.length)),
-                fontSize = fontSize.sp,
+                fontSize = size.sp,
                 fontFamily = FontFamily(Font(commonR.font.pretendard_black)),
                 fontWeight = FontWeight(900),
                 color = Color(0xFF9784ED).copy(alpha = alpha)
@@ -130,7 +164,7 @@ internal fun SplashContent(
             Text(
                 text = fullTextY.take(visibleCharsY) +
                         shortTextY.drop(visibleCharsY.coerceAtMost(shortTextY.length)),
-                fontSize = fontSize.sp,
+                fontSize = size.sp,
                 fontFamily = FontFamily(Font(commonR.font.pretendard_black)),
                 fontWeight = FontWeight(900),
                 color = Color(0xFF9784ED).copy(alpha = alpha)

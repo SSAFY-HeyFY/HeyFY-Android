@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                 startDestination = Destination.Splash,
                 modifier = Modifier.background(Color.White)
             ) {
-                heyFYComposable(Destination.Main) {
+                heyFYComposableWithFade(Destination.Main) {
                     MainScreen()
                 }
 
