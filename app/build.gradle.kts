@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":feature:mento_club"))
     implementation(project(":feature:success"))
     implementation(project(":feature:finance"))
+    implementation(project(":feature:exchange"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

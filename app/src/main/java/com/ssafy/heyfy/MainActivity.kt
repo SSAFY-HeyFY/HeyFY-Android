@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ssafy.account.AccountScreen
 import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.exchange.ExchangeScreen
 import com.ssafy.login.LoginScreen
 import com.ssafy.mento_club.MentoClubScreen
 import com.ssafy.navigation.Destination
@@ -97,6 +98,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.Success) {
                     SuccessScreen()
+                }
+
+                heyFYComposable(Destination.Exchange) {
+                    ExchangeScreen()
                 }
             }
         }

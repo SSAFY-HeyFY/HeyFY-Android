@@ -12,4 +12,5 @@ object DestinationType {
     const val MENTO_CLUB = "MENTO_CLUB"
     const val SUCCESS = "SUCCESS"
     const val FINANCE = "FINANCE"
+    const val EXCHANGE = "EXCHANGE"
 }
