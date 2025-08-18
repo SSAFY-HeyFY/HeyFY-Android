@@ -13,10 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.HeyFYTopBar
 
 @Composable
-fun FinanceScreen() {
+fun FinanceScreen(
+    viewModel: FinanceViewModel = hiltViewModel<FinanceViewModel>(),
+) {
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
@@ -40,7 +43,11 @@ fun FinanceScreen() {
             }
 
             item {
-                BullishPredictionCard()
+                BullishPredictionCard(
+                    onClick = {
+                        viewModel.goToExchange()
+                    }
+                )
             }
 
             item {

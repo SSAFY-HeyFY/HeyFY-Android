@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
-internal fun BullishPredictionCard() {
+internal fun BullishPredictionCard(
+    onClick: () -> Unit = {},
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -56,7 +58,7 @@ internal fun BullishPredictionCard() {
                 )
 
                 Button(
-                    onClick = { },
+                    onClick = { onClick() },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF9333EA)
