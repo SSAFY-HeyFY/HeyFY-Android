@@ -27,6 +27,7 @@ import com.ssafy.navigation.heyFYComposableWithFade
 import com.ssafy.send_money.SendMoneyScreen
 import com.ssafy.sign_up.SignUpScreen
 import com.ssafy.splash.SplashScreen
+import com.ssafy.success.SuccessScreen
 import com.ssafy.transaction.TransactionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
@@ -92,6 +93,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.MentoClub) {
                     MentoClubScreen()
+                }
+
+                heyFYComposable(Destination.Success) {
+                    SuccessScreen()
                 }
             }
         }

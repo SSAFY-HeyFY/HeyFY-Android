@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":feature:send_money"))
     implementation(project(":feature:transaction"))
     implementation(project(":feature:mento_club"))
+    implementation(project(":feature:success"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
