@@ -2,6 +2,7 @@ package com.ssafy.navigation
 
 import com.ssafy.navigation.DestinationType.ACCOUNT
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
+import com.ssafy.navigation.DestinationType.FINANCE
 import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
 import com.ssafy.navigation.DestinationType.MENTO_CLUB
@@ -42,6 +43,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object MentoClub : NoArgumentsDestination(MENTO_CLUB)
 
     data object Success : NoArgumentsDestination(SUCCESS)
+
+    data object Finance : NoArgumentsDestination(FINANCE)
 }
 
 
