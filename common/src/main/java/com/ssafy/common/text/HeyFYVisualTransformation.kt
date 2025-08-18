@@ -1,4 +1,4 @@
-package text
+package com.ssafy.common.text
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString

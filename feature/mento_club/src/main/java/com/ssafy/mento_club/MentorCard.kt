@@ -28,6 +28,7 @@ import com.ssafy.common.ui.LoadImage
 @Composable
 internal fun MentorCard(
     mentor: Mentor,
+    onClick: () -> Unit = {},
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -42,7 +43,6 @@ internal fun MentorCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top
             ) {
-                // Mentor Profile Image
                 LoadImage(
                     modifier = Modifier
                         .size(64.dp)
@@ -76,7 +76,7 @@ internal fun MentorCard(
 
             // Apply Button
             Button(
-                onClick = { /* TODO: 멘토링 신청 처리 */ },
+                onClick = { onClick() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),

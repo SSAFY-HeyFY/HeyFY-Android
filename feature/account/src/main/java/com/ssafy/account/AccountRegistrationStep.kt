@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
-import text.HeyFYVisualTransformation
+import com.ssafy.common.text.HeyFYVisualTransformation
 import com.ssafy.common.R as commonR
 
 @Composable

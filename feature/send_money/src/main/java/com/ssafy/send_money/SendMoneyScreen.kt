@@ -20,11 +20,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.ui.HeyFYPopUp
 import kotlinx.coroutines.delay
 
 @Composable
-fun SendMoneyScreen() {
+fun SendMoneyScreen(
+    viewModel: SendMoneyViewModel = hiltViewModel<SendMoneyViewModel>(),
+) {
+    var isShowPopUp by remember { mutableStateOf(false) }
+
     val maxBalance = 12450.5
     var selectedBank by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
@@ -45,13 +51,13 @@ fun SendMoneyScreen() {
         topBar = {
             DetailTopBar(
                 title = "Send Money",
-                onBack = { /* TODO: 뒤로가기 처리 */ }
+                onBack = { viewModel.navigateBack() }
             )
         },
         bottomBar = {
             SendMoneyBottomBar(
                 isEnabled = accountNumber.isNotEmpty() && transferAmount.isNotEmpty(),
-                onContinue = { /* TODO: 송금 처리 */ }
+                onContinue = { isShowPopUp = true }
             )
         },
         containerColor = Color(0xFFF9FAFB)
@@ -93,5 +99,22 @@ fun SendMoneyScreen() {
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+
+
+    if (isShowPopUp) {
+        HeyFYPopUp(
+            onCancel = {
+                isShowPopUp = false
+            },
+            onConfirm = {
+                isShowPopUp = false
+                // TODO : 송금 완료 처리
+                viewModel.goToSuccess()
+            },
+            onDismiss = {
+                isShowPopUp = false
+            }
+        )
     }
 }

@@ -32,6 +32,7 @@ import com.ssafy.common.R as commonR
 @Composable
 fun RecommendJobs(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -47,7 +48,9 @@ fun RecommendJobs(
         )
 
         repeat(6) {
-            JobItem()
+            JobItem(
+                onApply = onClick
+            )
             Spacer(
                 Modifier.height(16.dp)
             )

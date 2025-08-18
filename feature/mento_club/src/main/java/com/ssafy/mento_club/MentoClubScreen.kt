@@ -9,10 +9,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.ui.HeyFYPopUp
 
 data class Mentor(
     val id: String,
@@ -23,7 +29,12 @@ data class Mentor(
 )
 
 @Composable
-fun MentoClubScreen() {
+fun MentoClubScreen(
+    viewModel: MentoClubViewModel = hiltViewModel<MentoClubViewModel>()
+) {
+
+    var isShowPopUp by remember { mutableStateOf(false) }
+
     val mentors = listOf(
         Mentor(
             id = "1",
@@ -73,8 +84,29 @@ fun MentoClubScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(mentors) { mentor ->
-                MentorCard(mentor = mentor)
+                MentorCard(
+                    mentor = mentor,
+                    onClick = {
+                        isShowPopUp = true
+                    }
+                )
             }
         }
+    }
+
+    if (isShowPopUp) {
+        HeyFYPopUp(
+            onCancel = {
+                isShowPopUp = false
+            },
+            onConfirm = {
+                isShowPopUp = false
+                // TODO: 신청 완료 처리
+                viewModel.goToSuccess()
+            },
+            onDismiss = {
+                isShowPopUp = false
+            }
+        )
     }
 }

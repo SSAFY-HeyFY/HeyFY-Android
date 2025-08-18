@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ssafy.common.theme.HeyFYTheme
-import text.HeyFYVisualTransformation
+import com.ssafy.common.text.HeyFYVisualTransformation
 
 @Composable
 internal fun TransferAmountSection(
