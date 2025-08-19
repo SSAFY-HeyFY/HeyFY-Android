@@ -13,4 +13,5 @@ object DestinationType {
     const val SUCCESS = "SUCCESS"
     const val FINANCE = "FINANCE"
     const val EXCHANGE = "EXCHANGE"
+    const val TIPS = "TIPS"
 }

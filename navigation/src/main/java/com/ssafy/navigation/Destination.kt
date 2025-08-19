@@ -11,6 +11,7 @@ import com.ssafy.navigation.DestinationType.SEND_MONEY
 import com.ssafy.navigation.DestinationType.SIGN_UP
 import com.ssafy.navigation.DestinationType.SPLASH
 import com.ssafy.navigation.DestinationType.SUCCESS
+import com.ssafy.navigation.DestinationType.TIPS
 import com.ssafy.navigation.DestinationType.TRANSACTION
 
 sealed class Destination(protected val route: String, vararg params: String) {
@@ -48,6 +49,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object Finance : NoArgumentsDestination(FINANCE)
 
     data object Exchange : NoArgumentsDestination(EXCHANGE)
+
+    data object Tips : NoArgumentsDestination(TIPS)
 }
 
 

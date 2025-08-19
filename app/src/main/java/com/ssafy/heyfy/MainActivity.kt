@@ -29,6 +29,7 @@ import com.ssafy.send_money.SendMoneyScreen
 import com.ssafy.sign_up.SignUpScreen
 import com.ssafy.splash.SplashScreen
 import com.ssafy.success.SuccessScreen
+import com.ssafy.tips.TipsScreen
 import com.ssafy.transaction.TransactionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
@@ -102,6 +103,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.Exchange) {
                     ExchangeScreen()
+                }
+
+                heyFYComposable(Destination.Tips) {
+                    TipsScreen()
                 }
             }
         }

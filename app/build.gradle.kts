@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":feature:success"))
     implementation(project(":feature:finance"))
     implementation(project(":feature:exchange"))
+    implementation(project(":feature:tips"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
