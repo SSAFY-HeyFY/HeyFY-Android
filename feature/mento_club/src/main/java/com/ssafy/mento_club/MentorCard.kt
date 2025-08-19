@@ -1,5 +1,6 @@
 package com.ssafy.mento_club
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
@@ -43,11 +46,14 @@ internal fun MentorCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top
             ) {
-                LoadImage(
+                Image(
                     modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape),
-                    url = mentor.imageUrl,
+                        .width(60.dp)
+                        .height(90.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    painter = painterResource(id = mentor.imageId),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))

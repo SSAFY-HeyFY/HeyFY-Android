@@ -1,5 +1,6 @@
 package com.ssafy.mento_club
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,13 +21,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.HeyFYPopUp
 import com.ssafy.navigation.DestinationParamConstants.MENTO
+import com.ssafy.common.R as commonR
 
 data class Mentor(
     val id: String,
     val name: String,
     val title: String,
     val description: String,
-    val imageUrl: String,
+    @DrawableRes val imageId: Int,
 )
 
 @Composable
@@ -42,28 +44,28 @@ fun MentoClubScreen(
             name = "Sarah Johnson",
             title = "Senior Product Manager at Google",
             description = "with 8+ years of experience in tech. Specialized in product strategy, user experience, and team leadership.",
-            imageUrl = "http://localhost:3845/assets/b4ab72641176b0cc2e1ef990a1352b26e77f7de1.png"
+            imageId = commonR.drawable.image_jaehong
         ),
         Mentor(
             id = "2",
             name = "Michael Chen",
             title = "Software Engineering Manager at Microsoft",
             description = "Expert in full-stack development, cloud architecture, and engineering leadership.",
-            imageUrl = "http://localhost:3845/assets/1cf761465086d7cb3a73b008fbed9cfb1012fe69.png"
+            imageId = commonR.drawable.image_jaehong
         ),
         Mentor(
             id = "3",
             name = "Emily Rodriguez",
             title = "Marketing Director at Spotify",
             description = "Specializes in digital marketing, brand strategy, and growth hacking for tech startups.",
-            imageUrl = "http://localhost:3845/assets/eed0fd1a80730f9ecae8e4bd22c4209fc9fc3100.png"
+            imageId = commonR.drawable.image_jaehong
         ),
         Mentor(
             id = "4",
             name = "David Kim",
             title = "UX Design Lead at Airbnb",
             description = "10+ years of experience in user research, design systems, and creating intuitive digital experiences.",
-            imageUrl = "http://localhost:3845/assets/c77b5c00685bb3b77655ab2ec29bcdd937de69a8.png"
+            imageId = commonR.drawable.image_jaehong
         )
     )
 

@@ -34,7 +34,7 @@ fun TipsScreen(
         topBar = {
             DetailTopBar (
                 title = "Today's Tips",
-                onBack = viewModel::back,
+                onBack = viewModel::back
             )
         },
         containerColor = Color.White
