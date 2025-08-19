@@ -36,7 +36,8 @@ fun HomeScreen(
             goToSendMoney = viewModel::goToSendMoney,
             goToTransaction = viewModel::goToTransaction,
             goToMentoClub = viewModel::goToMentoClub,
-            goToTips = viewModel::goToTips
+            goToTips = viewModel::goToTips,
+            goToExchange = viewModel::goToExchange,
         )
     }
 }
@@ -52,7 +53,8 @@ private fun HomeContent(
     goToSendMoney: () -> Unit = {},
     goToTransaction: () -> Unit = {},
     goToMentoClub: () -> Unit = {},
-    goToTips: () -> Unit = {}
+    goToTips: () -> Unit = {},
+    goToExchange: () -> Unit = {},
 ) {
     Column(
         modifier
@@ -62,6 +64,7 @@ private fun HomeContent(
         SwipePagerWithIndicator(
             goToSendMoney = goToSendMoney,
             goToTransaction = goToTransaction,
+            goToExchange = goToExchange,
         )
 
         Row(

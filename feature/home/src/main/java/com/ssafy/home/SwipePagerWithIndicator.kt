@@ -28,6 +28,7 @@ internal fun SwipePagerWithIndicator(
     modifier: Modifier = Modifier,
     goToSendMoney: () -> Unit = {},
     goToTransaction: () -> Unit = {},
+    goToExchange: () -> Unit = {},
 ) {
     val pageCount = 3
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -66,6 +67,7 @@ internal fun SwipePagerWithIndicator(
                     isFX = false,
                     goToSendMoney = goToSendMoney,
                     goToTransaction = goToTransaction,
+                    goToExchange = goToExchange,
                 )
 
                 2 -> AccountCard(
@@ -73,6 +75,7 @@ internal fun SwipePagerWithIndicator(
                     isFX = true,
                     goToSendMoney = goToSendMoney,
                     goToTransaction = goToTransaction,
+                    goToExchange = goToExchange,
                 )
             }
         }

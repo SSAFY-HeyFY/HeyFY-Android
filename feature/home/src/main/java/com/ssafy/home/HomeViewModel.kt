@@ -52,4 +52,12 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToExchange() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Exchange(),
+            )
+        }
+    }
 }

@@ -30,22 +30,23 @@ internal fun AccountCard(
     account: String = "103-124-34412384",
     currency: String = "1,227,000",
     goToSendMoney: () -> Unit = {},
+    goToExchange: () -> Unit = {},
     goToTransaction: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
+            .clip(RoundedCornerShape(16.dp))
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(Color(0xFF7D80EE), Color(0xFFC78DEB)),
                     start = Offset.Zero,
                     end = Offset.Infinite,
                 ),
-                shape = RoundedCornerShape(16.dp)
             )
-            .padding(20.dp)
-            .clickable { goToTransaction() },
+            .clickable { goToTransaction() }
+            .padding(20.dp),
     ) {
         Text(
             text = if (isFX) "FX Account - USD" else "Accout",
@@ -112,7 +113,8 @@ internal fun AccountCard(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White),
+                    .background(Color.White)
+                    .clickable { goToExchange() },
                 contentAlignment = Alignment.Center,
             ) {
 
