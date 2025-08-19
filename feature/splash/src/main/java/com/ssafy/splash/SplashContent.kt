@@ -33,9 +33,8 @@ import com.ssafy.common.R as commonR
 @Composable
 internal fun SplashContent(
     modifier: Modifier = Modifier,
-    isHome: Boolean = true,
-    goToLogin: () -> Unit = {},
-    goToMain: () -> Unit = {},
+    isHome: Boolean,
+    updateAnimationCompleted: () -> Unit,
 ) {
     val fullTextF = "Foreigner"
     val shortTextF = "F"
@@ -120,7 +119,7 @@ internal fun SplashContent(
         delay(500)
         startMoveUp = true
         delay(1000)
-        if (isHome) goToMain() else goToLogin()
+        updateAnimationCompleted()
     }
 
     val y = if (isHome) offsetYForMain else offsetY
@@ -176,5 +175,8 @@ internal fun SplashContent(
 @Preview
 @Composable
 private fun SplashContentPreview() {
-    SplashContent()
+    SplashContent(
+        isHome = true,
+        updateAnimationCompleted = {}
+    )
 }
