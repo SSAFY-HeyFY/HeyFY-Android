@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.HeyFYPopUp
+import com.ssafy.navigation.DestinationParamConstants.MENTO
 
 data class Mentor(
     val id: String,
@@ -30,7 +31,7 @@ data class Mentor(
 
 @Composable
 fun MentoClubScreen(
-    viewModel: MentoClubViewModel = hiltViewModel<MentoClubViewModel>()
+    viewModel: MentoClubViewModel = hiltViewModel<MentoClubViewModel>(),
 ) {
 
     var isShowPopUp by remember { mutableStateOf(false) }
@@ -69,8 +70,9 @@ fun MentoClubScreen(
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
+            val title = if (viewModel.type == MENTO) "1:1 Mentoring" else "Club Recommendation"
             DetailTopBar(
-                title = "1:1 Mentoring",
+                title = title,
                 onBack = viewModel::back
             )
         },

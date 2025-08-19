@@ -1,5 +1,6 @@
 package com.ssafy.navigation
 
+import com.ssafy.navigation.DestinationParamConstants.MENTO_CLUB_TYPE
 import com.ssafy.navigation.DestinationType.ACCOUNT
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.EXCHANGE
@@ -13,6 +14,7 @@ import com.ssafy.navigation.DestinationType.SPLASH
 import com.ssafy.navigation.DestinationType.SUCCESS
 import com.ssafy.navigation.DestinationType.TIPS
 import com.ssafy.navigation.DestinationType.TRANSACTION
+import com.ssafy.navigation.appendParams
 
 sealed class Destination(protected val route: String, vararg params: String) {
 
@@ -42,7 +44,9 @@ sealed class Destination(protected val route: String, vararg params: String) {
 
     data object Transaction : NoArgumentsDestination(TRANSACTION)
 
-    data object MentoClub : NoArgumentsDestination(MENTO_CLUB)
+    data object MentoClub : Destination(MENTO_CLUB, MENTO_CLUB_TYPE) {
+        operator fun invoke(type: String): String = route.appendParams(MENTO_CLUB_TYPE to type)
+    }
 
     data object Success : NoArgumentsDestination(SUCCESS)
 

@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.HeyFYTopBar
+import com.ssafy.navigation.DestinationParamConstants.CLUB
+import com.ssafy.navigation.DestinationParamConstants.MENTO
 import com.ssafy.common.R as commonR
 
 @Composable
@@ -35,7 +37,9 @@ fun HomeScreen(
             goToCardDetail = viewModel::goToCardDetail,
             goToSendMoney = viewModel::goToSendMoney,
             goToTransaction = viewModel::goToTransaction,
-            goToMentoClub = viewModel::goToMentoClub,
+            goToMentoClub = { type ->
+                viewModel.goToMentoClub(type)
+            },
             goToTips = viewModel::goToTips,
             goToExchange = viewModel::goToExchange,
         )
@@ -52,7 +56,7 @@ private fun HomeContent(
     goToCardDetail: () -> Unit = {},
     goToSendMoney: () -> Unit = {},
     goToTransaction: () -> Unit = {},
-    goToMentoClub: () -> Unit = {},
+    goToMentoClub: (type: String) -> Unit = {},
     goToTips: () -> Unit = {},
     goToExchange: () -> Unit = {},
 ) {
@@ -77,7 +81,7 @@ private fun HomeContent(
                 imageResId = commonR.drawable.icon_mentoring,
                 content = "1 on 1\nKorean Culture\nMentoring",
                 type = "Mentoring",
-                onClick = goToMentoClub
+                onClick = { goToMentoClub(MENTO) }
             )
 
             Spacer(Modifier.width(6.dp))
@@ -87,7 +91,7 @@ private fun HomeContent(
                 imageResId = commonR.drawable.icon_club,
                 content = "Recommended\nClubs\nFor You",
                 type = "Club",
-                onClick = goToMentoClub
+                onClick = { goToMentoClub(CLUB) }
             )
 
             Spacer(Modifier.width(6.dp))
