@@ -44,4 +44,12 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun goToTips() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Tips(),
+            )
+        }
+    }
 }

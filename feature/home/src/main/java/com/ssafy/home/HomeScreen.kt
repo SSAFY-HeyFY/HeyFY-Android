@@ -36,6 +36,7 @@ fun HomeScreen(
             goToSendMoney = viewModel::goToSendMoney,
             goToTransaction = viewModel::goToTransaction,
             goToMentoClub = viewModel::goToMentoClub,
+            goToTips = viewModel::goToTips
         )
     }
 }
@@ -51,6 +52,7 @@ private fun HomeContent(
     goToSendMoney: () -> Unit = {},
     goToTransaction: () -> Unit = {},
     goToMentoClub: () -> Unit = {},
+    goToTips: () -> Unit = {}
 ) {
     Column(
         modifier
@@ -91,7 +93,8 @@ private fun HomeContent(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_tips,
                 content = "Today's\nCampus\nTips",
-                type = "Tips"
+                type = "Tips",
+                onClick = goToTips,
             )
         }
 
