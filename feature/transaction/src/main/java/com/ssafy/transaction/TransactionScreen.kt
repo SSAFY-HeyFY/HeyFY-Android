@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
 
 data class Transaction(
@@ -23,7 +24,9 @@ data class Transaction(
 )
 
 @Composable
-fun TransactionScreen() {
+fun TransactionScreen(
+    viewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>()
+) {
     val currentBalance = 12847.50
     val accountNumber = "103-12344123-24-84"
 
@@ -42,7 +45,7 @@ fun TransactionScreen() {
         topBar = {
             DetailTopBar(
                 title = "Transaction History",
-                onBack = { /* TODO: 뒤로가기 처리 */ }
+                onBack = viewModel::back
             )
         },
         containerColor = Color.White

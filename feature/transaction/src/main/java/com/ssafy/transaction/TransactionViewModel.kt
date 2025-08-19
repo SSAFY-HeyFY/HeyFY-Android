@@ -1,31 +1,20 @@
-package com.ssafy.mento_club
+package com.ssafy.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYAppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MentoClubViewModel @Inject constructor(
+class TransactionViewModel @Inject constructor(
     private val heyFYAppNavigator: HeyFYAppNavigator
-): ViewModel() {
+) : ViewModel() {
 
     fun back() {
         viewModelScope.launch {
             heyFYAppNavigator.navigateBack()
-        }
-    }
-
-    fun goToSuccess() {
-        viewModelScope.launch {
-            delay(500)
-            heyFYAppNavigator.navigateTo(
-                route = Destination.Success(),
-            )
         }
     }
 }

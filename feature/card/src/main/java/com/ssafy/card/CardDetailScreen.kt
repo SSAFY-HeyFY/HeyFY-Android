@@ -37,12 +37,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.R as commonR
 
 @Composable
-fun CardDetailScreen() {
+fun CardDetailScreen(
+    viewModel: CardDetailViewModel = hiltViewModel<CardDetailViewModel>()
+) {
 
     val uriHandler = LocalUriHandler.current
     var isCardFlipped by remember { mutableStateOf(false) }
@@ -59,7 +62,7 @@ fun CardDetailScreen() {
         topBar = {
             DetailTopBar(
                 title = "Card Recommendation",
-                onBack = { }
+                onBack = viewModel::back
             )
         },
 

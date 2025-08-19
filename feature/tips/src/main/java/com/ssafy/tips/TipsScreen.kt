@@ -10,11 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.R as commonR
 
 @Composable
-fun TipsScreen() {
+fun TipsScreen(
+    viewModel: TipsViewModel = hiltViewModel<TipsViewModel>()
+) {
 
     val imageIds = listOf(
         commonR.drawable.image_tips_1,
@@ -31,6 +34,7 @@ fun TipsScreen() {
         topBar = {
             DetailTopBar (
                 title = "Today's Tips",
+                onBack = viewModel::back,
             )
         },
         containerColor = Color.White

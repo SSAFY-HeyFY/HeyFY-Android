@@ -71,7 +71,7 @@ fun MentoClubScreen(
         topBar = {
             DetailTopBar(
                 title = "1:1 Mentoring",
-                onBack = { /* TODO: 뒤로가기 처리 */ }
+                onBack = viewModel::back
             )
         },
         containerColor = Color(0xFFF9FAFB)

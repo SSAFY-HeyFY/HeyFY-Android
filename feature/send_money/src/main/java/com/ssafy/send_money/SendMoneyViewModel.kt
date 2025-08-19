@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYAppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class SendMoneyViewModel @Inject constructor(
 
     fun goToSuccess() {
         viewModelScope.launch {
+            delay(500)
             heyFYAppNavigator.navigateTo(
                 route = Destination.Success(),
             )
