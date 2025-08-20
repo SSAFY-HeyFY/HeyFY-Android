@@ -21,10 +21,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun goToSendMoney() {
+    fun goToSendMoney(type: String) {
         viewModelScope.launch {
             navigator.navigateTo(
-                route = Destination.SendMoney(),
+                route = Destination.SendMoney(type),
             )
         }
     }

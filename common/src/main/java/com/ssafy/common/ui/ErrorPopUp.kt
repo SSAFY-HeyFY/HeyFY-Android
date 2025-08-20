@@ -80,7 +80,7 @@ fun ErrorPopUp(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "Confirm",
+                            text = "OK",
                             style = HeyFYTheme.typography.labelL,
                             color = Color.White
                         )

@@ -22,10 +22,9 @@ import com.ssafy.common.theme.HeyFYTheme
 @Composable
 internal fun TransferSummarySection(
     transferAmount: String,
+    currency: String,
 ) {
     val amount = transferAmount.toDoubleOrNull() ?: 0.0
-    val fee = 1.50
-    val total = amount + fee
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -46,7 +45,10 @@ internal fun TransferSummarySection(
                     color = Color(0xFF6B7280)
                 )
                 Text(
-                    text = "$${String.format("%.2f", amount)}",
+                    text = when (currency) {
+                        "KRW" -> "₩ ${String.format("%,.0f", amount)}"
+                        else -> "$ ${String.format("%.2f", amount)}"
+                    },
                     style = HeyFYTheme.typography.labelM,
                     color = Color(0xFF111827)
                 )
@@ -64,7 +66,7 @@ internal fun TransferSummarySection(
                     color = Color(0xFF6B7280)
                 )
                 Text(
-                    text = "$${String.format("%.2f", fee)}",
+                    text = "Free",
                     style = HeyFYTheme.typography.labelM,
                     color = Color(0xFF111827)
                 )
@@ -85,7 +87,10 @@ internal fun TransferSummarySection(
                     color = Color(0xFF111827)
                 )
                 Text(
-                    text = "$${String.format("%.2f", total)}",
+                    text = when (currency) {
+                        "KRW" -> "₩ ${String.format("%,.0f", amount)}"
+                        else -> "$ ${String.format("%.2f", amount)}"
+                    },
                     style = HeyFYTheme.typography.labelL,
                     color = Color(0xFF9333EA)
                 )

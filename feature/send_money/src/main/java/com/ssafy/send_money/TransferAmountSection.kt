@@ -31,13 +31,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ssafy.common.text.HeyFYVisualTransformation
+import com.ssafy.common.text.CurrencyVisualTransformation
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
 internal fun TransferAmountSection(
     transferAmount: String,
     maxBalance: Double,
+    currency: String,
     showInsufficientBalanceError: Boolean,
     updateShowInsufficientBalanceError: (Boolean) -> Unit,
     onAmountChange: (String) -> Unit,
@@ -67,7 +68,21 @@ internal fun TransferAmountSection(
 
             if (showInsufficientBalanceError) {
                 Text(
-                    text = "Insufficient Balance \n[Vailable Balance: $${maxBalance}]",
+                    text = when (currency) {
+                        "KRW" -> "Insufficient Balance \n[Available Balance: ₩ ${
+                            String.format(
+                                "%,.0f",
+                                maxBalance
+                            )
+                        }]"
+
+                        else -> "Insufficient Balance \n[Available Balance: $ ${
+                            String.format(
+                                "%,.2f",
+                                maxBalance
+                            )
+                        }]"
+                    },
                     style = HeyFYTheme.typography.bodyM,
                     color = Color(0xFFDC2626),
                     textAlign = TextAlign.Center,
@@ -90,23 +105,39 @@ internal fun TransferAmountSection(
                         return@OutlinedTextField
                     }
 
-                    if (!value.matches(Regex("^\\d*\\.?\\d{0,2}$"))) {
+                    // 숫자와 소수점만 허용
+                    val cleanValue = value.replace(Regex("[^\\d.]"), "")
+
+                    // 소수점이 여러 개 있는 경우 처리
+                    val dotCount = cleanValue.count { it == '.' }
+                    if (dotCount > 1) {
                         return@OutlinedTextField
                     }
 
-                    val numericValue = value.toDoubleOrNull() ?: 0.0
+                    // 소수점이 있는 경우 소수점 이하 2자리까지만 허용
+                    if (cleanValue.contains(".")) {
+                        val parts = cleanValue.split(".")
+                        if (parts.size == 2 && parts[1].length > 2) {
+                            return@OutlinedTextField
+                        }
+                    }
+
+                    val numericValue = cleanValue.toDoubleOrNull() ?: 0.0
 
                     if (numericValue > maxBalance) {
                         updateShowInsufficientBalanceError(true)
                     } else {
-                        onAmountChange(value)
+                        onAmountChange(cleanValue)
                     }
                 },
 
-                visualTransformation = HeyFYVisualTransformation("$0000000000000000.00", '0'),
+                visualTransformation = CurrencyVisualTransformation(currency),
                 placeholder = {
                     Text(
-                        text = "$0.00",
+                        text = when (currency) {
+                            "KRW" -> "₩ 0"
+                            else -> "$ 0.00"
+                        },
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFADAEBC),
@@ -157,10 +188,13 @@ internal fun TransferAmountSection(
                 )
 
                 QuickAmountButton(
-                    text = "$100",
+                    text = when (currency) {
+                        "KRW" -> "₩10,000"
+                        else -> "$10"
+                    },
                     onClick = {
                         val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
-                        val newAmount = currentAmount + 100.0
+                        val newAmount = currentAmount + if (currency == "KRW") 10000.0 else 10.0
                         if (newAmount <= maxBalance) {
                             onAmountChange(
                                 if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
@@ -172,10 +206,13 @@ internal fun TransferAmountSection(
                     }
                 )
                 QuickAmountButton(
-                    text = "$500",
+                    text = when (currency) {
+                        "KRW" -> "₩50,000"
+                        else -> "$50"
+                    },
                     onClick = {
                         val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
-                        val newAmount = currentAmount + 500.0
+                        val newAmount = currentAmount + if (currency == "KRW") 50000.0 else 50.0
                         if (newAmount <= maxBalance) {
                             onAmountChange(
                                 if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
@@ -186,11 +223,16 @@ internal fun TransferAmountSection(
                         }
                     }
                 )
+
+
                 QuickAmountButton(
-                    text = "$1,000",
+                    text = when (currency) {
+                        "KRW" -> "₩100,000"
+                        else -> "$100"
+                    },
                     onClick = {
                         val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
-                        val newAmount = currentAmount + 1000.0
+                        val newAmount = currentAmount + if (currency == "KRW") 100000.0 else 100.0
                         if (newAmount <= maxBalance) {
                             onAmountChange(
                                 if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
@@ -229,3 +271,4 @@ private fun QuickAmountButton(
         )
     }
 }
+

@@ -35,7 +35,9 @@ fun HomeScreen(
         HomeContent(
             modifier = Modifier.padding(innerPadding),
             goToCardDetail = viewModel::goToCardDetail,
-            goToSendMoney = viewModel::goToSendMoney,
+            goToSendMoney = { type ->
+                viewModel.goToSendMoney(type)
+            },
             goToTransaction = viewModel::goToTransaction,
             goToMentoClub = { type ->
                 viewModel.goToMentoClub(type)
@@ -54,7 +56,7 @@ private fun HomeContent(
     name: String = "John Smith",
     major: String = "Computer Science",
     goToCardDetail: () -> Unit = {},
-    goToSendMoney: () -> Unit = {},
+    goToSendMoney: (type: String) -> Unit = {},
     goToTransaction: () -> Unit = {},
     goToMentoClub: (type: String) -> Unit = {},
     goToTips: () -> Unit = {},

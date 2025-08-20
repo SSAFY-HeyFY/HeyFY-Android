@@ -1,8 +1,10 @@
 package com.ssafy.send_money
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.navigation.Destination
+import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.navigation.HeyFYAppNavigator
 import com.ssafy.send_money.model.SendMoneyUiEvent
 import com.ssafy.send_money.model.SendMoneyUiState
@@ -18,7 +20,10 @@ import javax.inject.Inject
 class SendMoneyViewModel @Inject constructor(
     private val transferUseCase: TransferUseCase,
     private val heyFYAppNavigator: HeyFYAppNavigator,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    val type = savedStateHandle.get<String>(DestinationParamConstants.SEND_MONEY_TYPE) ?: ""
 
     private val _uiState = MutableStateFlow<SendMoneyUiState>(SendMoneyUiState.Init)
     val uiState = _uiState.asStateFlow()

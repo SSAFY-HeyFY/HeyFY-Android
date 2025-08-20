@@ -41,8 +41,9 @@ fun SendMoneyScreen(
     var isShowPopUp by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val type = viewModel.type
 
-    val maxBalance = 12450.5
+    val maxBalance = 1245000.5
     var selectedBank by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
     var transferAmount by remember { mutableStateOf("") }
@@ -55,6 +56,13 @@ fun SendMoneyScreen(
     val memoFocusRequester = remember { FocusRequester() }
     val accountNumberFocusRequester = remember { FocusRequester() }
     val transferAmountFocusRequester = remember { FocusRequester() }
+
+    // type에 따른 통화 설정
+    val currency = when (type) {
+        "FX_ACCOUNT" -> "USD" // 또는 현재 사용 중인 통화
+        "ACCOUNT" -> "KRW"
+        else -> "USD" // 기본값
+    }
 
     LaunchedEffect(showInsufficientBalanceError) {
         if (showInsufficientBalanceError) {
@@ -100,7 +108,7 @@ fun SendMoneyScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            MyAccountSection(maxBalance = maxBalance)
+            MyAccountSection(maxBalance = maxBalance, currency = currency)
 
             RecipientAccountSection(
                 memo = selectedBank,
@@ -116,6 +124,7 @@ fun SendMoneyScreen(
             TransferAmountSection(
                 transferAmount = transferAmount,
                 maxBalance = maxBalance,
+                currency = currency,
                 showInsufficientBalanceError = showInsufficientBalanceError,
                 updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
                 onAmountChange = { transferAmount = it },
@@ -125,7 +134,7 @@ fun SendMoneyScreen(
                 }
             )
 
-            TransferSummarySection(transferAmount = transferAmount)
+            TransferSummarySection(transferAmount = transferAmount, currency = currency)
 
             Spacer(modifier = Modifier.height(16.dp))
         }

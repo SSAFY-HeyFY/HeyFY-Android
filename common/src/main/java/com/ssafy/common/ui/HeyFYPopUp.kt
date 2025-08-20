@@ -30,7 +30,7 @@ import com.ssafy.common.theme.HeyFYTheme
 fun HeyFYPopUp(
     title: String = "Confirm Action",
     message: String = "Are you sure you want to proceed with this action? This cannot be undone.",
-    confirmText: String = "Confirm",
+    confirmText: String = "OK",
     cancelText: String = "Cancel",
     onConfirm: () -> Unit = {},
     onCancel: () -> Unit = {},
