@@ -1,8 +1,9 @@
 package com.ssafy.network.utils
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import retrofit2.Response
 import java.io.IOException
-import kotlin.let
 
 object ApiUtils {
     suspend fun <T, R> safeApiCall(
@@ -16,18 +17,24 @@ object ApiUtils {
                     Result.success(convert(it))
                 } ?: Result.failure(kotlin.Exception("Response Body is null"))
             } else {
-                Result.failure(
-                    kotlin.Exception(
-                        "API Response Error: ${
-                            response.errorBody()?.byteString()
-                        }"
-                    )
-                )
+                val errorMessage = parseErrorMessage(response.errorBody()?.string())
+                Result.failure(kotlin.Exception(errorMessage))
             }
         } catch (e: IOException) {
-            Result.failure(IOException("Unknown Error: ${e.localizedMessage}"))
+            Result.failure(IOException("Please check your network connection"))
         } catch (e: Exception) {
-            Result.failure(kotlin.Exception("Unknown Error: ${e.localizedMessage}"))
+            Result.failure(kotlin.Exception("An unexpected error has occurred. Please contact the administrator"))
+        }
+    }
+
+    private fun parseErrorMessage(errorBody: String?): String {
+        return try {
+            errorBody?.let { body ->
+                val jsonObject = Gson().fromJson(body, JsonObject::class.java)
+                jsonObject.get("message")?.asString ?: body
+            } ?: "Unknown error occurred"
+        } catch (e: Exception) {
+            errorBody ?: "Unknown error occurred"
         }
     }
 }

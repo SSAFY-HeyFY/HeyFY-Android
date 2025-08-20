@@ -21,12 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.HeyFYPopUp
 import com.ssafy.send_money.model.SendMoneyUiEvent
 import com.ssafy.send_money.model.SendMoneyUiState
@@ -37,19 +39,20 @@ fun SendMoneyScreen(
     viewModel: SendMoneyViewModel = hiltViewModel<SendMoneyViewModel>(),
 ) {
     var isShowPopUp by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val maxBalance = 12450.5
     var selectedBank by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
     var transferAmount by remember { mutableStateOf("") }
-    var transferNote by remember { mutableStateOf("") }
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
 
+    val keyboardController = LocalSoftwareKeyboardController.current
     val memoFocusRequester = remember { FocusRequester() }
     val accountNumberFocusRequester = remember { FocusRequester() }
     val transferAmountFocusRequester = remember { FocusRequester() }
@@ -68,7 +71,7 @@ fun SendMoneyScreen(
             }
 
             is SendMoneyUiState.Error -> {
-                snackbarHostState.showSnackbar("잠시 후 다시 시도해 주세요")
+                errorMessage = (uiState as SendMoneyUiState.Error).mag
             }
 
             else -> {}
@@ -135,20 +138,33 @@ fun SendMoneyScreen(
 
 
     if (isShowPopUp) {
+        keyboardController?.hide()
         HeyFYPopUp(
             onCancel = {
                 isShowPopUp = false
             },
             onConfirm = {
                 isShowPopUp = false
-                viewModel.action(SendMoneyUiEvent.ClickTransfer(
-                  withdrawalAccountNo = "0012338458486007",
-                    depositAccountNo = "0014084444636603",
-                    amount = transferAmount.toInt()
-                ))
+                viewModel.action(
+                    SendMoneyUiEvent.ClickTransfer(
+                        withdrawalAccountNo = "0012338458486007",
+                        depositAccountNo = "0014084444636603",
+                        amount = transferAmount.toInt()
+                    )
+                )
             },
             onDismiss = {
                 isShowPopUp = false
+            }
+        )
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        keyboardController?.hide()
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                errorMessage = ""
             }
         )
     }
