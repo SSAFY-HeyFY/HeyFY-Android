@@ -9,12 +9,10 @@ import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
 import com.ssafy.navigation.DestinationType.MENTO_CLUB
 import com.ssafy.navigation.DestinationType.SEND_MONEY
-import com.ssafy.navigation.DestinationType.SIGN_UP
 import com.ssafy.navigation.DestinationType.SPLASH
 import com.ssafy.navigation.DestinationType.SUCCESS
 import com.ssafy.navigation.DestinationType.TIPS
 import com.ssafy.navigation.DestinationType.TRANSACTION
-import com.ssafy.navigation.appendParams
 
 sealed class Destination(protected val route: String, vararg params: String) {
 
@@ -31,8 +29,6 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object Splash : NoArgumentsDestination(SPLASH)
 
     data object Login : NoArgumentsDestination(LOGIN)
-
-    data object SignUp : NoArgumentsDestination(SIGN_UP)
 
     data object Account : NoArgumentsDestination(ACCOUNT)
 

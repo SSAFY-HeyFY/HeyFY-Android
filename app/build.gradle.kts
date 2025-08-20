@@ -62,7 +62,6 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:login"))
-    implementation(project(":feature:sign_up"))
     implementation(project(":feature:account"))
     implementation(project(":feature:home"))
     implementation(project(":feature:id"))

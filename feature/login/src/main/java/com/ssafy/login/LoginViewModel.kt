@@ -45,14 +45,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun goToSignUp() {
-        viewModelScope.launch {
-            heyFYAppNavigator.navigateTo(
-                route = Destination.SignUp(),
-            )
-        }
-    }
-
     fun goToAccount() {
         viewModelScope.launch {
             heyFYAppNavigator.navigateTo(

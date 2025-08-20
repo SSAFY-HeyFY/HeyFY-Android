@@ -27,7 +27,6 @@ import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
 import com.ssafy.navigation.heyFYComposableWithFade
 import com.ssafy.send_money.SendMoneyScreen
-import com.ssafy.sign_up.SignUpScreen
 import com.ssafy.splash.SplashScreen
 import com.ssafy.success.SuccessScreen
 import com.ssafy.tips.TipsScreen
@@ -87,10 +86,6 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposableWithFade(Destination.Login) {
                     LoginScreen()
-                }
-
-                heyFYComposable(Destination.SignUp) {
-                    SignUpScreen()
                 }
 
                 heyFYComposable(Destination.Account) {

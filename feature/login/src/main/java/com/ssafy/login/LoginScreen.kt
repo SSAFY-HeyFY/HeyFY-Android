@@ -31,11 +31,12 @@ fun LoginScreen(
         bottomBar = {
             LoginBottomSection(
                 modifier = Modifier.imePadding(),
-                goToSignUp = { viewModel.goToSignUp() },
-                onClick = { viewModel.login(
-                    studentId = studentId,
-                    password = password,
-                ) }
+                onClick = {
+                    viewModel.login(
+                        studentId = studentId,
+                        password = password,
+                    )
+                }
             )
         },
         containerColor = Color.White
@@ -53,7 +54,13 @@ fun LoginScreen(
                 passwordVisible = passwordVisible,
                 updateStudentId = { studentId = it },
                 updatePassword = { password = it },
-                updatePasswordVisible = { passwordVisible = it }
+                updatePasswordVisible = { passwordVisible = it },
+                login = {
+                    viewModel.login(
+                        studentId = studentId,
+                        password = password,
+                    )
+                }
             )
         }
     }

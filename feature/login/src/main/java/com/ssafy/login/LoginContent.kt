@@ -39,9 +39,8 @@ internal fun LoginContent(
     updateStudentId: (String) -> Unit,
     updatePassword: (String) -> Unit,
     updatePasswordVisible: (Boolean) -> Unit,
+    login: () -> Unit,
 ) {
-
-
     val scrollState = rememberScrollState()
 
     val passwordFocusRequester = remember { FocusRequester() }
@@ -97,7 +96,7 @@ internal fun LoginContent(
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
-                    // TODO: 로그인 처리
+                    login()
                 }
             ),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -135,7 +134,8 @@ private fun LoginContentPreview() {
             passwordVisible = false,
             updateStudentId = {},
             updatePassword = {},
-            updatePasswordVisible = {}
+            updatePasswordVisible = {},
+            login = {}
         )
     }
 }
