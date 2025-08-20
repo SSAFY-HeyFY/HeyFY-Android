@@ -82,7 +82,7 @@ internal fun SplashContent(
     )
 
     val offsetY by animateFloatAsState(
-        targetValue = if (startMoveUp) -232f else 0f,
+        targetValue = if (startMoveUp) -215f else 0f,
         animationSpec = tween(
             durationMillis = 1000,
         ),
