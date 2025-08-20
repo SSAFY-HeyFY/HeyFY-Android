@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.HeyFYPopUp
+import com.ssafy.send_money.model.SendMoneyUiEvent
+import com.ssafy.send_money.model.SendMoneyUiState
 import kotlinx.coroutines.delay
 
 @Composable
@@ -30,6 +35,7 @@ fun SendMoneyScreen(
     viewModel: SendMoneyViewModel = hiltViewModel<SendMoneyViewModel>(),
 ) {
     var isShowPopUp by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val maxBalance = 12450.5
     var selectedBank by remember { mutableStateOf("") }
@@ -39,10 +45,26 @@ fun SendMoneyScreen(
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     LaunchedEffect(showInsufficientBalanceError) {
         if (showInsufficientBalanceError) {
             delay(2000)
             showInsufficientBalanceError = false
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is SendMoneyUiState.NetworkError -> {
+                snackbarHostState.showSnackbar("네트워크를 연결해 주세요.")
+            }
+
+            is SendMoneyUiState.Error -> {
+                snackbarHostState.showSnackbar("잠시 후 다시 시도해 주세요")
+            }
+
+            else -> {}
         }
     }
 
@@ -51,7 +73,7 @@ fun SendMoneyScreen(
         topBar = {
             DetailTopBar(
                 title = "Send Money",
-                onBack = { viewModel.navigateBack() }
+                onBack = { viewModel.action(SendMoneyUiEvent.ClickBack) }
             )
         },
         bottomBar = {
@@ -109,12 +131,17 @@ fun SendMoneyScreen(
             },
             onConfirm = {
                 isShowPopUp = false
-                // TODO : 송금 완료 처리
-                viewModel.goToSuccess()
+                viewModel.action(SendMoneyUiEvent.ClickTransfer(
+                  withdrawalAccountNo = "0012338458486007",
+                    depositAccountNo = "0014084444636603",
+                    amount = transferAmount.toInt()
+                ))
             },
             onDismiss = {
                 isShowPopUp = false
             }
         )
     }
+
+    SnackbarHost(hostState = snackbarHostState)
 }
