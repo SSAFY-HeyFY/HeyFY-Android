@@ -29,6 +29,9 @@ android {
 
             buildConfigField("String", "API_PATH", getApiPath())
         }
+        debug {
+            buildConfigField("String", "API_PATH", getApiPath())
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

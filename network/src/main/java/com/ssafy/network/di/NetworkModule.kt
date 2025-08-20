@@ -70,8 +70,7 @@ object NetworkModule {
     @Singleton
     fun provideWussuInterceptor(
         tokenManager: TokenManager,
-        @ApplicationContext context: Context,
     ): HeyFYInterceptor {
-        return HeyFYInterceptor(tokenManager, context)
+        return HeyFYInterceptor(tokenManager)
     }
 }
