@@ -31,8 +31,16 @@ fun ExchangeScreen(
     var isShowPopUp by remember { mutableStateOf(false) }
     var exchangeAmount by remember { mutableStateOf("") }
     val currentRate = 1347.50
-    val receivedAmount = exchangeAmount.toDoubleOrNull()?.let { it * currentRate } ?: 0.0
+
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
+    var isUSD by remember { mutableStateOf(false) }
+    val receivedAmount = exchangeAmount.toDoubleOrNull()?.let {
+        if (isUSD) {
+            it * currentRate
+        } else {
+            it / currentRate
+        }
+    } ?: 0.0
 
     LaunchedEffect(showInsufficientBalanceError) {
         if (showInsufficientBalanceError) {
@@ -80,7 +88,9 @@ fun ExchangeScreen(
                     currentRate = currentRate,
                     receivedAmount = receivedAmount,
                     showInsufficientBalanceError = showInsufficientBalanceError,
+                    isUSD = isUSD,
                     updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
+                    onToggleCurrency = { isUSD = !isUSD }
                 )
             }
 
