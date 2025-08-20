@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,14 +22,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.text.HeyFYVisualTransformation
+import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
 internal fun TransferAmountSection(
@@ -37,6 +41,8 @@ internal fun TransferAmountSection(
     showInsufficientBalanceError: Boolean,
     updateShowInsufficientBalanceError: (Boolean) -> Unit,
     onAmountChange: (String) -> Unit,
+    transferAmountFocusRequester: FocusRequester,
+    onAmountDone: () -> Unit,
 ) {
     val horizontalScrollState = rememberScrollState()
 
@@ -87,7 +93,7 @@ internal fun TransferAmountSection(
                     if (!value.matches(Regex("^\\d*\\.?\\d{0,2}$"))) {
                         return@OutlinedTextField
                     }
-                    
+
                     val numericValue = value.toDoubleOrNull() ?: 0.0
 
                     if (numericValue > maxBalance) {
@@ -110,7 +116,8 @@ internal fun TransferAmountSection(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp),
+                    .height(80.dp)
+                    .focusRequester(transferAmountFocusRequester),
                 textStyle = androidx.compose.ui.text.TextStyle(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
@@ -126,7 +133,11 @@ internal fun TransferAmountSection(
                     cursorColor = Color(0xFF9333EA)
                 ),
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onAmountDone() }
                 ),
                 singleLine = true
             )

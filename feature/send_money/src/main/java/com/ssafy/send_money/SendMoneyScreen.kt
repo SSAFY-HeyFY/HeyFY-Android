@@ -20,6 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,6 +48,11 @@ fun SendMoneyScreen(
     val scrollState = rememberScrollState()
 
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
+
+    val memoFocusRequester = remember { FocusRequester() }
+    val accountNumberFocusRequester = remember { FocusRequester() }
+    val transferAmountFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(showInsufficientBalanceError) {
         if (showInsufficientBalanceError) {
@@ -98,10 +105,14 @@ fun SendMoneyScreen(
             MyAccountSection(maxBalance = maxBalance)
 
             RecipientAccountSection(
-                selectedBank = selectedBank,
-                onBankSelected = { selectedBank = it },
+                memo = selectedBank,
+                updateMemo = { selectedBank = it },
                 accountNumber = accountNumber,
-                onAccountNumberChange = { accountNumber = it }
+                onAccountNumberChange = { accountNumber = it },
+                memoFocusRequester = memoFocusRequester,
+                accountNumberFocusRequester = accountNumberFocusRequester,
+                onMemoNext = { accountNumberFocusRequester.requestFocus() },
+                onAccountNumberNext = { transferAmountFocusRequester.requestFocus() }
             )
 
             TransferAmountSection(
@@ -109,12 +120,11 @@ fun SendMoneyScreen(
                 maxBalance = maxBalance,
                 showInsufficientBalanceError = showInsufficientBalanceError,
                 updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
-                onAmountChange = { transferAmount = it }
-            )
-
-            TransferNoteSection(
-                transferNote = transferNote,
-                onNoteChange = { transferNote = it }
+                onAmountChange = { transferAmount = it },
+                transferAmountFocusRequester = transferAmountFocusRequester,
+                onAmountDone = {
+                    focusManager.clearFocus()
+                }
             )
 
             TransferSummarySection(transferAmount = transferAmount)
