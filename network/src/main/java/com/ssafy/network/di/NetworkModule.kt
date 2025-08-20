@@ -48,14 +48,14 @@ object NetworkModule {
     @Singleton
     fun provideOkhttpClient(
         @ApplicationContext context: Context,
-        wussuInterceptor: HeyFYInterceptor,
+        heyFYInterceptor: HeyFYInterceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .cache(Cache(context.cacheDir, CACHE_SIZE))
-            .addInterceptor(wussuInterceptor)
+            .addInterceptor(heyFYInterceptor)
             .addInterceptor(
                 HttpLoggingInterceptor { message ->
                     Timber.tag("API").d(message)

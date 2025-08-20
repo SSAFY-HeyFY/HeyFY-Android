@@ -23,7 +23,7 @@ import com.ssafy.common.theme.HeyFYTheme
 internal fun LoginBottomSection(
     modifier: Modifier = Modifier,
     goToSignUp: () -> Unit = {},
-    goToAccount: () -> Unit = {}
+    onClick: () -> Unit = {}
 ) {
     Text(
         text = "Sign In",
@@ -36,7 +36,7 @@ internal fun LoginBottomSection(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { goToAccount() },
+            onClick = { onClick() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
