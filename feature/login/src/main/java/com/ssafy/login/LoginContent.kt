@@ -12,10 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -36,11 +33,15 @@ import com.ssafy.common.R as commonR
 @Composable
 internal fun LoginContent(
     modifier: Modifier = Modifier,
+    studentId: String,
+    password: String,
+    passwordVisible: Boolean,
+    updateStudentId: (String) -> Unit,
+    updatePassword: (String) -> Unit,
+    updatePasswordVisible: (Boolean) -> Unit,
 ) {
 
-    var studentId by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
+
     val scrollState = rememberScrollState()
 
     val passwordFocusRequester = remember { FocusRequester() }
@@ -61,7 +62,7 @@ internal fun LoginContent(
 
             label = "Student ID",
             value = studentId,
-            onValueChange = { studentId = it },
+            onValueChange = { updateStudentId(it) },
             placeholder = "Enter your student ID",
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -87,7 +88,7 @@ internal fun LoginContent(
         InputField(
             label = "Password",
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { updatePassword(it) },
             placeholder = "Enter your password",
             modifier = Modifier.focusRequester(passwordFocusRequester),
             keyboardOptions = KeyboardOptions(
@@ -102,7 +103,7 @@ internal fun LoginContent(
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(
-                    onClick = { passwordVisible = !passwordVisible },
+                    onClick = { updatePasswordVisible(!passwordVisible) },
                     modifier = Modifier.size(18.dp)
                 ) {
                     Icon(
@@ -128,6 +129,13 @@ internal fun LoginContent(
 @Composable
 private fun LoginContentPreview() {
     HeyFYTheme {
-        LoginContent()
+        LoginContent(
+            studentId = "",
+            password = "",
+            passwordVisible = false,
+            updateStudentId = {},
+            updatePassword = {},
+            updatePasswordVisible = {}
+        )
     }
 }

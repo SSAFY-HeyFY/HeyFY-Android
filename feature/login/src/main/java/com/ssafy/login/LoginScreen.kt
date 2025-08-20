@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +21,10 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
 ) {
 
+    var studentId by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
@@ -24,7 +32,10 @@ fun LoginScreen(
             LoginBottomSection(
                 modifier = Modifier.imePadding(),
                 goToSignUp = { viewModel.goToSignUp() },
-                onClick = { viewModel.login() }
+                onClick = { viewModel.login(
+                    studentId = studentId,
+                    password = password,
+                ) }
             )
         },
         containerColor = Color.White
@@ -32,12 +43,17 @@ fun LoginScreen(
 
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
             LoginContent(
-                modifier = Modifier
-                    .padding(innerPadding),
+                studentId = studentId,
+                password = password,
+                passwordVisible = passwordVisible,
+                updateStudentId = { studentId = it },
+                updatePassword = { password = it },
+                updatePasswordVisible = { passwordVisible = it }
             )
         }
     }

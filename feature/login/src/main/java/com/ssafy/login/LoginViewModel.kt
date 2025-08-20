@@ -18,7 +18,10 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun login() {
+    fun login(
+        studentId: String,
+        password: String,
+    ) {
         viewModelScope.launch {
             loginUseCase(
                 studentId = "19111239",
