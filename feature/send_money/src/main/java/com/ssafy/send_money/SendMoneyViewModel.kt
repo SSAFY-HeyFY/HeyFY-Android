@@ -12,14 +12,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class SendMoneyViewModel @Inject constructor(
     private val transferUseCase: TransferUseCase,
     private val heyFYAppNavigator: HeyFYAppNavigator,
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SendMoneyUiState>(SendMoneyUiState.Init)
     val uiState = _uiState.asStateFlow()
@@ -39,7 +38,7 @@ class SendMoneyViewModel @Inject constructor(
     private fun transfer(
         withdrawalAccountNo: String,
         depositAccountNo: String,
-        amount: Int
+        amount: Int,
     ) {
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
@@ -74,16 +73,11 @@ class SendMoneyViewModel @Inject constructor(
     }
 
     private fun handleFailure(throwable: Throwable) {
-        when (throwable) {
-            is IOException -> {
-                updateUiState(SendMoneyUiState.NetworkError)
-            }
-
-            is Exception -> {
-                updateUiState(SendMoneyUiState.Error(
-                    mag = throwable.message ?: "예상치 못한 에러가 발생했습니다.\n관리자에게 문의해주세요."
-                ))
-            }
-        }
+        updateUiState(
+            SendMoneyUiState.Error(
+                mag = throwable.message
+                    ?: "An unexpected error has occurred. Please contact the administrator"
+            )
+        )
     }
 }

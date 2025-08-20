@@ -1,6 +1,5 @@
 package com.ssafy.common.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.R
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 
 @Composable
 fun DetailTopBar(
@@ -36,7 +36,7 @@ fun DetailTopBar(
                     modifier = Modifier
                         .fillMaxHeight()
                         .align(Alignment.CenterStart)
-                        .clickable { onBack() }
+                        .clickableOnce { onBack() }
                         .padding(horizontal = 20.dp),
                     painter = painterResource(id = R.drawable.icon_back),
                     contentDescription = null,

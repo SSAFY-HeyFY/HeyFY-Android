@@ -1,7 +1,6 @@
 package com.ssafy.success
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +26,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 
 @Composable
 fun SuccessScreen(
@@ -42,7 +42,7 @@ fun SuccessScreen(
                     .padding(20.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(Color(0xFF9333EA))
-                    .clickable { viewModel.goToMain() },
+                    .clickableOnce { viewModel.goToMain() },
                 contentAlignment = Alignment.Center
 
             ) {

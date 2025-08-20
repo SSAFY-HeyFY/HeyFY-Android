@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -40,11 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.utils.clickableOnce
 import com.ssafy.common.R as commonR
 
 @Composable
 fun CardDetailScreen(
-    viewModel: CardDetailViewModel = hiltViewModel<CardDetailViewModel>()
+    viewModel: CardDetailViewModel = hiltViewModel<CardDetailViewModel>(),
 ) {
 
     val uriHandler = LocalUriHandler.current
@@ -73,7 +73,7 @@ fun CardDetailScreen(
                     .padding(20.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(Color(0xFF9333EA))
-                    .clickable { uriHandler.openUri("https://www.shinhancard.com/pconts/html/card/apply/check/1229908_2206.html") },
+                    .clickableOnce { uriHandler.openUri("https://www.shinhancard.com/pconts/html/card/apply/check/1229908_2206.html") },
                 contentAlignment = Alignment.Center
 
             ) {
@@ -99,7 +99,7 @@ fun CardDetailScreen(
                     .fillMaxWidth()
                     .padding(20.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable { isCardFlipped = !isCardFlipped }
+                    .clickableOnce { isCardFlipped = !isCardFlipped }
                     .clipToBounds(),
                 contentAlignment = Alignment.Center
             ) {
@@ -139,7 +139,7 @@ fun CardDetailScreen(
                     Icon(
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { isCardFlipped = !isCardFlipped }
+                            .clickableOnce { isCardFlipped = !isCardFlipped }
                             .rotate(90f),
                         painter = painterResource(id = commonR.drawable.icon_rotation),
                         contentDescription = null,

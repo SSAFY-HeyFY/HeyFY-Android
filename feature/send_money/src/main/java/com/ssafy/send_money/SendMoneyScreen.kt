@@ -49,7 +49,6 @@ fun SendMoneyScreen(
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
-    val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -66,10 +65,6 @@ fun SendMoneyScreen(
 
     LaunchedEffect(uiState) {
         when (uiState) {
-            is SendMoneyUiState.NetworkError -> {
-                snackbarHostState.showSnackbar("네트워크를 연결해 주세요.")
-            }
-
             is SendMoneyUiState.Error -> {
                 errorMessage = (uiState as SendMoneyUiState.Error).mag
             }
@@ -168,6 +163,4 @@ fun SendMoneyScreen(
             }
         )
     }
-
-    SnackbarHost(hostState = snackbarHostState)
 }

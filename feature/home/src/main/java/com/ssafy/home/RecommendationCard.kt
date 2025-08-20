@@ -2,7 +2,6 @@ package com.ssafy.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.ssafy.common.R as commonR
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
+import com.ssafy.common.R as commonR
 
 @Composable
 fun RecommendationCard(
@@ -28,7 +28,7 @@ fun RecommendationCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .clickable { onCardClick() }
+            .clickableOnce { onCardClick() }
     ) {
 
         Row(

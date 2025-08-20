@@ -81,7 +81,7 @@ private fun BottomMenuScreen() {
 private fun BottomNavigationBar(
     menus: List<NavigationData>,
     selectedIndex: Int,
-    onItemSelected: (Int) -> Unit
+    onItemSelected: (Int) -> Unit,
 ) {
     BottomAppBar(
         modifier = Modifier
@@ -112,7 +112,7 @@ private fun NavigationItem(
     title: String,
     @DrawableRes iconRes: Int,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val color = if (isSelected) Color(0xFF9333EA) else Color(0xFF9CA3AF)
 

@@ -3,7 +3,6 @@ package com.ssafy.home
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 
 @Composable
 internal fun HomeItem(
@@ -70,7 +70,7 @@ internal fun HomeItem(
                 .fillMaxWidth(0.8f)
                 .clip(RoundedCornerShape(8.dp))
                 .border(1.dp, color, RoundedCornerShape(8.dp))
-                .clickable { onClick() }
+                .clickableOnce { onClick() }
                 .padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {

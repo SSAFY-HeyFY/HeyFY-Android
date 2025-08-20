@@ -5,5 +5,4 @@ sealed class SendMoneyUiState {
     data object Loading : SendMoneyUiState()
     data object Success : SendMoneyUiState()
     data class Error(val mag: String) : SendMoneyUiState()
-    data object NetworkError : SendMoneyUiState()
 }

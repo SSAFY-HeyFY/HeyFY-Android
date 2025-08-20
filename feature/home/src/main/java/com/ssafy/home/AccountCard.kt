@@ -1,7 +1,6 @@
 package com.ssafy.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 
 @Composable
 internal fun AccountCard(
@@ -45,7 +45,7 @@ internal fun AccountCard(
                     end = Offset.Infinite,
                 ),
             )
-            .clickable { goToTransaction() }
+            .clickableOnce { goToTransaction() }
             .padding(20.dp),
     ) {
         Text(
@@ -94,7 +94,7 @@ internal fun AccountCard(
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
-                    .clickable { goToSendMoney() },
+                    .clickableOnce { goToSendMoney() },
                 contentAlignment = Alignment.Center,
             ) {
 
@@ -114,7 +114,7 @@ internal fun AccountCard(
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
-                    .clickable { goToExchange() },
+                    .clickableOnce { goToExchange() },
                 contentAlignment = Alignment.Center,
             ) {
 
