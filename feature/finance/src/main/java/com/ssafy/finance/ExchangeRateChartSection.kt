@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,7 +38,9 @@ import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
+import com.patrykandpatrick.vico.core.common.Fill
 import com.patrykandpatrick.vico.core.common.Position
+import com.patrykandpatrick.vico.core.common.component.LineComponent
 import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 import com.ssafy.common.theme.HeyFYTheme
@@ -119,7 +120,10 @@ private val y3 = listOf(1374.33, 1373.11, 1372.33, 1373.31)
 private val x4 = (14..17).toList()
 private val y4 = listOf(1374.33, 1374.11, 1374.33, 1374.31)
 private val YDecimalFormat = DecimalFormat("#.##")
+private val AIDecimalFormat = DecimalFormat("환율정보: #.##")
 private val StartAxisValueFormatter = CartesianValueFormatter.decimal(YDecimalFormat)
+
+//private val AIMarkerValueFormatter = DefaultCartesianMarker.ValueFormatter.default(AIDecimalFormat)
 private val MarkerValueFormatter = DefaultCartesianMarker.ValueFormatter.default(YDecimalFormat)
 
 @Composable
@@ -183,8 +187,14 @@ private fun JetpackComposeElectricCarSales1(
                 itemPlacer = remember { HorizontalAxis.ItemPlacer.aligned(spacing = { 4 }) },
             ),
             marker = DefaultCartesianMarker(
-                label = TextComponent(),
+                label = TextComponent(
+                    lineCount = 1,
+                ),
                 valueFormatter = MarkerValueFormatter,
+                guideline = LineComponent(
+                    Fill.Black
+                ),
+                labelPosition = DefaultCartesianMarker.LabelPosition.Top,
             ),
         ),
         modelProducer,
