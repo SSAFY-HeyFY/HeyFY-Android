@@ -1,6 +1,8 @@
 package com.ssafy.send_money.model
 
 sealed class SendMoneyUiEvent {
+    data object Init : SendMoneyUiEvent()
+
     data class ClickTransfer(
         val withdrawalAccountNo: String,
         val depositAccountNo: String,

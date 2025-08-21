@@ -7,16 +7,26 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class TransferDataSourceImpl @Inject constructor(
-    private val transferApi: TransferApi
-): TransferDataSource {
-    override suspend fun transfer(
-        withdrawalAccountNo: String,
+    private val transferApi: TransferApi,
+) : TransferDataSource {
+    override suspend fun transferDomestic(
         depositAccountNo: String,
         amount: Int,
     ): Response<TransferResponse> {
-        return transferApi.transfer(
-            request = TransferRequest(
-                withdrawalAccountNo = withdrawalAccountNo,
+        return transferApi.transferDomestic(
+            TransferRequest(
+                depositAccountNo = depositAccountNo,
+                amount = amount,
+            )
+        )
+    }
+
+    override suspend fun transferForeign(
+        depositAccountNo: String,
+        amount: Int,
+    ): Response<TransferResponse> {
+        return transferApi.transferForeign(
+            TransferRequest(
                 depositAccountNo = depositAccountNo,
                 amount = amount,
             )

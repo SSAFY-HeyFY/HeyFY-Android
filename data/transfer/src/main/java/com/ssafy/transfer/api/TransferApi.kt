@@ -8,8 +8,13 @@ import retrofit2.http.POST
 
 interface TransferApi {
 
-    @POST("/transfers")
-    suspend fun transfer(
+    @POST("/transfers/domestic")
+    suspend fun transferDomestic(
+        @Body request: TransferRequest,
+    ): Response<TransferResponse>
+
+    @POST("/transfers/foreign")
+    suspend fun transferForeign(
         @Body request: TransferRequest,
     ): Response<TransferResponse>
 }

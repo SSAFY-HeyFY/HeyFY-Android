@@ -13,10 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ssafy.common.text.TextFormat.formatAccountNumber
+import com.ssafy.common.text.TextFormat.formatCurrencyKRW
+import com.ssafy.common.text.TextFormat.formatCurrencyUSD
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.ui.AutoSizeText
 
 @Composable
-internal fun MyAccountSection(maxBalance: Double, currency: String) {
+internal fun MyAccountSection(
+    balance: Double,
+    account: String,
+    currency: String,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -41,20 +49,20 @@ internal fun MyAccountSection(maxBalance: Double, currency: String) {
             )
 
             Text(
-                text = "103-12344123-24-84",
+                text = formatAccountNumber(account),
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF9CA3AF)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
+            AutoSizeText(
                 text = when (currency) {
-                    "KRW" -> "₩ ${String.format("%,.0f", maxBalance)}"
-                    else -> "$ ${String.format("%,.2f", maxBalance)}"
+                    "KRW" -> "₩ ${formatCurrencyKRW(balance)}"
+                    else -> "$ ${formatCurrencyUSD(balance)}"
                 },
                 style = HeyFYTheme.typography.headlineL,
-                color = Color(0xFF111827)
+                color = Color(0xFF111827),
             )
         }
     }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,13 +36,14 @@ import kotlinx.coroutines.delay
 fun SendMoneyScreen(
     viewModel: SendMoneyViewModel = hiltViewModel<SendMoneyViewModel>(),
 ) {
-    var isShowPopUp by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val type = viewModel.type
 
-    val maxBalance = 1245000.5
-    var selectedBank by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val account by viewModel.account.collectAsStateWithLifecycle()
+    val balance by viewModel.balance.collectAsStateWithLifecycle()
+
+    val isFxAccount = viewModel.isFXAccount
+
+    var transferNote by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
     var transferAmount by remember { mutableStateOf("") }
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
@@ -56,12 +55,13 @@ fun SendMoneyScreen(
     val memoFocusRequester = remember { FocusRequester() }
     val accountNumberFocusRequester = remember { FocusRequester() }
     val transferAmountFocusRequester = remember { FocusRequester() }
+    var isShowPopUp by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
-    // type에 따른 통화 설정
-    val currency = when (type) {
-        "FX_ACCOUNT" -> "USD" // 또는 현재 사용 중인 통화
-        "ACCOUNT" -> "KRW"
-        else -> "USD" // 기본값
+    val currency = if (isFxAccount) "USD" else "KRW"
+
+    LaunchedEffect(Unit) {
+        viewModel.action(SendMoneyUiEvent.Init)
     }
 
     LaunchedEffect(showInsufficientBalanceError) {
@@ -108,11 +108,15 @@ fun SendMoneyScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            MyAccountSection(maxBalance = maxBalance, currency = currency)
+            MyAccountSection(
+                balance = balance.toDouble(),
+                account = account,
+                currency = currency,
+            )
 
             RecipientAccountSection(
-                memo = selectedBank,
-                updateMemo = { selectedBank = it },
+                memo = transferNote,
+                updateMemo = { transferNote = it },
                 accountNumber = accountNumber,
                 onAccountNumberChange = { accountNumber = it },
                 memoFocusRequester = memoFocusRequester,
@@ -123,7 +127,7 @@ fun SendMoneyScreen(
 
             TransferAmountSection(
                 transferAmount = transferAmount,
-                maxBalance = maxBalance,
+                maxBalance = balance.toDouble(),
                 currency = currency,
                 showInsufficientBalanceError = showInsufficientBalanceError,
                 updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },

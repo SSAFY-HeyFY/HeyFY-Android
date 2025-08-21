@@ -7,15 +7,29 @@ import javax.inject.Inject
 class TransferRepositoryImpl @Inject constructor(
     private val transferDataSource: TransferDataSource,
 ) : TransferRepository {
-    override suspend fun transfer(
-        withdrawalAccountNo: String,
+
+    override suspend fun transferDomestic(
         depositAccountNo: String,
         amount: Int,
     ): Result<Boolean> {
         return safeApiCall(
             apiCall = {
-                transferDataSource.transfer(
-                    withdrawalAccountNo,
+                transferDataSource.transferDomestic(
+                    depositAccountNo,
+                    amount
+                )
+            },
+            convert = { it.success }
+        )
+    }
+
+    override suspend fun transferForeign(
+        depositAccountNo: String,
+        amount: Int,
+    ): Result<Boolean> {
+        return safeApiCall(
+            apiCall = {
+                transferDataSource.transferForeign(
                     depositAccountNo,
                     amount
                 )

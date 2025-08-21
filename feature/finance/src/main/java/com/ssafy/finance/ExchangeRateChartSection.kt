@@ -76,7 +76,7 @@ internal fun ExchangeRateChartSection() {
 
                 ) {
                     Text(
-                        text = "1M",
+                        text = "2W",
                         style = HeyFYTheme.typography.bodyS,
                         color = Color.White
                     )
