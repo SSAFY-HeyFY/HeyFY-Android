@@ -3,6 +3,7 @@ package com.ssafy.id
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -34,18 +37,21 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 import com.ssafy.common.R as commonR
 
 @Composable
 internal fun ResidenceCard(
     modifier: Modifier = Modifier,
+    isBlurred: Boolean = false,
+    onCardClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
             .clip(RoundedCornerShape(12.dp))
-
+            .clickableOnce(isRipple = false) { onCardClick() }
     ) {
 
         val context = LocalContext.current
@@ -86,11 +92,13 @@ internal fun ResidenceCard(
                     title = "외국인등록번호",
                     englishTitle = "Registration No.",
                     content = "123456-1234567",
+                    isBlurred = isBlurred,
+                    shouldBlur = true
                 )
                 IdItem(
                     title = "성명",
                     englishTitle = "Name",
-                    content = "Nguyen Van A"
+                    content = "Nguyen Thi Hoa"
                 )
                 IdItem(
                     title = "국가 / 지역",
@@ -100,7 +108,9 @@ internal fun ResidenceCard(
                 IdItem(
                     title = "체류 자격",
                     englishTitle = "Status",
-                    content = "유학(D-2)"
+                    content = "유학(D-2)",
+                    isBlurred = isBlurred,
+                    shouldBlur = true
                 )
             }
 
@@ -145,6 +155,8 @@ private fun IdItem(
     title: String,
     englishTitle: String,
     content: String,
+    isBlurred: Boolean = false,
+    shouldBlur: Boolean = false,
 ) {
     val font = HeyFYTheme.typography.bodyS2.copy(lineHeight = 14.sp)
     Row(
@@ -159,6 +171,32 @@ private fun IdItem(
             Text(text = englishTitle, style = font, color = Color.Black)
         }
         Spacer(Modifier.width(8.dp))
-        Text(text = content, style = HeyFYTheme.typography.labelM, color = Color.Black)
+        
+        val displayContent = if (shouldBlur && isBlurred) {
+            when (title) {
+                "외국인등록번호" -> {
+                    val parts = content.split("-")
+                    if (parts.size == 2) "${parts[0]}-*******" else content
+                }
+                "체류 자격" -> "****(D-*)"
+                else -> content
+            }
+        } else {
+            content
+        }
+        
+        Text(
+            text = displayContent,
+            style = HeyFYTheme.typography.labelM,
+            color = Color.Black,
+            modifier = if (shouldBlur && isBlurred) {
+                Modifier.blur(
+                    radius = 4.dp,
+                    edgeTreatment = BlurredEdgeTreatment.Unbounded
+                )
+            } else {
+                Modifier
+            }
+        )
     }
 }

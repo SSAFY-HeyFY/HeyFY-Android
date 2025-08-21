@@ -21,6 +21,4 @@ class MainViewModel @Inject constructor(): ViewModel() {
     fun updateSelectedItem(index: Int) {
         _selectedItem.value = index
     }
-
-
 }

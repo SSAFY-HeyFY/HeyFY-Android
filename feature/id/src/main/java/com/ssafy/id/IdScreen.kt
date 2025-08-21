@@ -61,7 +61,7 @@ private fun IdContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-
+    var isResidenceBlurred by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     Column(
@@ -71,7 +71,10 @@ private fun IdContent(
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ResidenceCard()
+        ResidenceCard(
+            isBlurred = isResidenceBlurred,
+            onCardClick = { isResidenceBlurred = !isResidenceBlurred }
+        )
 
         Spacer(Modifier.height(16.dp))
 

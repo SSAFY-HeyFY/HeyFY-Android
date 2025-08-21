@@ -41,7 +41,7 @@ internal fun UniversityCard(
     modifier: Modifier = Modifier,
     universityName: String = "Seoul National University",
     studentNumber: String = "2024123456",
-    name: String = "Nguyen Van A",
+    name: String = "Nguyen Thi Hoa",
     major: String = "Computer Science",
 ) {
     var showQRBottomSheet by remember { mutableStateOf(false) }
