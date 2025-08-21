@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.ssafy.heyfy"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.ssafy.heyfy"

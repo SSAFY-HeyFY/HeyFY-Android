@@ -27,6 +27,9 @@ data-store = "1.1.2"
 # Dedug
 timber = "5.0.1"
 
+# Vico
+vico = "2.1.3"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -71,6 +74,12 @@ coil-compose-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coi
 
 # DataStore
 data-store = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "data-store"}
+
+# Vuico
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+vico-compose-m2 = { group = "com.patrykandpatrick.vico", name = "compose-m2", version.ref = "vico" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+vico-views = { group = "com.patrykandpatrick.vico", name = "views", version.ref = "vico" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

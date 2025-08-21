@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ internal fun MainScreen() {
 
 @Composable
 private fun BottomMenuScreen() {
-    val navMenus = remember {
+    val navMenus = rememberSaveable {
         listOf(
             NavigationData("Home", commonR.drawable.icon_home),
             NavigationData("ID", commonR.drawable.icon_id),
@@ -49,7 +50,7 @@ private fun BottomMenuScreen() {
         )
     }
 
-    var selectedItem by remember { mutableIntStateOf(0) }
+    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         modifier = Modifier

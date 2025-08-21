@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.ssafy.send_money"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

@@ -134,8 +134,8 @@ internal fun UniversityCard(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
                         .background(Color(0x809333EA))
-                        .padding(vertical = 8.dp)
-                        .clickable { showQRBottomSheet = true },
+                        .clickable { showQRBottomSheet = true }
+                        .padding(vertical = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

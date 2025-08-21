@@ -138,7 +138,7 @@ internal fun AccountVerificationStep(
                 )
 
                 Text(
-                    text = "Resend Code",
+                    text = "Verify Code",
                     style = HeyFYTheme.typography.labelM,
                     color = Color(0xFF9333EA),
                     modifier = Modifier.clickableOnce { onResendCode() }
