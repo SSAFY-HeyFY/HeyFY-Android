@@ -24,9 +24,7 @@ import com.ssafy.navigation.DestinationParamConstants.MENTO
 import com.ssafy.common.R as commonR
 
 data class Mentor(
-    val id: String,
     val name: String,
-    val title: String,
     val description: String,
     @DrawableRes val imageId: Int,
 )
@@ -40,32 +38,36 @@ fun MentoClubScreen(
 
     val mentors = listOf(
         Mentor(
-            id = "1",
-            name = "Sarah Johnson",
-            title = "Senior Product Manager at Google",
-            description = "with 8+ years of experience in tech. Specialized in product strategy, user experience, and team leadership.",
+            name = "Jae Hong Park",
+            description = "Hi! I’m passionate about exploring local restaurants and discovering hidden food spots. I love trying new dishes and sharing my experiences with friends. Excited to exchange food stories with you!",
             imageId = commonR.drawable.image_jaehong
         ),
         Mentor(
-            id = "2",
-            name = "Michael Chen",
-            title = "Software Engineering Manager at Microsoft",
-            description = "Expert in full-stack development, cloud architecture, and engineering leadership.",
-            imageId = commonR.drawable.image_jaehong
+            name = "Dae Eol Park",
+            description = "Join our traditional Korean music club, where you can learn Daegeum (Korean bamboo flute) and Gayageum. I’ve been studying Daegeum for three years and can now perform a variety of folk songs, including Arirang.",
+            imageId = commonR.drawable.image_daeul
         ),
         Mentor(
-            id = "3",
-            name = "Emily Rodriguez",
-            title = "Marketing Director at Spotify",
+            name = "U Sang Um",
             description = "Specializes in digital marketing, brand strategy, and growth hacking for tech startups.",
-            imageId = commonR.drawable.image_jaehong
+            imageId = commonR.drawable.image_usang_2
         ),
         Mentor(
-            id = "4",
+            name = "Hae Rin Kim",
+            description = "Hi! I love traveling and discovering new places. I’d be happy to share Korea’s unique culture with you. If you’d like to join me on fun and meaningful trips, just reach out!",
+            imageId = commonR.drawable.image_haerin
+        ),
+
+        Mentor(
+            name = "Seung Sang Kim",
+            description = "I have a great passion for coding and spend a lot of my time at the Coding Lounge. If you're also interested in programming, feel free to come join me there. Let's work on projects together!",
+            imageId = commonR.drawable.image_seungsang
+        ),
+
+        Mentor(
             name = "David Kim",
-            title = "UX Design Lead at Airbnb",
             description = "10+ years of experience in user research, design systems, and creating intuitive digital experiences.",
-            imageId = commonR.drawable.image_jaehong
+            imageId = commonR.drawable.image_usang_1
         )
     )
 

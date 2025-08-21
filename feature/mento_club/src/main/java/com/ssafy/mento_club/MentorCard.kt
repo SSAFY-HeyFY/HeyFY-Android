@@ -70,7 +70,7 @@ internal fun MentorCard(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "${mentor.title} ${mentor.description}",
+                        text = mentor.description,
                         style = HeyFYTheme.typography.bodyM,
                         color = Color(0xFF6B7280),
                         lineHeight = HeyFYTheme.typography.bodyM.lineHeight
@@ -80,7 +80,6 @@ internal fun MentorCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Apply Button
             Button(
                 onClick = { onClick() },
                 modifier = Modifier

@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,7 @@ internal fun UniversityCard(
     modifier: Modifier = Modifier,
     universityName: String = "Seoul National University",
     studentNumber: String = "2024123456",
-    name: String = "John Smith",
+    name: String = "Nguyen Van A",
     major: String = "Computer Science",
 ) {
     var showQRBottomSheet by remember { mutableStateOf(false) }
@@ -76,18 +77,18 @@ internal fun UniversityCard(
         Spacer(Modifier.height(8.dp))
 
         Row {
-
-            // TODO 사진 삽입
             Box(
                 modifier = Modifier
                     .width(80.dp)
                     .height(100.dp)
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(8.dp)
-                    )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White)
             ) {
-
+                Image(
+                    painter = painterResource(commonR.drawable.image_persona),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
             }
 
             Spacer(Modifier.width(16.dp))

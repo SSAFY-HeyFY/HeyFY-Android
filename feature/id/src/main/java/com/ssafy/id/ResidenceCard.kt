@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
@@ -89,27 +90,33 @@ internal fun ResidenceCard(
                 IdItem(
                     title = "성명",
                     englishTitle = "Name",
-                    content = "JOHN SMITH"
+                    content = "Nguyen Van A"
                 )
                 IdItem(
                     title = "국가 / 지역",
                     englishTitle = "Country / Region",
-                    content = "REPUBLIC OF UTOPIA"
+                    content = "VIETNAM"
                 )
                 IdItem(
                     title = "체류 자격",
                     englishTitle = "Status",
-                    content = "기업투자(D-8)"
+                    content = "유학(D-2)"
                 )
             }
 
-            // TODO 이미지 삽입
             Box(
                 modifier = Modifier
                     .size(width = 90.dp, height = 110.dp)
-                    .background(Color.White, RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White)
                     .align(Alignment.TopEnd)
-            )
+            ) {
+                Image(
+                    painter = painterResource(commonR.drawable.image_persona),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }

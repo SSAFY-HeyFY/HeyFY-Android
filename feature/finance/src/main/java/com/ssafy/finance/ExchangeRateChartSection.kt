@@ -91,49 +91,33 @@ internal fun ExchangeRateChartSection() {
     }
 }
 
-private val RangeProvider = CartesianLayerRangeProvider.fixed(maxY = 1500.0, minY = 1200.0)
-private val x = (1..30).toList() // 날짜
+private val RangeProvider = CartesianLayerRangeProvider.fixed(maxY = 1400.0, minY = 1300.0)
+private val x = (1..14).toList() // 날짜
 private val y = listOf<Number>(
-    1350,
-    1350.5,
-    1340,
-    1360,
-    1350,
-    1350,
-    1370,
-    1375,
-    1380,
-    1390,
-    1410,
-    1400,
-    1380,
-    1370,
-    1350,
-    1350.5,
-    1340,
-    1360,
-    1350,
-    1350,
-    1370,
-    1375,
-    1380,
-    1390,
-    1410,
-    1400,
-    1380
+    1350.48,
+    1351.40,
+    1353.51,
+    1360.21,
+    1358.44,
+    1356.81,
+    1357.99,
+    1361.56,
+    1363.55,
+    1368.25,
+    1371.54,
+    1373.33,
+    1375.11,
+    1374.33,
 ) // 환율
 
-private val x1 = (1..27).toList()
-private val y1 = y.take(27)
+private val x2 = (14..17).toList()
+private val y2 = listOf(1374.33, 1375.11, 1376.33, 1378.31)
 
-private val x2 = (27..30).toList()
-private val y2 = listOf(1380, 1390, 1400, 1410)
+private val x3 = (14..17).toList()
+private val y3 = listOf(1374.33, 1373.11, 1372.33, 1373.31)
 
-private val x3 = (27..30).toList()
-private val y3 = listOf(1380, 1380, 1390, 1400)
-
-private val x4 = (27..30).toList()
-private val y4 = listOf(1380, 1370, 1380, 1390)
+private val x4 = (14..17).toList()
+private val y4 = listOf(1374.33, 1374.11, 1374.33, 1374.31)
 private val YDecimalFormat = DecimalFormat("#.##")
 private val StartAxisValueFormatter = CartesianValueFormatter.decimal(YDecimalFormat)
 private val MarkerValueFormatter = DefaultCartesianMarker.ValueFormatter.default(YDecimalFormat)
@@ -196,7 +180,7 @@ private fun JetpackComposeElectricCarSales1(
                 guideline = null,
                 tick = null,
                 line = null,
-                itemPlacer = remember { HorizontalAxis.ItemPlacer.aligned(spacing = { 7 }) },
+                itemPlacer = remember { HorizontalAxis.ItemPlacer.aligned(spacing = { 4 }) },
             ),
             marker = DefaultCartesianMarker(
                 label = TextComponent(),
@@ -215,7 +199,7 @@ fun JetpackComposeElectricCarSales(modifier: Modifier = Modifier) {
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
             lineSeries {
-                series(x1, y1)
+                series(x, y)
                 series(x2, y2)
                 series(x3, y3)
                 series(x4, y4)
