@@ -6,8 +6,8 @@ data class Home(
     val foreignAccount: Account,
 ) {
     data class Account(
-        val accountNo: String,
-        val balance: Long,
-        val currency: String,
+        val accountNo: String = "",
+        val balance: Long = 0L,
+        val currency: String = "",
     )
 }

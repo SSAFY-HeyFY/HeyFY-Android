@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import com.ssafy.home.domain.model.Home
 import com.ssafy.navigation.DestinationParamConstants.ACCOUNT
 import com.ssafy.navigation.DestinationParamConstants.FX_ACCOUNT
 import kotlin.math.absoluteValue
@@ -28,6 +29,9 @@ import kotlin.math.absoluteValue
 @Composable
 internal fun SwipePagerWithIndicator(
     modifier: Modifier = Modifier,
+    studentId: String,
+    normalAccount: Home.Account,
+    foreignAccount: Home.Account,
     goToSendMoney: (type: String) -> Unit = {},
     goToTransaction: () -> Unit = {},
     goToExchange: () -> Unit = {},
@@ -61,12 +65,15 @@ internal fun SwipePagerWithIndicator(
 
             when (page) {
                 0 -> UniversityCard(
-                    modifier = modifierPager
+                    modifier = modifierPager,
+                    studentId = studentId
                 )
 
                 1 -> AccountCard(
                     modifier = modifierPager,
-                    isFX = false,
+                    isFX = normalAccount.currency != "KRW",
+                    account = normalAccount.accountNo,
+                    currency = normalAccount.balance,
                     goToSendMoney = { goToSendMoney(ACCOUNT) } ,
                     goToTransaction = goToTransaction,
                     goToExchange = goToExchange,
@@ -74,7 +81,9 @@ internal fun SwipePagerWithIndicator(
 
                 2 -> AccountCard(
                     modifier = modifierPager,
-                    isFX = true,
+                    isFX = foreignAccount.currency != "KRW",
+                    account = foreignAccount.accountNo,
+                    currency = foreignAccount.balance,
                     goToSendMoney = { goToSendMoney(FX_ACCOUNT) },
                     goToTransaction = goToTransaction,
                     goToExchange = goToExchange,

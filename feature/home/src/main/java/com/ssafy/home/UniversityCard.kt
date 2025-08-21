@@ -39,10 +39,7 @@ import com.ssafy.common.theme.HeyFYTheme
 @Composable
 internal fun UniversityCard(
     modifier: Modifier = Modifier,
-    universityName: String = "Seoul National University",
-    studentNumber: String = "2024123456",
-    name: String = "Nguyen Thi Hoa",
-    major: String = "Computer Science",
+    studentId: String,
 ) {
     var showQRBottomSheet by remember { mutableStateOf(false) }
 
@@ -69,7 +66,7 @@ internal fun UniversityCard(
         Spacer(Modifier.height(4.dp))
 
         Text(
-            text = universityName,
+            text = "Seoul National University",
             style = HeyFYTheme.typography.bodyM,
             color = Color.White
         )
@@ -108,7 +105,7 @@ internal fun UniversityCard(
                     Spacer(Modifier.width(4.dp))
 
                     Text(
-                        text = studentNumber,
+                        text = studentId,
                         style = HeyFYTheme.typography.headlineS,
                         color = Color.White
                     )
@@ -117,13 +114,13 @@ internal fun UniversityCard(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = name,
+                    text = "Nguyen Thi Hoa",
                     style = HeyFYTheme.typography.headlineS,
                     color = Color.White
                 )
 
                 Text(
-                    text = major,
+                    text = "Computer Science",
                     style = HeyFYTheme.typography.headlineS,
                     color = Color.White
                 )
@@ -200,7 +197,8 @@ internal fun UniversityCard(
 private fun UniversityCardPreview() {
     HeyFYTheme {
         UniversityCard(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            studentId = "19111239"
         )
     }
 }

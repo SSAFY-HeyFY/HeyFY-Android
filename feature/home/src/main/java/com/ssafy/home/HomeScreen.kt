@@ -9,11 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.HeyFYTopBar
+import com.ssafy.home.domain.model.Home
+import com.ssafy.home.model.HomeUiEvent
+import com.ssafy.home.model.HomeUiState
 import com.ssafy.navigation.DestinationParamConstants.CLUB
 import com.ssafy.navigation.DestinationParamConstants.MENTO
 import com.ssafy.common.R as commonR
@@ -22,6 +32,25 @@ import com.ssafy.common.R as commonR
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val studentId by viewModel.studentId.collectAsStateWithLifecycle()
+    val normalAccount by viewModel.normalAccount.collectAsStateWithLifecycle()
+    val foreignAccount by viewModel.foreignAccount.collectAsStateWithLifecycle()
+    var errorMessage by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        viewModel.action(HomeUiEvent.Init)
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is HomeUiState.Error -> {
+                errorMessage = (uiState as HomeUiState.Error).mag
+            }
+
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier
@@ -34,16 +63,34 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeContent(
             modifier = Modifier.padding(innerPadding),
-            goToCardDetail = viewModel::goToCardDetail,
+            studentId = studentId,
+            normalAccount = normalAccount,
+            foreignAccount = foreignAccount,
+            goToCardDetail = { viewModel.action(HomeUiEvent.ClickCard) },
             goToSendMoney = { type ->
-                viewModel.goToSendMoney(type)
+                viewModel.action(HomeUiEvent.CLickSendMoney(type))
             },
-            goToTransaction = viewModel::goToTransaction,
+            goToTransaction = {
+                viewModel.action(HomeUiEvent.ClickTransaction)
+            },
             goToMentoClub = { type ->
-                viewModel.goToMentoClub(type)
+                viewModel.action(HomeUiEvent.ClickMentoClub(type))
             },
-            goToTips = viewModel::goToTips,
-            goToExchange = viewModel::goToExchange,
+            goToTips = {
+                viewModel.action(HomeUiEvent.ClickTips)
+            },
+            goToExchange = {
+                viewModel.action(HomeUiEvent.ClickExchange)
+            },
+        )
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                errorMessage = ""
+            }
         )
     }
 }
@@ -51,10 +98,9 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier = Modifier,
-    universityName: String = "Seoul National University",
-    studentNumber: String = "2024123456",
-    name: String = "John Smith",
-    major: String = "Computer Science",
+    studentId: String,
+    normalAccount: Home.Account,
+    foreignAccount: Home.Account,
     goToCardDetail: () -> Unit = {},
     goToSendMoney: (type: String) -> Unit = {},
     goToTransaction: () -> Unit = {},
@@ -68,6 +114,9 @@ private fun HomeContent(
             .padding(vertical = 16.dp)
     ) {
         SwipePagerWithIndicator(
+            studentId = studentId,
+            normalAccount = normalAccount,
+            foreignAccount = foreignAccount,
             goToSendMoney = goToSendMoney,
             goToTransaction = goToTransaction,
             goToExchange = goToExchange,
@@ -113,4 +162,5 @@ private fun HomeContent(
             onCardClick = goToCardDetail
         )
     }
+
 }
