@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.ssafy.mento_club"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24

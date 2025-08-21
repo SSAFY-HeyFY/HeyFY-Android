@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.ssafy.exchange"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24

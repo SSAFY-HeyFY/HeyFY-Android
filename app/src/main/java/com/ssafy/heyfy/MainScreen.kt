@@ -20,38 +20,38 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.finance.FinanceScreen
 import com.ssafy.home.HomeScreen
 import com.ssafy.id.IdScreen
-import com.ssafy.common.R as commonR
 
 @Composable
-internal fun MainScreen() {
-    BottomMenuScreen()
+internal fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel<MainViewModel>()
+) {
+
+    val selectedItem by viewModel.selectedItem.collectAsStateWithLifecycle()
+
+    BottomMenuScreen(
+        navMenus = viewModel.navMenus,
+        selectedItem = selectedItem,
+        onItemSelected = viewModel::updateSelectedItem
+    )
 }
 
 @Composable
-private fun BottomMenuScreen() {
-    val navMenus = rememberSaveable {
-        listOf(
-            NavigationData("Home", commonR.drawable.icon_home),
-            NavigationData("ID", commonR.drawable.icon_id),
-            NavigationData("Finance", commonR.drawable.icon_finance),
-        )
-    }
-
-    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
-
+private fun BottomMenuScreen(
+    navMenus: List<NavigationData>,
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit,
+) {
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
@@ -60,7 +60,7 @@ private fun BottomMenuScreen() {
             BottomNavigationBar(
                 menus = navMenus,
                 selectedIndex = selectedItem,
-                onItemSelected = { selectedItem = it }
+                onItemSelected = { onItemSelected(it) }
             )
         },
         containerColor = Color.White,
@@ -140,7 +140,7 @@ private fun NavigationItem(
     }
 }
 
-private data class NavigationData(
+data class NavigationData(
     val title: String,
     @DrawableRes val icon: Int,
 )

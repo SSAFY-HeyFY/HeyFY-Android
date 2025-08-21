@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.ssafy.network"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
