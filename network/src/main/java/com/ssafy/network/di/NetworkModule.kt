@@ -2,6 +2,7 @@ package com.ssafy.network.di
 
 import android.content.Context
 import com.ssafy.common.data_store.TokenManager
+import com.ssafy.network.api.AuthApi
 import com.ssafy.network.interceptor.HeyFYInterceptor
 import com.ssafy.network.BuildConfig
 import dagger.Module
@@ -70,7 +71,36 @@ object NetworkModule {
     @Singleton
     fun provideWussuInterceptor(
         tokenManager: TokenManager,
+        authApi: AuthApi,
     ): HeyFYInterceptor {
-        return HeyFYInterceptor(tokenManager)
+        return HeyFYInterceptor(tokenManager, authApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(): AuthApi {
+        // AuthApi는 별도의 OkHttpClient로 생성 (순환 의존성 방지)
+        val authRetrofit = Retrofit
+            .Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                    .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    .addInterceptor(
+                        HttpLoggingInterceptor { message ->
+                            Timber.tag("AUTH_API").d(message)
+                        }.apply {
+                            setLevel(HttpLoggingInterceptor.Level.BODY)
+                        }
+                    )
+                    .build()
+            )
+            .build()
+        
+        return authRetrofit.create(AuthApi::class.java)
     }
 }

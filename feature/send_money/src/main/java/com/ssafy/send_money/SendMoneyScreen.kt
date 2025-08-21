@@ -61,7 +61,9 @@ fun SendMoneyScreen(
     val currency = if (isFxAccount) "USD" else "KRW"
 
     LaunchedEffect(Unit) {
-        viewModel.action(SendMoneyUiEvent.Init)
+        if (uiState is SendMoneyUiState.Init) {
+            viewModel.action(SendMoneyUiEvent.Init)
+        }
     }
 
     LaunchedEffect(showInsufficientBalanceError) {

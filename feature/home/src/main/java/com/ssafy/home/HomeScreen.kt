@@ -39,7 +39,9 @@ fun HomeScreen(
     var errorMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        viewModel.action(HomeUiEvent.Init)
+        if (uiState is HomeUiState.Init) {
+            viewModel.action(HomeUiEvent.Init)
+        }
     }
 
     LaunchedEffect(uiState) {
