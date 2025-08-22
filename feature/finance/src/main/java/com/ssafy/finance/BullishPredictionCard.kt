@@ -19,13 +19,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.finance.domain.model.ExchangeRatePrediction
 
 @Composable
 internal fun BullishPredictionCard(
+    modifier: Modifier = Modifier,
+    prediction: ExchangeRatePrediction,
     onClick: () -> Unit = {},
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -35,13 +38,13 @@ internal fun BullishPredictionCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Bullish Prediction",
+                text = prediction.trend,
                 style = HeyFYTheme.typography.labelL.copy(fontWeight = FontWeight.SemiBold),
                 color = Color(0xFF000000)
             )
 
             Text(
-                text = "The rate is expected to rise over the next 5 days",
+                text = prediction.trend,
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF000000)
             )
@@ -51,8 +54,13 @@ internal fun BullishPredictionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val percent = if (prediction.changePercent < 0) {
+                    "${prediction.changePercent}"
+                } else {
+                    "+${prediction.changePercent}"
+                }
                 Text(
-                    text = "+1.17% in 5 days",
+                    text = "${percent}% in ${prediction.periodDays} days",
                     style = HeyFYTheme.typography.labelL,
                     color = Color(0xFF10B981)
                 )

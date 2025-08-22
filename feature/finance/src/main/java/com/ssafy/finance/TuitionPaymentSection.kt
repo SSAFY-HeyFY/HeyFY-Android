@@ -22,12 +22,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.finance.domain.model.ExchangeRateTuition
+import java.text.SimpleDateFormat
+import java.util.Locale
 import com.ssafy.common.R as commonR
 
 @Composable
-internal fun TuitionPaymentSection() {
+internal fun TuitionPaymentSection(
+    modifier: Modifier = Modifier,
+    tuition: ExchangeRateTuition,
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -55,7 +61,7 @@ internal fun TuitionPaymentSection() {
             }
 
             Text(
-                text = "Payment available: March 1 - March 31, 2024",
+                text = "Payment available: ${formatDateRange(tuition.period.start, tuition.period.end)}",
                 style = HeyFYTheme.typography.bodyM.copy(fontWeight = FontWeight.Medium),
                 color = Color(0xFF9333EA)
             )
@@ -80,9 +86,8 @@ internal fun TuitionPaymentSection() {
                             style = HeyFYTheme.typography.bodyM,
                             color = Color(0xFF9333EA)
                         )
-
                         Text(
-                            text = "March 15, 2024",
+                            text = formatDate(tuition.recommendedDate),
                             style = HeyFYTheme.typography.headlineL,
                             color = Color(0xFF9333EA)
                         )
@@ -90,7 +95,7 @@ internal fun TuitionPaymentSection() {
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = "The exchange rate is expected to be highest on this day",
+                            text = tuition.recommendationNote,
                             style = HeyFYTheme.typography.bodyS,
                             color = Color(0xFF9333EA)
                         )
@@ -107,5 +112,53 @@ internal fun TuitionPaymentSection() {
                 }
             }
         }
+    }
+}
+
+/**
+ * 날짜 문자열을 "20240315" → "March 15, 2024" 형식으로 변환
+ */
+private fun formatDate(dateString: String): String {
+    if (dateString.isEmpty() || dateString.length != 8) {
+        return dateString
+    }
+    
+    return try {
+        val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.US)
+        val outputFormat = SimpleDateFormat("MMMM d, yyyy", Locale.US)
+        val date = inputFormat.parse(dateString)
+        date?.let { outputFormat.format(it) } ?: dateString
+    } catch (e: Exception) {
+        dateString
+    }
+}
+
+/**
+ * 시작일과 종료일을 범위 형태로 포맷팅
+ * "20240301", "20240331" → "March 1 - March 31, 2024"
+ */
+private fun formatDateRange(startDate: String, endDate: String): String {
+    if (startDate.isEmpty() || endDate.isEmpty()) {
+        return "Payment period not available"
+    }
+    
+    return try {
+        val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.US)
+        val start = inputFormat.parse(startDate)
+        val end = inputFormat.parse(endDate)
+        
+        if (start != null && end != null) {
+            val startFormat = SimpleDateFormat("MMMM d", Locale.US)
+            val endFormat = SimpleDateFormat("MMMM d, yyyy", Locale.US)
+            
+            val startFormatted = startFormat.format(start)
+            val endFormatted = endFormat.format(end)
+            
+            "$startFormatted - $endFormatted"
+        } else {
+            "Payment period not available"
+        }
+    } catch (e: Exception) {
+        "Payment period not available"
     }
 }

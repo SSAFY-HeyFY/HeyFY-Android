@@ -21,18 +21,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.R as commonR
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.finance.domain.model.ExchangeRateCurrent
 
 @Composable
-internal fun CurrencySection() {
+internal fun CurrencySection(
+    modifier: Modifier = Modifier,
+    current: ExchangeRateCurrent,
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "USD",
-            amount = "1,340.50",
-            change = "+2.3%",
+            amount = current.usd.currency,
+            change = if(current.usd.exchangeRate < 0L) "${current.usd.exchangeRate}" else "+${current.usd.exchangeRate}",
             isPositive = true
         )
 

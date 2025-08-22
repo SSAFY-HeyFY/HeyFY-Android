@@ -44,12 +44,16 @@ import com.patrykandpatrick.vico.core.common.component.LineComponent
 import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.finance.domain.model.ExchangeRateHistories
 import java.text.DecimalFormat
 
 @Composable
-internal fun ExchangeRateChartSection() {
+internal fun ExchangeRateChartSection(
+    modifier: Modifier = Modifier,
+    histories: ExchangeRateHistories,
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
