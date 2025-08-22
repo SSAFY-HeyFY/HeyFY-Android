@@ -4,7 +4,6 @@ sealed class SendMoneyUiEvent {
     data object Init : SendMoneyUiEvent()
 
     data class ClickTransfer(
-        val withdrawalAccountNo: String,
         val depositAccountNo: String,
         val amount: Int,
     ) : SendMoneyUiEvent()
