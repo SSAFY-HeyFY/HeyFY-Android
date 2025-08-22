@@ -71,6 +71,35 @@ fun MentoClubScreen(
         )
     )
 
+    val clubs = listOf(
+        Mentor(
+            name = "Equal Opportunities Club",
+            description = "Equal Opportunities Club is a welcoming space where diversity is celebrated, and everyone is valued. We stand for no discrimination, equal chances, and higher happiness for all members together.",
+            imageId = commonR.drawable.image_club_1
+        ),
+        Mentor(
+            name = "Broadcasting Club",
+            description = "Broadcasting Club is where voices and creativity come alive. We create videos, host events, and share stories that inspire. Join us to learn media skills and bring exciting ideas to life together.",
+            imageId = commonR.drawable.image_club_2
+        ),
+        Mentor(
+            name = "HEYFY PEOPLE",
+            description = "HEYFY PEOPLE is a spirited club where students unite through dance, music, and cheering. We celebrate passion, energy, and creativity, inspiring each other to shine on stage and beyond together.",
+            imageId = commonR.drawable.image_club_3
+        ),
+        Mentor(
+            name = "YOUTH PARTY",
+            description = "YOUTH PARTY is a dynamic concert club where passion meets music. We gather to enjoy live performances, share youthful energy, and create unforgettable moments filled with rhythm, joy, and unity.",
+            imageId = commonR.drawable.image_club_4
+        ),
+
+        Mentor(
+            name = "HEYFY LIFE STYLE",
+            description = "HEYFY LIFE STYLE is a vibrant community where people connect, share passions, and explore trends. We inspire each other to live with balance, joy, and individuality every single day.",
+            imageId = commonR.drawable.image_club_5
+        ),
+    )
+
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
@@ -89,7 +118,7 @@ fun MentoClubScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(mentors) { mentor ->
+            items(if (viewModel.type == MENTO) mentors else clubs) { mentor ->
                 MentorCard(
                     mentor = mentor,
                     onClick = {
