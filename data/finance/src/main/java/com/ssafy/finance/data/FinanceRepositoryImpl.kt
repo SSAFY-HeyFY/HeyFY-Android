@@ -92,9 +92,9 @@ class FinanceRepositoryImpl @Inject constructor(
                 exchangeRate = cny.exchangeRate
             ),
             vnd = ExchangeRateCurrent.ExchangeRate(
-                currency = vnd.currency,
-                date = vnd.date,
-                exchangeRate = vnd.exchangeRate
+                currency = vnd?.currency ?: "",
+                date = vnd?.date ?: "",
+                exchangeRate = vnd?.exchangeRate ?: 0.0
             )
         )
     }

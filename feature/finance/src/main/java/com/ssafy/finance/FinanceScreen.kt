@@ -10,16 +10,49 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.HeyFYTopBar
+import com.ssafy.finance.model.FinanceUiEvent
+import com.ssafy.finance.model.FinanceUiState
 
 @Composable
 fun FinanceScreen(
     viewModel: FinanceViewModel = hiltViewModel<FinanceViewModel>(),
 ) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val current by viewModel.current.collectAsStateWithLifecycle()
+    val histories by viewModel.histories.collectAsStateWithLifecycle()
+    val prediction by viewModel.prediction.collectAsStateWithLifecycle()
+    val tuition by viewModel.tuition.collectAsStateWithLifecycle()
+    var errorMessage by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        if (uiState is FinanceUiState.Init) {
+            viewModel.action(FinanceUiEvent.Init)
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is FinanceUiState.Error -> {
+                errorMessage = (uiState as FinanceUiState.Error).mag
+            }
+
+            else -> {}
+        }
+    }
+
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
@@ -35,28 +68,44 @@ fun FinanceScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                CurrencySection()
+                CurrencySection(
+                    current = current,
+                )
             }
 
             item {
-                ExchangeRateChartSection()
+                ExchangeRateChartSection(
+                    histories = histories,
+                )
             }
 
             item {
                 BullishPredictionCard(
+                    prediction = prediction,
                     onClick = {
-                        viewModel.goToExchange()
+                        viewModel.action(FinanceUiEvent.ClickExchange)
                     }
                 )
             }
 
             item {
-                TuitionPaymentSection()
+                TuitionPaymentSection(
+                    tuition = tuition,
+                )
             }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                errorMessage = ""
+            }
+        )
     }
 }
