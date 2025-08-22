@@ -54,15 +54,15 @@ internal fun BullishPredictionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val percent = if (prediction.changePercent < 0) {
-                    "${prediction.changePercent}"
+                val (percent, color) = if (prediction.changePercent < 0) {
+                    "${prediction.changePercent}" to Color(0xFFDC2626)
                 } else {
-                    "+${prediction.changePercent}"
+                    "+${prediction.changePercent}" to Color(0xFF10B981)
                 }
                 Text(
                     text = "${percent}% in ${prediction.periodDays} days",
                     style = HeyFYTheme.typography.labelL,
-                    color = Color(0xFF10B981)
+                    color = color
                 )
 
                 Button(

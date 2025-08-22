@@ -17,8 +17,7 @@ class HeyFYInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        
-        // /auth/refresh API 호출인 경우는 인터셉터를 건너뜀
+
         if (originalRequest.url.encodedPath == "/auth/refresh") {
             return chain.proceed(originalRequest)
         }
@@ -28,7 +27,6 @@ class HeyFYInterceptor @Inject constructor(
 
         Timber.d("Access token: $accessToken")
 
-        // Access Token을 헤더에 추가
         if (!accessToken.isNullOrEmpty()) {
             builder.addHeader(AUTHORIZATION, "Bearer $accessToken")
         }

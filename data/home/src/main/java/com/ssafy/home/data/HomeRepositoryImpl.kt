@@ -31,7 +31,7 @@ class HomeRepositoryImpl @Inject constructor(
     private fun HomeResponse.Account.toAccount(): Home.Account {
         return Home.Account(
             accountNo = accountNo,
-            balance = balance,
+            balance = balance.toDouble(),
             currency = currency,
         )
     }

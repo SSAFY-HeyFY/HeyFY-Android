@@ -33,7 +33,7 @@ class SendMoneyViewModel @Inject constructor(
     private val _account = MutableStateFlow("")
     val account = _account.asStateFlow()
 
-    private val _balance = MutableStateFlow(0L)
+    private val _balance = MutableStateFlow(0.0)
     val balance = _balance.asStateFlow()
 
     private val _uiState = MutableStateFlow<SendMoneyUiState>(SendMoneyUiState.Init)

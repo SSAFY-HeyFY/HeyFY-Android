@@ -7,7 +7,7 @@ data class Home(
 ) {
     data class Account(
         val accountNo: String = "",
-        val balance: Long = 0L,
+        val balance: Double = 0.0,
         val currency: String = "",
     )
 }

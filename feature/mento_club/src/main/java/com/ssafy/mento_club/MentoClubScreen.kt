@@ -136,7 +136,6 @@ fun MentoClubScreen(
             },
             onConfirm = {
                 isShowPopUp = false
-                // TODO: 신청 완료 처리
                 viewModel.goToSuccess()
             },
             onDismiss = {
