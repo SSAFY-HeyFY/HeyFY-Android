@@ -35,15 +35,15 @@ internal fun CurrencySection(
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "USD",
-            amount = current.usd.currency,
-            change = if(current.usd.exchangeRate < 0L) "${current.usd.exchangeRate}" else "+${current.usd.exchangeRate}",
+            amount = current.usd.exchangeRate.toString(),
+            change = "+0.8%",
             isPositive = true
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "CNY",
-            amount = "184.20",
+            amount = current.cny.exchangeRate.toString(),
             change = "-1.2%",
             isPositive = false
         )
@@ -51,7 +51,7 @@ internal fun CurrencySection(
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "VND",
-            amount = "0.054",
+            amount = current.vnd.exchangeRate.toString(),
             change = "+0.8%",
             isPositive = true
         )

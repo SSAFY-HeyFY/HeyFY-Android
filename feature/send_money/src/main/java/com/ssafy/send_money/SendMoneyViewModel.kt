@@ -47,12 +47,12 @@ class SendMoneyViewModel @Inject constructor(
 
             is SendMoneyUiEvent.ClickTransfer -> {
                 if (isFXAccount) {
-                    transferDomestic(
+                    transferForeigner(
                         depositAccountNo = event.depositAccountNo,
                         amount = event.amount
                     )
                 } else {
-                    transferForeigner(
+                    transferDomestic(
                         depositAccountNo = event.depositAccountNo,
                         amount = event.amount
                     )

@@ -71,6 +71,7 @@ class HomeViewModel @Inject constructor(
                     _studentId.value = home.studentId
                     _normalAccount.value = home.normalAccount
                     _foreignAccount.value = home.foreignAccount
+                    updateUiState(HomeUiState.Success)
                 }
                 .onFailure(::handleFailure)
         }

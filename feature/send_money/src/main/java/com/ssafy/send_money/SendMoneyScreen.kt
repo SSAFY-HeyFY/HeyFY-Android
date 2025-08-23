@@ -157,7 +157,7 @@ fun SendMoneyScreen(
                 isShowPopUp = false
                 viewModel.action(
                     SendMoneyUiEvent.ClickTransfer(
-                        depositAccountNo = "0014084444636603",
+                        depositAccountNo = account,
                         amount = transferAmount.toInt()
                     )
                 )

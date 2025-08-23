@@ -72,6 +72,8 @@ class FinanceViewModel @Inject constructor(
             getCurrentFinanceUseCase().onSuccess {
                 _current.value = it
             }.onFailure(::handleFailure)
+
+            updateUiState(FinanceUiState.Success)
         }
     }
 

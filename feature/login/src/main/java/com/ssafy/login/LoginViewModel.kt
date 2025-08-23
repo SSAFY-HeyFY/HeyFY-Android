@@ -35,6 +35,7 @@ class LoginViewModel @Inject constructor(
                 tokenManager.saveAccessToken(accessToken)
                 tokenManager.saveRefreshToken(refreshToken)
                 goToAccount()
+                updateUiState(LoginUiState.Success)
             }.onFailure(::handleFailure)
         }
     }

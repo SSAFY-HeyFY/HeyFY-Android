@@ -27,7 +27,7 @@ class HeyFYInterceptor @Inject constructor(
 
         Timber.d("Access token: $accessToken")
 
-        if (!accessToken.isNullOrEmpty()) {
+        if (accessToken.isNullOrEmpty().not()) {
             builder.addHeader(AUTHORIZATION, "Bearer $accessToken")
         }
 
@@ -39,7 +39,7 @@ class HeyFYInterceptor @Inject constructor(
             val refreshToken = runBlocking { tokenManager.getRefreshToken().first() }
             Timber.d("Refresh token: $refreshToken")
 
-            if (!refreshToken.isNullOrEmpty() && !accessToken.isNullOrEmpty()) {
+            if (refreshToken.isNullOrEmpty().not() && accessToken.isNullOrEmpty().not()) {
                 try {
                     val refreshResponse = runBlocking {
                         authApi.refreshToken(
@@ -52,6 +52,7 @@ class HeyFYInterceptor @Inject constructor(
                         val newTokens = refreshResponse.body()
                         if (newTokens != null) {
                             runBlocking {
+                                tokenManager.deleteAccessToken()
                                 tokenManager.saveAccessToken(newTokens.accessToken)
                                 tokenManager.saveRefreshToken(newTokens.refreshToken)
                             }
@@ -60,6 +61,7 @@ class HeyFYInterceptor @Inject constructor(
 
                             val newRequest = originalRequest.newBuilder()
                                 .removeHeader(AUTHORIZATION)
+                                .removeHeader(REFRESH_TOKEN)
                                 .addHeader(AUTHORIZATION, "Bearer ${newTokens.accessToken}")
                                 .build()
 
@@ -82,7 +84,7 @@ class HeyFYInterceptor @Inject constructor(
     private fun Response.isUnauthorized(): Boolean = code == HttpURLConnection.HTTP_UNAUTHORIZED
 
     companion object {
-        private const val AUTHORIZATION = "authorization"
+        private const val AUTHORIZATION = "Authorization"
         private const val REFRESH_TOKEN = "RefreshToken"
     }
 }
