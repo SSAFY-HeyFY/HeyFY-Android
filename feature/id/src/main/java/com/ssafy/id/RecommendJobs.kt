@@ -65,8 +65,8 @@ fun RecommendJobs(
         JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
 
 
-    )
-    
+        )
+
     val pagerState = rememberPagerState(pageCount = { jobItems.size })
 
     Column(

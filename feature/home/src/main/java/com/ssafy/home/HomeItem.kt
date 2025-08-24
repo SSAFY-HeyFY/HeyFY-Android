@@ -1,6 +1,7 @@
 package com.ssafy.home
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,47 +41,64 @@ internal fun HomeItem(
     }
 
 
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .border(1.dp, Color(0xFFF3F4F6), RoundedCornerShape(12.dp))
-            .padding(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        border = BorderStroke(1.dp, Color(0xFFF3F4F6))
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .size(48.dp),
-            contentAlignment = Alignment.Center
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = null,
-            )
-        }
+            Box(
+                modifier = Modifier
+                    .size(48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = imageResId),
+                    contentDescription = null,
+                )
+            }
+            Spacer(Modifier.height(12.dp))
 
-        Text(
-            text = content,
-            style = HeyFYTheme.typography.bodyS,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(Modifier.height(24.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, color, RoundedCornerShape(8.dp))
-                .clickableOnce { onClick() }
-                .padding(vertical = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
             Text(
-                text = buttonText,
-                style = HeyFYTheme.typography.bodyS,
-                color = color
+                text = type,
+                style = HeyFYTheme.typography.labelL,
+                color = Color.Black,
+                textAlign = TextAlign.Center
             )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = content,
+                style = HeyFYTheme.typography.bodyS,
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(1.dp, color, RoundedCornerShape(8.dp))
+                    .clickableOnce { onClick() }
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = buttonText,
+                    style = HeyFYTheme.typography.bodyS,
+                    color = color
+                )
+            }
         }
     }
 }

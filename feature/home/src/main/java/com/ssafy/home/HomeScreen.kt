@@ -132,7 +132,7 @@ private fun HomeContent(
             HomeItem(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_mentoring,
-                content = "1 on 1\nKorean Culture\nMentoring",
+                content = "1 on 1 Korean",
                 type = "Mentoring",
                 onClick = { goToMentoClub(MENTO) }
             )
@@ -142,7 +142,7 @@ private fun HomeContent(
             HomeItem(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_club,
-                content = "Recommended\nClubs\nFor You",
+                content = "Recommended",
                 type = "Club",
                 onClick = { goToMentoClub(CLUB) }
             )
@@ -152,7 +152,7 @@ private fun HomeContent(
             HomeItem(
                 modifier = Modifier.weight(1f),
                 imageResId = commonR.drawable.icon_tips,
-                content = "Today's\nCampus\nTips",
+                content = "Campus Tip",
                 type = "Tips",
                 onClick = goToTips,
             )

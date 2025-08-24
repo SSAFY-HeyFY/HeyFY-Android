@@ -33,7 +33,7 @@ fun TipsScreen(
             .systemBarsPadding(),
         topBar = {
             DetailTopBar (
-                title = "Today's Tips",
+                title = "Today's Campus Tips",
                 onBack = viewModel::back
             )
         },
