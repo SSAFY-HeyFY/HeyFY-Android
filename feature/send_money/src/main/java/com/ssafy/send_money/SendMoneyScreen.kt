@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,11 +29,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.ErrorPopUp
-import com.ssafy.common.ui.HeyFYPopUp
+import com.ssafy.common.ui.PasswordBottomSheet
 import com.ssafy.send_money.model.SendMoneyUiEvent
 import com.ssafy.send_money.model.SendMoneyUiState
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SendMoneyScreen(
     viewModel: SendMoneyViewModel = hiltViewModel<SendMoneyViewModel>(),
@@ -55,8 +58,14 @@ fun SendMoneyScreen(
     val memoFocusRequester = remember { FocusRequester() }
     val accountNumberFocusRequester = remember { FocusRequester() }
     val transferAmountFocusRequester = remember { FocusRequester() }
-    var isShowPopUp by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+
+    // Password
+    var showPasswordBottomSheet by remember { mutableStateOf(false) }
+    var password by remember { mutableStateOf("") }
+    var isPasswordError by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val correctPassword = "123456"
 
     val currency = if (isFxAccount) "USD" else "KRW"
 
@@ -83,6 +92,23 @@ fun SendMoneyScreen(
         }
     }
 
+    LaunchedEffect(password) {
+        if (password.length < 6) return@LaunchedEffect
+        if (password == correctPassword) {
+            showPasswordBottomSheet = false
+            password = ""
+            isPasswordError = false
+            viewModel.action(
+                SendMoneyUiEvent.ClickTransfer(
+                    depositAccountNo = account,
+                    amount = transferAmount.toInt()
+                )
+            )
+        } else {
+            isPasswordError = true
+        }
+    }
+
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
@@ -94,7 +120,9 @@ fun SendMoneyScreen(
         bottomBar = {
             SendMoneyBottomBar(
                 isEnabled = accountNumber.isNotEmpty() && transferAmount.isNotEmpty(),
-                onContinue = { isShowPopUp = true }
+                onContinue = {
+                    showPasswordBottomSheet = true
+                }
             )
         },
         containerColor = Color(0xFFF9FAFB)
@@ -146,28 +174,6 @@ fun SendMoneyScreen(
         }
     }
 
-
-    if (isShowPopUp) {
-        keyboardController?.hide()
-        HeyFYPopUp(
-            onCancel = {
-                isShowPopUp = false
-            },
-            onConfirm = {
-                isShowPopUp = false
-                viewModel.action(
-                    SendMoneyUiEvent.ClickTransfer(
-                        depositAccountNo = account,
-                        amount = transferAmount.toInt()
-                    )
-                )
-            },
-            onDismiss = {
-                isShowPopUp = false
-            }
-        )
-    }
-
     if (errorMessage.isNotEmpty()) {
         keyboardController?.hide()
         ErrorPopUp(
@@ -175,6 +181,17 @@ fun SendMoneyScreen(
             onDismiss = {
                 errorMessage = ""
             }
+        )
+    }
+
+    if (showPasswordBottomSheet) {
+        PasswordBottomSheet(
+            bottomSheetState = bottomSheetState,
+            password = password,
+            isPasswordError = isPasswordError,
+            updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
+            updatePassword = { password = it },
+            updateIsPasswordError = { isPasswordError = it }
         )
     }
 }
