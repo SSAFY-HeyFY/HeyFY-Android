@@ -2,13 +2,11 @@ package com.ssafy.id
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.common.ui.HeyFYPopUp
 import com.ssafy.common.ui.HeyFYTopBar
+import kotlinx.coroutines.delay
 
 @Composable
 fun IdScreen(
@@ -61,6 +60,14 @@ private fun IdContent(
     onClick: () -> Unit = {},
 ) {
     var isResidenceBlurred by remember { mutableStateOf(true) }
+
+
+    LaunchedEffect(isResidenceBlurred) {
+        if (!isResidenceBlurred) {
+            delay(60000) // 10초 대기
+            isResidenceBlurred = true
+        }
+    }
 
     Column(
         modifier = modifier
