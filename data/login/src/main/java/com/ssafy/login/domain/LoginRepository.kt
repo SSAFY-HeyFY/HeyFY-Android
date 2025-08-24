@@ -8,3 +8,4 @@ interface LoginRepository {
     ): Result<Pair<String, String>>
 
 }
+

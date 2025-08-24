@@ -1,13 +1,12 @@
 package com.ssafy.id
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,29 +60,28 @@ private fun IdContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-    var isResidenceBlurred by remember { mutableStateOf(false) }
-    val scrollState = rememberScrollState()
+    var isResidenceBlurred by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(state = scrollState),
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         ResidenceCard(
             isBlurred = isResidenceBlurred,
-            onCardClick = { isResidenceBlurred = !isResidenceBlurred }
+            onCardClick = { isResidenceBlurred = !isResidenceBlurred },
+            modifier = Modifier.weight(0.40f)
         )
 
-        Spacer(Modifier.height(16.dp))
-
-        WorkCard()
-
-        Spacer(Modifier.height(16.dp))
+        WorkCard(
+            modifier = Modifier.weight(0.35f)
+        )
 
         RecommendJobs(
-            onClick = { onClick() }
+            onClick = { onClick() },
+            modifier = Modifier.weight(0.25f)
         )
     }
 }

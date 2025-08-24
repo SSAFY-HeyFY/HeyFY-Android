@@ -24,3 +24,4 @@ class LoginRepositoryImpl @Inject constructor(
         )
     }
 }
+

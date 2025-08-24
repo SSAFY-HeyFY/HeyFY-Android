@@ -19,3 +19,4 @@ interface LoginModule {
     @Binds
     fun bindLoginRepository(loginRepositoryImpl: LoginRepositoryImpl): LoginRepository
 }
+

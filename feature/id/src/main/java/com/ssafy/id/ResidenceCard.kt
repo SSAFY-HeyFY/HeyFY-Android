@@ -89,6 +89,7 @@ internal fun ResidenceCard(
                 TitleSection()
                 HorizontalDivider(thickness = 1.dp, color = Color(0xFFF3F4F6))
                 IdItem(
+                    modifier = Modifier.weight(1f),
                     title = "외국인등록번호",
                     englishTitle = "Registration No.",
                     content = "123456-1234567",
@@ -96,16 +97,19 @@ internal fun ResidenceCard(
                     shouldBlur = true
                 )
                 IdItem(
+                    modifier = Modifier.weight(1f),
                     title = "성명",
                     englishTitle = "Name",
                     content = "Nguyen Thi Hoa"
                 )
                 IdItem(
+                    modifier = Modifier.weight(1f),
                     title = "국가 / 지역",
                     englishTitle = "Country / Region",
                     content = "VIETNAM"
                 )
                 IdItem(
+                    modifier = Modifier.weight(1f),
                     title = "체류 자격",
                     englishTitle = "Status",
                     content = "유학(D-2)",
@@ -159,6 +163,7 @@ private fun IdItem(
     shouldBlur: Boolean = false,
 ) {
     val font = HeyFYTheme.typography.bodyS2.copy(lineHeight = 14.sp)
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
