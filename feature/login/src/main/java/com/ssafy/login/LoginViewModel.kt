@@ -27,6 +27,7 @@ class LoginViewModel @Inject constructor(
         studentId: String,
         password: String,
     ) {
+        // TODO : 하드 코딩 제거
         viewModelScope.launch {
             loginUseCase(
                 studentId = "19111239",
