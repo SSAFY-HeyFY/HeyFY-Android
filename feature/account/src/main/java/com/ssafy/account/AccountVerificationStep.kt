@@ -41,7 +41,7 @@ internal fun AccountVerificationStep(
     verificationCode: List<String>,
     onVerificationCodeChange: (Int, String) -> Unit,
     timeRemaining: Int,
-    onResendCode: () -> Unit,
+    onShowCode: () -> Unit,
 ) {
     val minutes = timeRemaining / 60
     val seconds = timeRemaining % 60
@@ -142,7 +142,9 @@ internal fun AccountVerificationStep(
                     text = "Verify Code",
                     style = HeyFYTheme.typography.labelM,
                     color = Color(0xFF9333EA),
-                    modifier = Modifier.clickableOnce { onResendCode() }
+                    modifier = Modifier.clickableOnce {
+                        onShowCode()
+                    }
                 )
             }
 

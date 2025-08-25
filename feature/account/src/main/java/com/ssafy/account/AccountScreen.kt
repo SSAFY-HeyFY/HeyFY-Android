@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.account.model.AccountUiEvent
 import com.ssafy.account.model.AccountUiState
+import com.ssafy.common.ui.CodePopUp
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.ErrorPopUp
 import kotlinx.coroutines.delay
@@ -39,6 +40,7 @@ fun AccountScreen(
     val currentStep by viewModel.step.collectAsStateWithLifecycle()
     val accountNumber by viewModel.accountNumber.collectAsStateWithLifecycle()
     val verificationCode by viewModel.verificationCode.collectAsStateWithLifecycle()
+    val showCodeMessage by viewModel.showCodeMessage.collectAsStateWithLifecycle()
 
     var errorMessage by remember { mutableStateOf("") }
     var timeRemaining by remember { mutableIntStateOf(180) }
@@ -90,7 +92,9 @@ fun AccountScreen(
                     AccountRegistrationBottomBar(
                         accountNumber = accountNumber,
                         onClick = {
-                            viewModel.action(AccountUiEvent.ClickAccountNumber)
+                            if (accountNumber.length > 15) {
+                                viewModel.action(AccountUiEvent.ClickAccountNumber)
+                            }
                         }
                     )
                 } else {
@@ -138,7 +142,9 @@ fun AccountScreen(
                         viewModel.action(AccountUiEvent.UpdateVerificationCode(code))
                     },
                     timeRemaining = timeRemaining,
-                    onResendCode = { timeRemaining = 167 },
+                    onShowCode = {
+                        viewModel.action(AccountUiEvent.UpdateShowCode(true))
+                    },
                 )
             }
         }
@@ -149,6 +155,15 @@ fun AccountScreen(
             message = errorMessage,
             onDismiss = {
                 errorMessage = ""
+            }
+        )
+    }
+
+    if (showCodeMessage.isNotEmpty()) {
+        CodePopUp(
+            code = showCodeMessage,
+            onDismiss = {
+                viewModel.action(AccountUiEvent.UpdateShowCode(false))
             }
         )
     }

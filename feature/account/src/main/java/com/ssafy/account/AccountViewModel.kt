@@ -34,6 +34,9 @@ class AccountViewModel @Inject constructor(
     private val _verificationCode = MutableStateFlow(listOf("", "", "", ""))
     val verificationCode = _verificationCode.asStateFlow()
 
+    private val _showCodeMessage = MutableStateFlow("")
+    val showCodeMessage = _showCodeMessage.asStateFlow()
+
     private var code = ""
 
     fun action(event: AccountUiEvent) {
@@ -57,6 +60,14 @@ class AccountViewModel @Inject constructor(
 
             is AccountUiEvent.UpdateVerificationCode -> {
                 _verificationCode.value = event.verificationCode
+            }
+
+            is AccountUiEvent.UpdateShowCode -> {
+                _showCodeMessage.value = if (event.showCode) {
+                    code
+                } else {
+                    ""
+                }
             }
         }
     }
