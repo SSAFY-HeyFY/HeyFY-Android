@@ -7,7 +7,7 @@ data class HomeResponse(
 ) {
     data class Account(
         val accountNo: String,
-        val balance: Long,
+        val balance: String,
         val currency: String,
     )
 }

@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,13 +32,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ssafy.common.text.CurrencyVisualTransformation
-import com.ssafy.common.text.TextFormat.formatCurrencyKRW
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
-internal fun TransferAmountSection(
+internal fun TransferAmountForeignerSection(
     transferAmount: String,
-    balance: Long,
+    balance: Double,
     currency: String,
     showInsufficientBalanceError: Boolean,
     updateShowInsufficientBalanceError: (Boolean) -> Unit,
@@ -70,8 +68,8 @@ internal fun TransferAmountSection(
 
             if (showInsufficientBalanceError) {
                 Text(
-                    text = "Insufficient Balance \n[Available Balance: ₩ ${
-                        formatCurrencyKRW(balance)
+                    text = "Insufficient Balance \n[Available Balance: $ ${
+                        String.format("%,.2f", balance)
                     }]",
                     style = HeyFYTheme.typography.bodyM,
                     color = Color(0xFFDC2626),
@@ -112,19 +110,19 @@ internal fun TransferAmountSection(
                         }
                     }
 
-                    val numericValue = value.toLong()
+                    val numericValue = cleanValue.toDoubleOrNull() ?: 0.0
 
                     if (numericValue > balance) {
                         updateShowInsufficientBalanceError(true)
                     } else {
-                        onAmountChange(value)
+                        onAmountChange(cleanValue)
                     }
                 },
 
                 visualTransformation = CurrencyVisualTransformation(currency),
                 placeholder = {
                     Text(
-                        text = "₩ 0",
+                        text = "$ 0.00",
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFADAEBC),
@@ -136,7 +134,7 @@ internal fun TransferAmountSection(
                     .fillMaxWidth()
                     .height(80.dp)
                     .focusRequester(transferAmountFocusRequester),
-                textStyle = TextStyle(
+                textStyle = androidx.compose.ui.text.TextStyle(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF111827),
@@ -175,24 +173,30 @@ internal fun TransferAmountSection(
                 )
 
                 QuickAmountButton(
-                    text = "₩10,000",
+                    text = "$10",
                     onClick = {
-                        val currentAmount = transferAmount.toIntOrNull() ?: 0
-                        val newAmount = currentAmount + 10000
+                        val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
+                        val newAmount = currentAmount + 10.0
                         if (newAmount <= balance) {
-                            onAmountChange(newAmount.toString())
+                            onAmountChange(
+                                if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
+                                    .toString() else String.format("%.2f", newAmount)
+                            )
                         } else {
                             updateShowInsufficientBalanceError(true)
                         }
                     }
                 )
                 QuickAmountButton(
-                    text = "₩50,000",
+                    text = "$50",
                     onClick = {
-                        val currentAmount = transferAmount.toIntOrNull() ?: 0
-                        val newAmount = currentAmount + 50000
+                        val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
+                        val newAmount = currentAmount + 50.0
                         if (newAmount <= balance) {
-                            onAmountChange(newAmount.toString())
+                            onAmountChange(
+                                if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
+                                    .toString() else String.format("%.2f", newAmount)
+                            )
                         } else {
                             updateShowInsufficientBalanceError(true)
                         }
@@ -201,12 +205,15 @@ internal fun TransferAmountSection(
 
 
                 QuickAmountButton(
-                    text = "₩100,000",
+                    text = "$100",
                     onClick = {
-                        val currentAmount = transferAmount.toIntOrNull() ?: 0
-                        val newAmount = currentAmount + 100000
+                        val currentAmount = transferAmount.toDoubleOrNull() ?: 0.0
+                        val newAmount = currentAmount + 100.0
                         if (newAmount <= balance) {
-                            onAmountChange(newAmount.toString())
+                            onAmountChange(
+                                if (newAmount == newAmount.toInt().toDouble()) newAmount.toInt()
+                                    .toString() else String.format("%.2f", newAmount)
+                            )
                         } else {
                             updateShowInsufficientBalanceError(true)
                         }

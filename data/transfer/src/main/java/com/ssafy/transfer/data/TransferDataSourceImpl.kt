@@ -11,11 +11,13 @@ class TransferDataSourceImpl @Inject constructor(
 ) : TransferDataSource {
     override suspend fun transferDomestic(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Response<TransferResponse> {
         return transferApi.transferDomestic(
             TransferRequest(
                 depositAccountNo = depositAccountNo,
+                transactionSummary = transactionSummary,
                 amount = amount,
             )
         )
@@ -23,11 +25,13 @@ class TransferDataSourceImpl @Inject constructor(
 
     override suspend fun transferForeign(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Response<TransferResponse> {
         return transferApi.transferForeign(
             TransferRequest(
                 depositAccountNo = depositAccountNo,
+                transactionSummary = transactionSummary,
                 amount = amount,
             )
         )

@@ -25,8 +25,8 @@ object TextFormat {
      * 숫자에 콤마(,) 추가
      * 예: 1227000 -> "1,227,000"
      */
-    fun formatCurrencyKRW(balance: Double): String {
-        return String.format("%,.0f", balance)
+    fun formatCurrencyKRW(balance: Long): String {
+        return String.format("%,d", balance)
     }
 
     fun formatCurrencyUSD(balance: Double): String {

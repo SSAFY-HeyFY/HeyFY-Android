@@ -6,11 +6,13 @@ import retrofit2.Response
 interface TransferDataSource {
     suspend fun transferDomestic(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Response<TransferResponse>
 
     suspend fun transferForeign(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Response<TransferResponse>
 }

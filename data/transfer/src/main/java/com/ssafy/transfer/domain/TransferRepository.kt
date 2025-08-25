@@ -4,12 +4,14 @@ interface TransferRepository {
 
     suspend fun transferDomestic(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Result<Boolean>
 
 
     suspend fun transferForeign(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Result<Boolean>
 }

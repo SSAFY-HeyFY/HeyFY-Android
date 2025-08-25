@@ -32,7 +32,8 @@ internal fun AccountCard(
     modifier: Modifier = Modifier,
     isFX: Boolean,
     account: String,
-    currency: Double,
+    currencyN: Long = 0L,
+    currencyF: Double = 0.0,
     goToSendMoney: () -> Unit = {},
     goToExchange: () -> Unit = {},
     goToTransaction: () -> Unit = {},
@@ -83,9 +84,9 @@ internal fun AccountCard(
 
             AutoSizeText(
                 text = if (isFX) {
-                    "$ ${formatCurrencyUSD(currency)}"
+                    "$ ${formatCurrencyUSD(currencyF)}"
                 } else {
-                    "₩ ${formatCurrencyKRW(currency)}"
+                    "₩ ${formatCurrencyKRW(currencyN)}"
                 },
                 style = HeyFYTheme.typography.displayL,
                 color = Color.White,
@@ -150,7 +151,8 @@ private fun AccountCardKRWPreview() {
             modifier = Modifier.padding(16.dp),
             isFX = false,
             account = "1031243441238400",
-            currency = 122700012.2700012
+            currencyN = 1227000,
+            currencyF = 122700012.2700012
         )
     }
 }
@@ -167,7 +169,8 @@ private fun AccountCardFXPreview() {
             modifier = Modifier.padding(16.dp),
             isFX = true,
             account = "1031243441238400",
-            currency = 1227000122.700012
+            currencyN = 1227000,
+            currencyF = 1227000122.700012
         )
     }
 }

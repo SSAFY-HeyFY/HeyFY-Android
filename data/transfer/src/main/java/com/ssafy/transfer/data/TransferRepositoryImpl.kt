@@ -10,13 +10,15 @@ class TransferRepositoryImpl @Inject constructor(
 
     override suspend fun transferDomestic(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Result<Boolean> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferDomestic(
-                    depositAccountNo,
-                    amount
+                    depositAccountNo = depositAccountNo,
+                    transactionSummary = transactionSummary,
+                    amount = amount
                 )
             },
             convert = { it.success }
@@ -25,13 +27,15 @@ class TransferRepositoryImpl @Inject constructor(
 
     override suspend fun transferForeign(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Result<Boolean> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferForeign(
-                    depositAccountNo,
-                    amount
+                    depositAccountNo = depositAccountNo,
+                    transactionSummary = transactionSummary,
+                    amount = amount,
                 )
             },
             convert = { it.success }

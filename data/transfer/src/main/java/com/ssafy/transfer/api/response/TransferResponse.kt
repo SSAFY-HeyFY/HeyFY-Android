@@ -8,7 +8,7 @@ data class TransferResponse(
     data class History(
         val fromAccountMasked: String,
         val toAccountMasked: String,
-        val amount: Int,
+        val amount: String,
         val currency: String,
         val completedAt: String,
     )

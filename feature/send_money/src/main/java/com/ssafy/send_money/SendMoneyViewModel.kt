@@ -30,14 +30,26 @@ class SendMoneyViewModel @Inject constructor(
     val isFXAccount = (savedStateHandle.get<String>(DestinationParamConstants.SEND_MONEY_TYPE)
         ?: "") == DestinationParamConstants.FX_ACCOUNT
 
+    private val _uiState = MutableStateFlow<SendMoneyUiState>(SendMoneyUiState.Init)
+    val uiState = _uiState.asStateFlow()
+
     private val _account = MutableStateFlow("")
     val account = _account.asStateFlow()
 
-    private val _balance = MutableStateFlow(0.0)
-    val balance = _balance.asStateFlow()
+    private val _balanceF = MutableStateFlow(0.0)
+    val balanceF = _balanceF.asStateFlow()
 
-    private val _uiState = MutableStateFlow<SendMoneyUiState>(SendMoneyUiState.Init)
-    val uiState = _uiState.asStateFlow()
+    private val _balanceN = MutableStateFlow(0L)
+    val balanceN = _balanceN.asStateFlow()
+
+    private val _depositAccountNo = MutableStateFlow("")
+    val depositAccountNo = _depositAccountNo.asStateFlow()
+
+    private val _transferNote = MutableStateFlow("")
+    val transferNote = _transferNote.asStateFlow()
+
+    private val _transferAmount = MutableStateFlow("")
+    val transferAmount = _transferAmount.asStateFlow()
 
     fun action(event: SendMoneyUiEvent) {
         when (event) {
@@ -47,18 +59,21 @@ class SendMoneyViewModel @Inject constructor(
 
             is SendMoneyUiEvent.ClickTransfer -> {
                 if (isFXAccount) {
-                    transferForeigner(
-                        depositAccountNo = event.depositAccountNo,
-                        amount = event.amount
-                    )
+                    transferForeigner()
                 } else {
-                    transferDomestic(
-                        depositAccountNo = event.depositAccountNo,
-                        amount = event.amount
-                    )
+                    transferDomestic()
                 }
             }
 
+            is SendMoneyUiEvent.UpdateTransferNote -> {
+                _transferNote.value = event.note
+            }
+            is SendMoneyUiEvent.UpdateTransferAmount -> {
+                _transferAmount.value = event.amount
+            }
+            is SendMoneyUiEvent.UpdateDepositAccountNo -> {
+                _depositAccountNo.value = event.accountNo
+            }
             SendMoneyUiEvent.ClickBack -> back()
         }
     }
@@ -69,40 +84,38 @@ class SendMoneyViewModel @Inject constructor(
             fetchHomeUseCase().onSuccess {
                 if(isFXAccount) {
                     _account.value = it.foreignAccount.accountNo
-                    _balance.value = it.foreignAccount.balance
+                    _balanceF.value = it.foreignAccount.balance
                 } else {
                     _account.value = it.normalAccount.accountNo
-                    _balance.value = it.normalAccount.balance
+                    _balanceN.value = it.normalAccount.balance
                 }
                 updateUiState(SendMoneyUiState.Success)
             }.onFailure(::handleFailure)
         }
     }
 
-    private fun transferDomestic(
-        depositAccountNo: String,
-        amount: Int,
-    ) {
+    private fun transferDomestic() {
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferDomesticUseCase(
-                depositAccountNo = depositAccountNo,
-                amount = amount
+                // depositAccountNo = depositAccountNo.value,
+                depositAccountNo = "0014084444636603",
+                transactionSummary = transferNote.value,
+                amount = transferAmount.value,
             ).onSuccess {
                 goToSuccess()
             }.onFailure(::handleFailure)
         }
     }
 
-    private fun transferForeigner(
-        depositAccountNo: String,
-        amount: Int,
-    ) {
+    private fun transferForeigner() {
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferForeignerUseCase(
-                depositAccountNo = depositAccountNo,
-                amount = amount
+                // depositAccountNo = depositAccountNo.value,
+                depositAccountNo = "0014433880825658",
+                transactionSummary = transferNote.value,
+                amount = transferAmount.value,
             ).onSuccess {
                 goToSuccess()
             }.onFailure(::handleFailure)

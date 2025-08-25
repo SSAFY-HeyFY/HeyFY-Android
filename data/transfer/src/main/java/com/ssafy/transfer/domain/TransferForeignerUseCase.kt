@@ -7,11 +7,9 @@ class TransferForeignerUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         depositAccountNo: String,
-        amount: Int,
+        transactionSummary: String,
+        amount: String,
     ): Result<Boolean> {
-        return transferRepository.transferForeign(
-            depositAccountNo,
-            amount
-        )
+        return transferRepository.transferForeign(depositAccountNo, transactionSummary, amount)
     }
 }

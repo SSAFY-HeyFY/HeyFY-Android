@@ -2,12 +2,18 @@ package com.ssafy.home.domain.model
 
 data class Home(
     val studentId: String,
-    val normalAccount: Account,
-    val foreignAccount: Account,
+    val normalAccount: NAccount,
+    val foreignAccount: FAccount,
 ) {
-    data class Account(
+    data class FAccount(
         val accountNo: String = "",
         val balance: Double = 0.0,
+        val currency: String = "",
+    )
+
+    data class NAccount(
+        val accountNo: String = "",
+        val balance: Long = 0L,
         val currency: String = "",
     )
 }

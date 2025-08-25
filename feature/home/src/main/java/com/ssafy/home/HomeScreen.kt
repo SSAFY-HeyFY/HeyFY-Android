@@ -101,8 +101,8 @@ fun HomeScreen(
 private fun HomeContent(
     modifier: Modifier = Modifier,
     studentId: String,
-    normalAccount: Home.Account,
-    foreignAccount: Home.Account,
+    normalAccount: Home.NAccount,
+    foreignAccount: Home.FAccount,
     goToCardDetail: () -> Unit = {},
     goToSendMoney: (type: String) -> Unit = {},
     goToTransaction: () -> Unit = {},

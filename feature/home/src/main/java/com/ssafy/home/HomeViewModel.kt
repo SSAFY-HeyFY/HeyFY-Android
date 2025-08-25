@@ -26,10 +26,10 @@ class HomeViewModel @Inject constructor(
     private val _studentId = MutableStateFlow("")
     val studentId = _studentId.asStateFlow()
 
-    private val _normalAccount = MutableStateFlow(Home.Account())
+    private val _normalAccount = MutableStateFlow(Home.NAccount())
     val normalAccount = _normalAccount.asStateFlow()
 
-    private val _foreignAccount = MutableStateFlow(Home.Account())
+    private val _foreignAccount = MutableStateFlow(Home.FAccount())
     val foreignAccount = _foreignAccount.asStateFlow()
 
     fun action(event: HomeUiEvent) {

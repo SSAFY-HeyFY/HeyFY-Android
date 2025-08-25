@@ -21,7 +21,7 @@ import com.ssafy.common.ui.AutoSizeText
 
 @Composable
 internal fun MyAccountSection(
-    balance: Double,
+    balance: String,
     account: String,
     currency: String,
 ) {
@@ -58,8 +58,8 @@ internal fun MyAccountSection(
 
             AutoSizeText(
                 text = when (currency) {
-                    "KRW" -> "₩ ${formatCurrencyKRW(balance)}"
-                    else -> "$ ${formatCurrencyUSD(balance)}"
+                    "KRW" -> "₩ $balance"
+                    else -> "$ $balance"
                 },
                 style = HeyFYTheme.typography.headlineL,
                 color = Color(0xFF111827),

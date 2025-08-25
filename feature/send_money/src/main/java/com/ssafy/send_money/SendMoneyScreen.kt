@@ -27,6 +27,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ssafy.common.text.TextFormat.formatCurrencyKRW
+import com.ssafy.common.text.TextFormat.formatCurrencyUSD
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.PasswordBottomSheet
@@ -42,13 +44,13 @@ fun SendMoneyScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val account by viewModel.account.collectAsStateWithLifecycle()
-    val balance by viewModel.balance.collectAsStateWithLifecycle()
+    val balanceF by viewModel.balanceF.collectAsStateWithLifecycle()
+    val balanceN by viewModel.balanceN.collectAsStateWithLifecycle()
+    val accountNumber by viewModel.depositAccountNo.collectAsStateWithLifecycle()
+    val transferNote by viewModel.transferNote.collectAsStateWithLifecycle()
+    val transferAmount by viewModel.transferAmount.collectAsStateWithLifecycle()
 
     val isFxAccount = viewModel.isFXAccount
-
-    var transferNote by remember { mutableStateOf("") }
-    var accountNumber by remember { mutableStateOf("") }
-    var transferAmount by remember { mutableStateOf("") }
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
@@ -98,12 +100,7 @@ fun SendMoneyScreen(
             showPasswordBottomSheet = false
             password = ""
             isPasswordError = false
-            viewModel.action(
-                SendMoneyUiEvent.ClickTransfer(
-                    depositAccountNo = account,
-                    amount = transferAmount.toInt()
-                )
-            )
+            viewModel.action(SendMoneyUiEvent.ClickTransfer)
         } else {
             isPasswordError = true
         }
@@ -138,35 +135,63 @@ fun SendMoneyScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
+            val balance =
+                if (isFxAccount) formatCurrencyUSD(balanceF) else formatCurrencyKRW(balanceN)
+
             MyAccountSection(
-                balance = balance.toDouble(),
+                balance = balance,
                 account = account,
                 currency = currency,
             )
 
             RecipientAccountSection(
                 memo = transferNote,
-                updateMemo = { transferNote = it },
+                updateMemo = {
+                    viewModel.action(SendMoneyUiEvent.UpdateTransferNote(it))
+                },
                 accountNumber = accountNumber,
-                onAccountNumberChange = { accountNumber = it },
+                onAccountNumberChange = {
+                    viewModel.action(SendMoneyUiEvent.UpdateDepositAccountNo(it))
+                },
                 memoFocusRequester = memoFocusRequester,
                 accountNumberFocusRequester = accountNumberFocusRequester,
                 onMemoNext = { accountNumberFocusRequester.requestFocus() },
                 onAccountNumberNext = { transferAmountFocusRequester.requestFocus() }
             )
 
-            TransferAmountSection(
-                transferAmount = transferAmount,
-                maxBalance = balance.toDouble(),
-                currency = currency,
-                showInsufficientBalanceError = showInsufficientBalanceError,
-                updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
-                onAmountChange = { transferAmount = it },
-                transferAmountFocusRequester = transferAmountFocusRequester,
-                onAmountDone = {
-                    focusManager.clearFocus()
-                }
-            )
+            if (isFxAccount) {
+                TransferAmountForeignerSection(
+                    transferAmount = transferAmount,
+                    balance = balanceF,
+                    currency = currency,
+                    showInsufficientBalanceError = showInsufficientBalanceError,
+                    updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
+                    onAmountChange = {
+                        viewModel.action(SendMoneyUiEvent.UpdateTransferAmount(it))
+                    },
+                    transferAmountFocusRequester = transferAmountFocusRequester,
+                    onAmountDone = {
+                        focusManager.clearFocus()
+                    }
+                )
+            } else {
+                TransferAmountSection(
+                    transferAmount = transferAmount,
+                    balance = balanceN,
+                    currency = currency,
+                    showInsufficientBalanceError = showInsufficientBalanceError,
+                    updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
+                    onAmountChange = {
+                        viewModel.action(SendMoneyUiEvent.UpdateTransferAmount(it))
+                    },
+                    transferAmountFocusRequester = transferAmountFocusRequester,
+                    onAmountDone = {
+                        focusManager.clearFocus()
+                    }
+                )
+            }
+
+
 
             TransferSummarySection(transferAmount = transferAmount, currency = currency)
 

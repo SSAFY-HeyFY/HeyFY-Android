@@ -23,13 +23,21 @@ class HomeRepositoryImpl @Inject constructor(
     private fun HomeResponse.toHome(): Home {
         return Home(
             studentId = studentId,
-            normalAccount = normalAccount.toAccount(),
-            foreignAccount = foreignAccount.toAccount(),
+            normalAccount = normalAccount.toNAccount(),
+            foreignAccount = foreignAccount.toFAccount(),
         )
     }
 
-    private fun HomeResponse.Account.toAccount(): Home.Account {
-        return Home.Account(
+    private fun HomeResponse.Account.toNAccount(): Home.NAccount {
+        return Home.NAccount(
+            accountNo = accountNo,
+            balance = balance.toLong(),
+            currency = currency,
+        )
+    }
+
+    private fun HomeResponse.Account.toFAccount(): Home.FAccount {
+        return Home.FAccount(
             accountNo = accountNo,
             balance = balance.toDouble(),
             currency = currency,
