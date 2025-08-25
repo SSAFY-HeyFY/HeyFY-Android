@@ -39,5 +39,6 @@ data class ExchangeRateCurrent(
         val currency: String = "",
         val date: String = "",
         val exchangeRate: Double = 0.0,
+        val fluctuationRate: Double = 0.0,
     )
 }

@@ -19,9 +19,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.ssafy.common.R as commonR
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.finance.domain.model.ExchangeRateCurrent
+import com.ssafy.common.R as commonR
 
 @Composable
 internal fun CurrencySection(
@@ -36,7 +36,7 @@ internal fun CurrencySection(
             modifier = Modifier.weight(1f),
             currency = "USD",
             amount = current.usd.exchangeRate.toString(),
-            change = "+0.8%",
+            change = current.usd.fluctuationRate.toString(),
             isPositive = true
         )
 
@@ -44,7 +44,7 @@ internal fun CurrencySection(
             modifier = Modifier.weight(1f),
             currency = "CNY",
             amount = current.cny.exchangeRate.toString(),
-            change = "-1.2%",
+            change = current.cny.fluctuationRate.toString(),
             isPositive = false
         )
 
@@ -52,7 +52,7 @@ internal fun CurrencySection(
             modifier = Modifier.weight(1f),
             currency = "VND",
             amount = current.vnd.exchangeRate.toString(),
-            change = "+0.8%",
+            change = current.vnd.fluctuationRate.toString(),
             isPositive = true
         )
     }

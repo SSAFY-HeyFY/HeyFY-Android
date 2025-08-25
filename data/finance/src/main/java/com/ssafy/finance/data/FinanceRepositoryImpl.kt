@@ -84,17 +84,20 @@ class FinanceRepositoryImpl @Inject constructor(
             usd = ExchangeRateCurrent.ExchangeRate(
                 currency = usd.currency,
                 date = usd.date,
-                exchangeRate = usd.exchangeRate
+                exchangeRate = usd.exchangeRate,
+                fluctuationRate = usd.fluctuationRate,
             ),
             cny = ExchangeRateCurrent.ExchangeRate(
                 currency = cny.currency,
                 date = cny.date,
-                exchangeRate = cny.exchangeRate
+                exchangeRate = cny.exchangeRate,
+                fluctuationRate = usd.fluctuationRate,
             ),
             vnd = ExchangeRateCurrent.ExchangeRate(
                 currency = vnd?.currency ?: "",
                 date = vnd?.date ?: "",
-                exchangeRate = vnd?.exchangeRate ?: 0.0
+                exchangeRate = vnd?.exchangeRate ?: 0.0,
+                fluctuationRate = vnd?.fluctuationRate ?: 0.0,
             )
         )
     }
