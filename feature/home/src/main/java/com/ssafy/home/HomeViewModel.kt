@@ -58,8 +58,8 @@ class HomeViewModel @Inject constructor(
                 goToTips()
             }
 
-            HomeUiEvent.ClickTransaction -> {
-                goToTransaction()
+            is HomeUiEvent.ClickTransaction -> {
+                goToTransaction(event.type)
             }
         }
     }
@@ -93,10 +93,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun goToTransaction() {
+    private fun goToTransaction(type: String) {
         viewModelScope.launch {
             navigator.navigateTo(
-                route = Destination.Transaction(),
+                route = Destination.Transaction(type),
             )
         }
     }

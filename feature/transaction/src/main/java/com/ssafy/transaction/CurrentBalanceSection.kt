@@ -14,11 +14,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ssafy.common.text.TextFormat.formatAccountNumber
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
 internal fun CurrentBalanceSection(
-    balance: Double,
+    balance: String,
     accountNumber: String,
 ) {
     Column(
@@ -37,7 +38,7 @@ internal fun CurrentBalanceSection(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "$${String.format("%,.2f", balance)}",
+            text = balance,
             fontSize = 30.sp,
             fontWeight = FontWeight.Normal,
             color = Color(0xFF000000),
@@ -47,8 +48,8 @@ internal fun CurrentBalanceSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = accountNumber,
-            style = HeyFYTheme.typography.bodyM,
+            text = formatAccountNumber(accountNumber),
+            style = HeyFYTheme.typography.bodyL,
             color = Color(0xFF000000),
             textAlign = TextAlign.Center
         )

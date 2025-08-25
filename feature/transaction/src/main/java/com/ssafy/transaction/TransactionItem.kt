@@ -24,12 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ssafy.account.domain.model.TransactionHistory
+import com.ssafy.common.text.TextFormat
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.R as commonR
 
 @Composable
 internal fun TransactionItem(
-    transaction: Transaction
+    transaction: TransactionHistory.Item,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -80,14 +82,14 @@ internal fun TransactionItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = transaction.date,
+                    text = TextFormat.formatDateEnglish(transaction.date),
                     style = HeyFYTheme.typography.bodyS,
                     color = Color(0xFF6B7280)
                 )
             }
 
             Text(
-                text = "${if (transaction.isIncome) "+" else "-"}$${String.format("%.2f", transaction.amount)}",
+                text = "${if (transaction.isIncome) "+" else "-"} ${transaction.amount}",
                 style = HeyFYTheme.typography.bodyM,
                 color = if (transaction.isIncome) Color(0xFF16A34A) else Color(0xFFDC2626),
                 fontWeight = FontWeight.Normal

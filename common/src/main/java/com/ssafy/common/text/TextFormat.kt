@@ -1,8 +1,5 @@
 package com.ssafy.common.text
 
-import java.text.NumberFormat
-import java.util.Locale
-
 object TextFormat {
     /**
      * 16자리 계좌번호를 3-3-4-4-2 형식으로 포맷팅
@@ -31,5 +28,31 @@ object TextFormat {
 
     fun formatCurrencyUSD(balance: Double): String {
         return String.format("%,.2f", balance)
+    }
+
+    /**
+     * 날짜를 영어 표기법으로 포맷팅
+     * 예: "20250825" -> "Aug 25, 2025"
+     */
+    fun formatDateEnglish(dateString: String): String {
+        return try {
+            if (dateString.length == 8) {
+                val year = dateString.substring(0, 4)
+                val month = dateString.substring(4, 6).toInt()
+                val day = dateString.substring(6, 8).toInt()
+                
+                val monthNames = listOf(
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                )
+                
+                val monthName = monthNames.getOrNull(month - 1) ?: "Unknown"
+                "$monthName $day, $year"
+            } else {
+                dateString
+            }
+        } catch (e: Exception) {
+            dateString
+        }
     }
 }

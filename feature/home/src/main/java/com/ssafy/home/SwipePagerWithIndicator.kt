@@ -33,7 +33,7 @@ internal fun SwipePagerWithIndicator(
     normalAccount: Home.NAccount,
     foreignAccount: Home.FAccount,
     goToSendMoney: (type: String) -> Unit = {},
-    goToTransaction: () -> Unit = {},
+    goToTransaction: (type: String) -> Unit = {},
     goToExchange: () -> Unit = {},
 ) {
     val pageCount = 3
@@ -74,8 +74,8 @@ internal fun SwipePagerWithIndicator(
                     isFX = normalAccount.currency != "KRW",
                     account = normalAccount.accountNo,
                     currencyN = normalAccount.balance,
-                    goToSendMoney = { goToSendMoney(ACCOUNT) } ,
-                    goToTransaction = goToTransaction,
+                    goToSendMoney = { goToSendMoney(ACCOUNT) },
+                    goToTransaction = { goToTransaction(ACCOUNT) },
                     goToExchange = goToExchange,
                 )
 
@@ -85,7 +85,7 @@ internal fun SwipePagerWithIndicator(
                     account = foreignAccount.accountNo,
                     currencyF = foreignAccount.balance,
                     goToSendMoney = { goToSendMoney(FX_ACCOUNT) },
-                    goToTransaction = goToTransaction,
+                    goToTransaction = { goToTransaction(FX_ACCOUNT) },
                     goToExchange = goToExchange,
                 )
             }

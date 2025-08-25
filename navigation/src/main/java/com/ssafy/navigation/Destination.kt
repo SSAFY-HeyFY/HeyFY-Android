@@ -2,6 +2,7 @@ package com.ssafy.navigation
 
 import com.ssafy.navigation.DestinationParamConstants.MENTO_CLUB_TYPE
 import com.ssafy.navigation.DestinationParamConstants.SEND_MONEY_TYPE
+import com.ssafy.navigation.DestinationParamConstants.TRANSACTION_TYPE
 import com.ssafy.navigation.DestinationType.ACCOUNT
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.EXCHANGE
@@ -40,7 +41,9 @@ sealed class Destination(protected val route: String, vararg params: String) {
         operator fun invoke(type: String): String = route.appendParams(SEND_MONEY_TYPE to type)
     }
 
-    data object Transaction : NoArgumentsDestination(TRANSACTION)
+    data object Transaction : Destination(TRANSACTION, TRANSACTION_TYPE) {
+        operator fun invoke(type: String): String = route.appendParams(TRANSACTION_TYPE to type)
+    }
 
     data object MentoClub : Destination(MENTO_CLUB, MENTO_CLUB_TYPE) {
         operator fun invoke(type: String): String = route.appendParams(MENTO_CLUB_TYPE to type)

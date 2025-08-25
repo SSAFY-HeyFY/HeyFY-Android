@@ -5,15 +5,10 @@ data class TransactionHistory(
     val list: List<Item>
 ) {
     data class Item(
-        val transactionUniqueNo: String,
-        val transactionDate: String,
-        val transactionTime: String,
-        val transactionType: String,
-        val transactionTypeName: String,
-        val transactionAccountNo: String,
-        val transactionBalance: String,
-        val transactionAfterBalance: String,
-        val transactionSummary: String,
-        val transactionMemo: String
+        val id: String,
+        val title: String,
+        val date: String,
+        val amount: String,
+        val isIncome: Boolean,
     )
 }

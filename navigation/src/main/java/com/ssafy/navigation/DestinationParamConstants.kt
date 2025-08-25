@@ -7,4 +7,5 @@ object DestinationParamConstants {
     const val SEND_MONEY_TYPE = "SEND_MONEY_TYPE"
     const val ACCOUNT = "ACCOUNT"
     const val FX_ACCOUNT = "FX_ACCOUNT"
+    const val TRANSACTION_TYPE = "TRANSACTION_TYPE"
 }

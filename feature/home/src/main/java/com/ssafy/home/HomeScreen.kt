@@ -72,8 +72,8 @@ fun HomeScreen(
             goToSendMoney = { type ->
                 viewModel.action(HomeUiEvent.CLickSendMoney(type))
             },
-            goToTransaction = {
-                viewModel.action(HomeUiEvent.ClickTransaction)
+            goToTransaction = { type ->
+                viewModel.action(HomeUiEvent.ClickTransaction(type))
             },
             goToMentoClub = { type ->
                 viewModel.action(HomeUiEvent.ClickMentoClub(type))
@@ -105,7 +105,7 @@ private fun HomeContent(
     foreignAccount: Home.FAccount,
     goToCardDetail: () -> Unit = {},
     goToSendMoney: (type: String) -> Unit = {},
-    goToTransaction: () -> Unit = {},
+    goToTransaction: (type: String) -> Unit = {},
     goToMentoClub: (type: String) -> Unit = {},
     goToTips: () -> Unit = {},
     goToExchange: () -> Unit = {},

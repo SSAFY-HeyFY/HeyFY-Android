@@ -9,36 +9,48 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.ui.DetailTopBar
-
-data class Transaction(
-    val id: String,
-    val title: String,
-    val date: String,
-    val amount: Double,
-    val isIncome: Boolean,
-)
+import com.ssafy.common.ui.ErrorPopUp
+import com.ssafy.transaction.model.TransactionUiEvent
+import com.ssafy.transaction.model.TransactionUiState
 
 @Composable
 fun TransactionScreen(
-    viewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>()
+    viewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>(),
 ) {
-    val currentBalance = 12847.50
-    val accountNumber = "103-12344123-24-84"
 
-    val transactions = listOf(
-        Transaction("1", "Salary Payment", "Today, 2:30 PM", 3200.00, true),
-        Transaction("2", "Amazon Purchase", "Yesterday, 4:15 PM", 89.99, false),
-        Transaction("3", "Netflix Subscription", "Dec 15, 11:00 AM", 15.99, false),
-        Transaction("4", "Starbucks Coffee", "Dec 14, 8:30 AM", 5.75, false),
-        Transaction("5", "Transfer from John", "Dec 13, 6:45 PM", 125.00, true),
-        Transaction("6", "Gas Station", "Dec 12, 3:20 PM", 45.30, false),
-        Transaction("7", "Restaurant Bill", "Dec 11, 7:15 PM", 67.80, false)
-    )
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val currentBalance by viewModel.currentBalance.collectAsStateWithLifecycle()
+    val accountNumber by viewModel.accountNumber.collectAsStateWithLifecycle()
+    val transactions by viewModel.transactions.collectAsStateWithLifecycle()
+    var errorMessage by remember { mutableStateOf("") }
+
+
+    LaunchedEffect(Unit) {
+        if (uiState is TransactionUiState.Init) {
+            viewModel.action(TransactionUiEvent.Init)
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is TransactionUiState.Error -> {
+                errorMessage = (uiState as TransactionUiState.Error).mag
+            }
+
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
@@ -69,4 +81,14 @@ fun TransactionScreen(
             }
         }
     }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                errorMessage = ""
+            }
+        )
+    }
+
 }

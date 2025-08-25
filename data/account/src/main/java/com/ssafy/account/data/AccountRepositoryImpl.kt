@@ -8,6 +8,8 @@ import com.ssafy.account.domain.AccountRepository
 import com.ssafy.account.domain.model.AccountAuth
 import com.ssafy.account.domain.model.AccountCheck
 import com.ssafy.account.domain.model.TransactionHistory
+import com.ssafy.common.text.TextFormat.formatCurrencyKRW
+import com.ssafy.common.text.TextFormat.formatCurrencyUSD
 import com.ssafy.network.utils.ApiUtils
 import javax.inject.Inject
 
@@ -52,16 +54,11 @@ class AccountRepositoryImpl @Inject constructor(
 
     private fun TransactionHistoryResponse.Item.toTransactionHistoryItem(): TransactionHistory.Item {
         return TransactionHistory.Item(
-            transactionUniqueNo = transactionUniqueNo,
-            transactionDate = transactionDate,
-            transactionTime = transactionTime,
-            transactionType = transactionType,
-            transactionTypeName = transactionTypeName,
-            transactionAccountNo = transactionAccountNo,
-            transactionBalance = transactionBalance,
-            transactionAfterBalance = transactionAfterBalance,
-            transactionSummary = transactionSummary,
-            transactionMemo = transactionMemo
+            id = transactionUniqueNo,
+            title = transactionSummary,
+            date = transactionDate,
+            isIncome = transactionType == "1",
+            amount = "₩${formatCurrencyKRW(transactionBalance.toLong())}",
         )
     }
 
@@ -74,16 +71,11 @@ class AccountRepositoryImpl @Inject constructor(
 
     private fun ForeignTransactionHistoryResponse.Item.toTransactionHistoryItem(): TransactionHistory.Item {
         return TransactionHistory.Item(
-            transactionUniqueNo = transactionUniqueNo,
-            transactionDate = transactionDate,
-            transactionTime = transactionTime,
-            transactionType = transactionType,
-            transactionTypeName = transactionTypeName,
-            transactionAccountNo = transactionAccountNo,
-            transactionBalance = transactionBalance,
-            transactionAfterBalance = transactionAfterBalance,
-            transactionSummary = transactionSummary,
-            transactionMemo = transactionMemo
+            id = transactionUniqueNo,
+            title = transactionSummary,
+            date = transactionDate,
+            isIncome = transactionType == "1",
+            amount = "$${formatCurrencyUSD(transactionBalance.toDouble())}",
         )
     }
 

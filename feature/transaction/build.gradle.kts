@@ -39,6 +39,8 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":navigation"))
+    implementation(project(":data:account"))
+    implementation(project(":data:home"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
