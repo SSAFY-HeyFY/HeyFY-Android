@@ -13,6 +13,7 @@ import com.ssafy.finance.domain.model.ExchangeRateTuition
 import com.ssafy.finance.model.FinanceUiEvent
 import com.ssafy.finance.model.FinanceUiState
 import com.ssafy.navigation.Destination
+import com.ssafy.navigation.DestinationParamConstants.ACCOUNT
 import com.ssafy.navigation.HeyFYAppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,7 +82,7 @@ class FinanceViewModel @Inject constructor(
     private fun goToExchange() {
         viewModelScope.launch {
             heyFYAppNavigator.navigateTo(
-                route = Destination.Exchange(),
+                route = Destination.Exchange(ACCOUNT),
             )
         }
     }

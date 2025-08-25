@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,22 +20,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.HeyFYPopUp
+import com.ssafy.common.ui.PasswordBottomSheet
+import com.ssafy.exchange.model.ExchangeUiEvent
+import com.ssafy.exchange.model.ExchangeUiState
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExchangeScreen(
     viewModel: ExchangeViewModel = hiltViewModel<ExchangeViewModel>(),
 ) {
-    var isShowPopUp by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val historicalAnalysis by viewModel.historicalAnalysis.collectAsStateWithLifecycle()
+    val aiPrediction by viewModel.aiPrediction.collectAsStateWithLifecycle()
+    val isUSD by viewModel.isUSD.collectAsStateWithLifecycle()
+
     var exchangeAmount by remember { mutableStateOf("") }
     val currentRate = 1347.50
+    var errorMessage by remember { mutableStateOf("") }
 
-    var showInsufficientBalanceError by remember { mutableStateOf(false) }
-    var isUSD by remember { mutableStateOf(false) }
     val receivedAmount = exchangeAmount.toDoubleOrNull()?.let {
         if (isUSD) {
             it * currentRate
@@ -42,10 +54,40 @@ fun ExchangeScreen(
         }
     } ?: 0.0
 
-    LaunchedEffect(showInsufficientBalanceError) {
-        if (showInsufficientBalanceError) {
-            delay(2000)
-            showInsufficientBalanceError = false
+    // Password
+    var showPasswordBottomSheet by remember { mutableStateOf(false) }
+    var password by remember { mutableStateOf("") }
+    var isPasswordError by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val correctPassword = "123456"
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit) {
+        if (uiState is ExchangeUiState.Init) {
+            viewModel.action(ExchangeUiEvent.Init)
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is ExchangeUiState.Error -> {
+                errorMessage = (uiState as ExchangeUiState.Error).mag
+            }
+
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(password) {
+        if (password.length < 6) return@LaunchedEffect
+        if (password == correctPassword) {
+            showPasswordBottomSheet = false
+            password = ""
+            isPasswordError = false
+            viewModel.action(ExchangeUiEvent.Exchange(exchangeAmount.toInt()))
+        } else {
+            isPasswordError = true
         }
     }
 
@@ -56,12 +98,16 @@ fun ExchangeScreen(
         topBar = {
             DetailTopBar(
                 title = "Currency Exchange",
-                onBack = { viewModel.back() }
+                onBack = { viewModel.action(ExchangeUiEvent.Back) }
             )
         },
         bottomBar = {
             ExchangeBottomBar(
-                onClick = { isShowPopUp = true }
+                isEnabled = receivedAmount > 0,
+                onClick = {
+                    keyboardController?.hide()
+                    showPasswordBottomSheet = true
+                }
             )
         },
         containerColor = Color(0xFFF9FAFB)
@@ -74,11 +120,15 @@ fun ExchangeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                HistoricalAnalysisCard()
+                HistoricalAnalysisCard(
+                    content = historicalAnalysis,
+                )
             }
 
             item {
-                AIPredictionCard()
+                AIPredictionCard(
+                    content = aiPrediction,
+                )
             }
 
             item {
@@ -87,10 +137,8 @@ fun ExchangeScreen(
                     onAmountChange = { exchangeAmount = it },
                     currentRate = currentRate,
                     receivedAmount = receivedAmount,
-                    showInsufficientBalanceError = showInsufficientBalanceError,
                     isUSD = isUSD,
-                    updateShowInsufficientBalanceError = { showInsufficientBalanceError = it },
-                    onToggleCurrency = { isUSD = !isUSD }
+                    onToggleCurrency = { viewModel.action(ExchangeUiEvent.UpdateIsUSD) }
                 )
             }
 
@@ -100,18 +148,22 @@ fun ExchangeScreen(
         }
     }
 
-    if (isShowPopUp) {
-        HeyFYPopUp(
-            onCancel = {
-                isShowPopUp = false
-            },
-            onConfirm = {
-                isShowPopUp = false
-                // TODO : 송금 완료 처리
-                viewModel.goToSuccess()
-            },
+    if (showPasswordBottomSheet) {
+        PasswordBottomSheet(
+            bottomSheetState = bottomSheetState,
+            password = password,
+            isPasswordError = isPasswordError,
+            updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
+            updatePassword = { password = it },
+            updateIsPasswordError = { isPasswordError = it }
+        )
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
             onDismiss = {
-                isShowPopUp = false
+                errorMessage = ""
             }
         )
     }

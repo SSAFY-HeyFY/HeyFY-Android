@@ -81,8 +81,8 @@ fun HomeScreen(
             goToTips = {
                 viewModel.action(HomeUiEvent.ClickTips)
             },
-            goToExchange = {
-                viewModel.action(HomeUiEvent.ClickExchange)
+            goToExchange = { type ->
+                viewModel.action(HomeUiEvent.ClickExchange(type))
             },
         )
     }
@@ -108,7 +108,7 @@ private fun HomeContent(
     goToTransaction: (type: String) -> Unit = {},
     goToMentoClub: (type: String) -> Unit = {},
     goToTips: () -> Unit = {},
-    goToExchange: () -> Unit = {},
+    goToExchange: (type: String) -> Unit = {},
 ) {
     Column(
         modifier

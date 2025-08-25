@@ -1,5 +1,6 @@
 package com.ssafy.navigation
 
+import com.ssafy.navigation.DestinationParamConstants.EXCHANGE_TYPE
 import com.ssafy.navigation.DestinationParamConstants.MENTO_CLUB_TYPE
 import com.ssafy.navigation.DestinationParamConstants.SEND_MONEY_TYPE
 import com.ssafy.navigation.DestinationParamConstants.TRANSACTION_TYPE
@@ -51,7 +52,9 @@ sealed class Destination(protected val route: String, vararg params: String) {
 
     data object Success : NoArgumentsDestination(SUCCESS)
 
-    data object Exchange : NoArgumentsDestination(EXCHANGE)
+    data object Exchange : Destination(EXCHANGE, EXCHANGE_TYPE) {
+        operator fun invoke(type: String): String = route.appendParams(EXCHANGE_TYPE to type)
+    }
 
     data object Tips : NoArgumentsDestination(TIPS)
 }

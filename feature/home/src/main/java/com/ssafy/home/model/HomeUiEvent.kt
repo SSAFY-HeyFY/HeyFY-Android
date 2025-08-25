@@ -7,5 +7,5 @@ sealed class HomeUiEvent {
     data class ClickTransaction(val type: String) : HomeUiEvent()
     data class ClickMentoClub(val type: String) : HomeUiEvent()
     data object ClickTips : HomeUiEvent()
-    data object ClickExchange : HomeUiEvent()
+    data class ClickExchange(val type: String) : HomeUiEvent()
 }

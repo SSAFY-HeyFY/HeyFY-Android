@@ -27,7 +27,9 @@ import com.ssafy.common.R as commonR
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
-internal fun HistoricalAnalysisCard() {
+internal fun HistoricalAnalysisCard(
+    content: String,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -65,7 +67,7 @@ internal fun HistoricalAnalysisCard() {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Over the past 30 days, today shows the highest exchange rate",
+                    text = content,
                     style = HeyFYTheme.typography.bodyM,
                     color = Color(0xFF6B7280),
                     lineHeight = 20.sp

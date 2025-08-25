@@ -32,6 +32,7 @@ import com.ssafy.common.text.TextFormat.formatCurrencyUSD
 import com.ssafy.common.ui.DetailTopBar
 import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.PasswordBottomSheet
+import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.send_money.model.SendMoneyUiEvent
 import com.ssafy.send_money.model.SendMoneyUiState
 import kotlinx.coroutines.delay
@@ -118,6 +119,7 @@ fun SendMoneyScreen(
             SendMoneyBottomBar(
                 isEnabled = accountNumber.isNotEmpty() && transferAmount.isNotEmpty(),
                 onContinue = {
+                    keyboardController?.hide()
                     showPasswordBottomSheet = true
                 }
             )

@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -41,9 +40,7 @@ internal fun ExchangeMainCard(
     onAmountChange: (String) -> Unit,
     currentRate: Double,
     receivedAmount: Double,
-    showInsufficientBalanceError: Boolean,
     isUSD: Boolean,
-    updateShowInsufficientBalanceError: (Boolean) -> Unit,
     onToggleCurrency: () -> Unit = {},
 ) {
     Card(
@@ -66,10 +63,8 @@ internal fun ExchangeMainCard(
                 exchangeAmount = exchangeAmount,
                 onAmountChange = onAmountChange,
                 receivedAmount = receivedAmount,
-                showInsufficientBalanceError = showInsufficientBalanceError,
                 isUSD = isUSD,
                 onToggleCurrency = onToggleCurrency,
-                updateShowInsufficientBalanceError = updateShowInsufficientBalanceError,
             )
 
             ExchangeDetailsSection(receivedAmount = receivedAmount, isUSD = isUSD)
@@ -169,11 +164,8 @@ private fun AmountInputSection(
     exchangeAmount: String,
     onAmountChange: (String) -> Unit,
     receivedAmount: Double,
-    showInsufficientBalanceError: Boolean,
     isUSD: Boolean,
-    onToggleCurrency : () -> Unit,
-    updateShowInsufficientBalanceError: (Boolean) -> Unit,
-    maxBalance: Float = 12450.5f,
+    onToggleCurrency: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -189,81 +181,39 @@ private fun AmountInputSection(
             )
 
             OutlinedTextField(
-                value = exchangeAmount,
-                onValueChange = { value ->
-                    if (value.isEmpty()) {
-                        onAmountChange(value)
-                        return@OutlinedTextField
-                    }
-
-                    if (!value.matches(Regex("^\\d*\\.?\\d{0,2}$"))) {
-                        return@OutlinedTextField
-                    }
-
-                    val numericValue = value.toDoubleOrNull() ?: 0.0
-
-                    if (numericValue > maxBalance) {
-                        updateShowInsufficientBalanceError(true)
-                    } else {
-                        onAmountChange(value)
-                    }
+                value = if (isUSD) {
+                    "₩ ${String.format("%,.0f", receivedAmount)}"
+                } else {
+                    "$ ${String.format("%,.2f", receivedAmount)}"
                 },
-                visualTransformation = CurrencyVisualTransformation(if (isUSD) "USD" else "KRW"),
+                onValueChange = { },
                 modifier = Modifier.fillMaxWidth(),
+                readOnly = true,
                 textStyle = HeyFYTheme.typography.labelL.copy(
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
                 ),
                 suffix = {
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 4.dp),
-                        text = if (isUSD) "USD" else "KRW",
+                        text = if (isUSD) "KRW" else "USD",
                         style = HeyFYTheme.typography.bodyL,
                         color = Color(0xFF6B7280)
                     )
                 },
-                placeholder = {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        text = if (isUSD) "0.00" else "0",
-                        style = HeyFYTheme.typography.bodyL.copy(
-                            textAlign = TextAlign.End,
-                        ),
-                        color = Color(0xFF6B7280)
-                    )
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF6B7280),
                     unfocusedBorderColor = Color(0xFF6B7280),
                     focusedContainerColor = Color(0xFFF9FAFB),
-                    unfocusedContainerColor = Color(0xFFF9FAFB)
+                    unfocusedContainerColor = Color(0xFFF9FAFB),
+                    cursorColor = Color(0xFF9333EA),
                 ),
+                singleLine = true,
+
                 shape = RoundedCornerShape(8.dp)
             )
         }
-
-        val textColor = if (showInsufficientBalanceError) {
-            Color(0xFFDC2626)
-        } else {
-            Color(0xFF000000)
-        }
-
-        val balanceText = if (isUSD) {
-            "Amount Available for Exchange : $${String.format("%,.2f", maxBalance)} USD"
-        } else {
-            val krwBalance = maxBalance * 1300 // TODO : 예시 환율 1300 -> 실제 금액으로 반영
-            "Amount Available for Exchange : ₩${String.format("%,.0f", krwBalance)} KRW"
-        }
-
-        Text(
-            text = balanceText,
-            style = HeyFYTheme.typography.bodyS,
-            color = textColor,
-            textAlign = TextAlign.End,
-            modifier = Modifier.fillMaxWidth()
-        )
 
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -297,14 +247,17 @@ private fun AmountInputSection(
             )
 
             OutlinedTextField(
-                value = if (isUSD) {
-                    String.format("%,.0f", receivedAmount)
-                } else {
-                    String.format("%,.2f", receivedAmount)
+                value = exchangeAmount,
+                onValueChange = { value ->
+                    if (value.isEmpty()) {
+                        onAmountChange(value)
+                        return@OutlinedTextField
+                    }
+
+                    onAmountChange(value)
                 },
-                onValueChange = { },
+                visualTransformation = CurrencyVisualTransformation(if (isUSD) "USD" else "KRW"),
                 modifier = Modifier.fillMaxWidth(),
-                readOnly = true,
                 textStyle = HeyFYTheme.typography.labelL.copy(
                     textAlign = TextAlign.End,
                     color = Color(0xFF9333EA)
@@ -313,17 +266,31 @@ private fun AmountInputSection(
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 4.dp),
-                        text = if (isUSD) "KRW" else "USD",
+                        text = if (isUSD) "USD" else "KRW",
                         style = HeyFYTheme.typography.bodyL,
                         color = Color(0xFF9333EA)
                     )
                 },
+                singleLine = true,
+                placeholder = {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = "${if (isUSD) "$" else "₩"} 0",
+                        style = HeyFYTheme.typography.bodyL.copy(
+                            textAlign = TextAlign.End,
+                        ),
+                        color = Color(0xFF9333EA)
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF9333EA),
                     unfocusedBorderColor = Color(0xFF9333EA),
                     focusedContainerColor = Color(0xFF9333EA).copy(alpha = 0.05f),
                     unfocusedContainerColor = Color(0xFF9333EA).copy(alpha = 0.05f)
                 ),
+
                 shape = RoundedCornerShape(8.dp)
             )
         }

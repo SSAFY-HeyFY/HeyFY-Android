@@ -27,7 +27,9 @@ import com.ssafy.common.R as commonR
 import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
-internal fun AIPredictionCard() {
+internal fun AIPredictionCard(
+    content: String,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -67,7 +69,7 @@ internal fun AIPredictionCard() {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "The rate may increase by \$0.54 more in the near future",
+                    text = content,
                     style = HeyFYTheme.typography.bodyM,
                     color = Color(0xFF9333EA),
                     lineHeight = 20.sp

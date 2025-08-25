@@ -95,23 +95,6 @@ internal fun TransferAmountSection(
                         return@OutlinedTextField
                     }
 
-                    // 숫자와 소수점만 허용
-                    val cleanValue = value.replace(Regex("[^\\d.]"), "")
-
-                    // 소수점이 여러 개 있는 경우 처리
-                    val dotCount = cleanValue.count { it == '.' }
-                    if (dotCount > 1) {
-                        return@OutlinedTextField
-                    }
-
-                    // 소수점이 있는 경우 소수점 이하 2자리까지만 허용
-                    if (cleanValue.contains(".")) {
-                        val parts = cleanValue.split(".")
-                        if (parts.size == 2 && parts[1].length > 2) {
-                            return@OutlinedTextField
-                        }
-                    }
-
                     val numericValue = value.toLong()
 
                     if (numericValue > balance) {

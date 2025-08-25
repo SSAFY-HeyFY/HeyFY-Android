@@ -8,4 +8,5 @@ object DestinationParamConstants {
     const val ACCOUNT = "ACCOUNT"
     const val FX_ACCOUNT = "FX_ACCOUNT"
     const val TRANSACTION_TYPE = "TRANSACTION_TYPE"
+    const val EXCHANGE_TYPE = "EXCHANGE_TYPE"
 }

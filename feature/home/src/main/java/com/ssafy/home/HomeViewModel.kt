@@ -46,8 +46,8 @@ class HomeViewModel @Inject constructor(
                 goToCardDetail()
             }
 
-            HomeUiEvent.ClickExchange -> {
-                goToExchange()
+            is HomeUiEvent.ClickExchange -> {
+                goToExchange(event.type)
             }
 
             is HomeUiEvent.ClickMentoClub -> {
@@ -117,10 +117,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun goToExchange() {
+    private fun goToExchange(type: String) {
         viewModelScope.launch {
             navigator.navigateTo(
-                route = Destination.Exchange(),
+                route = Destination.Exchange(type)
             )
         }
     }

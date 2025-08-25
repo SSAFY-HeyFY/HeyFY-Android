@@ -17,6 +17,7 @@ import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
 internal fun ExchangeBottomBar(
+    isEnabled: Boolean = false,
     onClick: () -> Unit = { },
 ) {
     Card(
@@ -32,14 +33,20 @@ internal fun ExchangeBottomBar(
                 .padding(16.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF9333EA)
+                containerColor = if (isEnabled) Color(
+                    0xFF9333EA
+                ) else Color(
+                    0xFFD1D5DB
+                ),
             ),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             Text(
                 text = "Exchange Now",
                 style = HeyFYTheme.typography.labelL,
-                color = Color.White
+                color = if (isEnabled) Color.White else Color(
+                    0xFF6B7280
+                )
             )
         }
     }
