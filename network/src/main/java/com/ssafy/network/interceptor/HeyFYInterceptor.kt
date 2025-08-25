@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
-import okhttp3.internal.closeQuietly
+
 import timber.log.Timber
 import java.net.HttpURLConnection
 import javax.inject.Inject
@@ -34,46 +34,57 @@ class HeyFYInterceptor @Inject constructor(
         val response = chain.proceed(builder.build())
 
         if (response.isUnauthorized()) {
-            response.closeQuietly()
-            
             val refreshToken = runBlocking { tokenManager.getRefreshToken().first() }
             Timber.d("Refresh token: $refreshToken")
 
-            if (refreshToken.isNullOrEmpty().not() && accessToken.isNullOrEmpty().not()) {
-                try {
-                    val refreshResponse = runBlocking {
-                        authApi.refreshToken(
-                            authorization = "Bearer $accessToken",
-                            refreshToken = refreshToken
-                        )
-                    }
+            if (refreshToken.isNullOrEmpty() || accessToken.isNullOrEmpty()) {
+                Timber.d("Both tokens are null or empty, clearing tokens and returning unauthorized response")
+                runBlocking { 
+                    tokenManager.deleteAccessToken()
+                    tokenManager.deleteRefreshToken()
+                }
+                return response
+            }
 
-                    if (refreshResponse.isSuccessful) {
-                        val newTokens = refreshResponse.body()
-                        if (newTokens != null) {
-                            runBlocking {
-                                tokenManager.deleteAccessToken()
-                                tokenManager.saveAccessToken(newTokens.accessToken)
-                                tokenManager.saveRefreshToken(newTokens.refreshToken)
-                            }
+            try {
+                val refreshResponse = runBlocking {
+                    authApi.refreshToken(
+                        authorization = "Bearer $accessToken",
+                        refreshToken = refreshToken
+                    )
+                }
 
-                            Timber.d("Token refreshed successfully")
-
-                            val newRequest = originalRequest.newBuilder()
-                                .removeHeader(AUTHORIZATION)
-                                .removeHeader(REFRESH_TOKEN)
-                                .addHeader(AUTHORIZATION, "Bearer ${newTokens.accessToken}")
-                                .build()
-
-                            return chain.proceed(newRequest)
+                if (refreshResponse.isSuccessful) {
+                    val newTokens = refreshResponse.body()
+                    if (newTokens != null) {
+                        runBlocking {
+                            tokenManager.deleteAccessToken()
+                            tokenManager.saveAccessToken(newTokens.accessToken)
+                            tokenManager.saveRefreshToken(newTokens.refreshToken)
                         }
-                    } else {
-                        Timber.e("Token refresh failed: ${refreshResponse.code()}")
-                        runBlocking { tokenManager.deleteAccessToken() }
+
+                        Timber.d("Token refreshed successfully")
+
+                        val newRequest = originalRequest.newBuilder()
+                            .removeHeader(AUTHORIZATION)
+                            .removeHeader(REFRESH_TOKEN)
+                            .addHeader(AUTHORIZATION, "Bearer ${newTokens.accessToken}")
+                            .build()
+
+                        return chain.proceed(newRequest)
                     }
-                } catch (e: Exception) {
-                    Timber.e(e, "Exception during token refresh")
-                    runBlocking { tokenManager.deleteAccessToken() }
+                } else {
+                    Timber.e("Token refresh failed: ${refreshResponse.code()}")
+                    runBlocking { 
+                        tokenManager.deleteAccessToken()
+                        tokenManager.deleteRefreshToken()
+                    }
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Exception during token refresh")
+                runBlocking { 
+                    tokenManager.deleteAccessToken()
+                    tokenManager.deleteRefreshToken()
                 }
             }
         }

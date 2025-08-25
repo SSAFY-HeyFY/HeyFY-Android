@@ -44,6 +44,11 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun deleteAccessToken() {
         dataStore.edit { prefs ->
             prefs.remove(ACCESS_TOKEN_KEY)
+        }
+    }
+
+    override suspend fun deleteRefreshToken() {
+        dataStore.edit { prefs ->
             prefs.remove(REFRESH_TOKEN_KEY)
         }
     }
