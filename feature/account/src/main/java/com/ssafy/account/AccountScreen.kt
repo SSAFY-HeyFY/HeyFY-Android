@@ -24,16 +24,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ssafy.account.model.AccountUiEvent
+import com.ssafy.account.model.AccountUiState
 import com.ssafy.common.ui.DetailTopBar
+import com.ssafy.common.ui.ErrorPopUp
 import kotlinx.coroutines.delay
 
 @Composable
 fun AccountScreen(
     viewModel: AccountViewModel = hiltViewModel<AccountViewModel>(),
 ) {
-    var currentStep by remember { mutableIntStateOf(1) }
-    var accountNumber by remember { mutableStateOf("") }
-    var verificationCode by remember { mutableStateOf(listOf("", "", "", "")) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val currentStep by viewModel.step.collectAsStateWithLifecycle()
+    val accountNumber by viewModel.accountNumber.collectAsStateWithLifecycle()
+    val verificationCode by viewModel.verificationCode.collectAsStateWithLifecycle()
+
+    var errorMessage by remember { mutableStateOf("") }
     var timeRemaining by remember { mutableIntStateOf(180) }
     val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -44,6 +51,23 @@ fun AccountScreen(
                 delay(1000)
                 timeRemaining--
             }
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is AccountUiState.Error -> {
+                errorMessage = (uiState as AccountUiState.Error).mag
+            }
+
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(verificationCode) {
+        if (verificationCode.all { it.isNotEmpty() }) {
+            keyboardController?.hide()
+            viewModel.action(AccountUiEvent.ClickVerify)
         }
     }
 
@@ -64,14 +88,17 @@ fun AccountScreen(
             ) {
                 if (currentStep == 1) {
                     AccountRegistrationBottomBar(
-                        onClick = { currentStep = 2 }
+                        accountNumber = accountNumber,
+                        onClick = {
+                            viewModel.action(AccountUiEvent.ClickAccountNumber)
+                        }
                     )
                 } else {
                     AccountVerificationBottomBar(
                         verificationCode = verificationCode,
                         onClick = {
                             keyboardController?.hide()
-                            viewModel.goToMain()
+                            viewModel.action(AccountUiEvent.ClickVerify)
                         }
                     )
                 }
@@ -79,7 +106,6 @@ fun AccountScreen(
         },
         containerColor = Color.White
     ) { innerPadding ->
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,21 +123,33 @@ fun AccountScreen(
             if (currentStep == 1) {
                 AccountRegistrationStep(
                     accountNumber = accountNumber,
-                    onAccountNumberChange = { accountNumber = it },
+                    onAccountNumberChange = {
+                        viewModel.action(AccountUiEvent.UpdateAccountNumber(it))
+                    },
                 )
             } else {
                 AccountVerificationStep(
                     accountNumber = accountNumber,
                     verificationCode = verificationCode,
                     onVerificationCodeChange = { index, value ->
-                        verificationCode = verificationCode.toMutableList().apply {
+                        val code = verificationCode.toMutableList().apply {
                             this[index] = value
                         }
+                        viewModel.action(AccountUiEvent.UpdateVerificationCode(code))
                     },
                     timeRemaining = timeRemaining,
                     onResendCode = { timeRemaining = 167 },
                 )
             }
         }
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                errorMessage = ""
+            }
+        )
     }
 }

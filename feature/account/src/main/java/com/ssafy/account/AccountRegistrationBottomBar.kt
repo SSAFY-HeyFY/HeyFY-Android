@@ -14,22 +14,30 @@ import com.ssafy.common.theme.HeyFYTheme
 
 @Composable
 fun AccountRegistrationBottomBar(
+    accountNumber: String,
     onClick: () -> Unit
 ) {
+
     Button(
         onClick = { onClick() },
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF9333EA)
+            containerColor = if (accountNumber.length > 15) Color(
+                0xFF9333EA
+            ) else Color(
+                0xFFD1D5DB
+            ),
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
             text = "Verify Account",
             style = HeyFYTheme.typography.labelL,
-            color = Color.White
+            color = if (accountNumber.length > 15) Color.White else Color(
+                0xFF6B7280
+            )
         )
     }
 }

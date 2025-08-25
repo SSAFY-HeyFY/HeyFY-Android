@@ -8,6 +8,6 @@ class GetTransactionHistoryUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     suspend operator fun invoke(accountNo: String): Result<TransactionHistory> {
-        return accountRepository.getTransactionHistory(TransactionHistoryRequest(accountNo))
+        return accountRepository.getTransactionHistory(accountNo)
     }
 }

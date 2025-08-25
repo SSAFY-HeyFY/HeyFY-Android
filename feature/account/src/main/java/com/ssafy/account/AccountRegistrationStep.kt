@@ -84,14 +84,14 @@ internal fun AccountRegistrationStep(
             OutlinedTextField(
                 value = accountNumber,
                 onValueChange = { input ->
-                    if (input.length <= 12) {
+                    if (input.length <= 16) {
                         onAccountNumberChange(input)
                     }
                 },
-                visualTransformation = HeyFYVisualTransformation("000-000-000000", '0'),
+                visualTransformation = HeyFYVisualTransformation("000-000-00000000-00", '0'),
                 placeholder = {
                     Text(
-                        text = "000-000-000000",
+                        text = "000-000-00000000-00",
                         style = HeyFYTheme.typography.bodyL,
                         color = Color(0xFFADAEBC)
                     )

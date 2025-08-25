@@ -15,19 +15,19 @@ class AccountDataSourceImpl @Inject constructor(
     private val accountApi: AccountApi
 ) : AccountDataSource {
 
-    override suspend fun getTransactionHistory(request: TransactionHistoryRequest): Response<TransactionHistoryResponse> {
-        return accountApi.getTransactionHistory(request)
+    override suspend fun getTransactionHistory(accountNo: String): Response<TransactionHistoryResponse> {
+        return accountApi.getTransactionHistory(TransactionHistoryRequest(accountNo))
     }
 
-    override suspend fun getForeignTransactionHistory(request: TransactionHistoryRequest): Response<ForeignTransactionHistoryResponse> {
-        return accountApi.getForeignTransactionHistory(request)
+    override suspend fun getForeignTransactionHistory(accountNo: String): Response<ForeignTransactionHistoryResponse> {
+        return accountApi.getForeignTransactionHistory(TransactionHistoryRequest(accountNo))
     }
 
-    override suspend fun getAccountAuth(request: AccountAuthRequest): Response<AccountAuthResponse> {
-        return accountApi.getAccountAuth(request)
+    override suspend fun getAccountAuth(accountNo: String): Response<AccountAuthResponse> {
+        return accountApi.getAccountAuth(AccountAuthRequest(accountNo))
     }
 
-    override suspend fun checkAccount(request: AccountCheckRequest): Response<AccountCheckResponse> {
-        return accountApi.checkAccount(request)
+    override suspend fun checkAccount(code: String , accountNo: String): Response<AccountCheckResponse> {
+        return accountApi.checkAccount(AccountCheckRequest(accountNo, code))
     }
 }

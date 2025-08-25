@@ -10,8 +10,8 @@ import com.ssafy.account.api.response.TransactionHistoryResponse
 import retrofit2.Response
 
 interface AccountDataSource {
-    suspend fun getTransactionHistory(request: TransactionHistoryRequest): Response<TransactionHistoryResponse>
-    suspend fun getForeignTransactionHistory(request: TransactionHistoryRequest): Response<ForeignTransactionHistoryResponse>
-    suspend fun getAccountAuth(request: AccountAuthRequest): Response<AccountAuthResponse>
-    suspend fun checkAccount(request: AccountCheckRequest): Response<AccountCheckResponse>
+    suspend fun getTransactionHistory(accountNo: String): Response<TransactionHistoryResponse>
+    suspend fun getForeignTransactionHistory(accountNo: String): Response<ForeignTransactionHistoryResponse>
+    suspend fun getAccountAuth(accountNo: String): Response<AccountAuthResponse>
+    suspend fun checkAccount(code: String , accountNo: String): Response<AccountCheckResponse>
 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ssafy.common.text.TextFormat.formatAccountNumber
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.utils.clickableOnce
 import com.ssafy.common.R as commonR
@@ -95,7 +96,7 @@ internal fun AccountVerificationStep(
             )
 
             OutlinedTextField(
-                value = if (accountNumber.isNotEmpty()) formatAccountNumber(accountNumber) else "123-456-789012",
+                value = if (accountNumber.isNotEmpty()) formatAccountNumber(accountNumber) else "000-000-00000000-00",
                 onValueChange = { },
                 readOnly = true,
                 trailingIcon = {
@@ -210,16 +211,5 @@ internal fun AccountVerificationStep(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-private fun formatAccountNumber(accountNumber: String): String {
-    val digits = accountNumber.filter { it.isDigit() }
-    return when (digits.length) {
-        0 -> ""
-        in 1..3 -> digits
-        in 4..6 -> "${digits.substring(0, 3)}-${digits.substring(3)}"
-        in 7..12 -> "${digits.substring(0, 3)}-${digits.substring(3, 6)}-${digits.substring(6)}"
-        else -> "${digits.substring(0, 3)}-${digits.substring(3, 6)}-${digits.substring(6, 12)}"
     }
 }
