@@ -5,6 +5,7 @@ import com.ssafy.navigation.DestinationParamConstants.MENTO_CLUB_TYPE
 import com.ssafy.navigation.DestinationParamConstants.SEND_MONEY_TYPE
 import com.ssafy.navigation.DestinationParamConstants.TRANSACTION_TYPE
 import com.ssafy.navigation.DestinationType.ACCOUNT
+import com.ssafy.navigation.DestinationType.AUTH
 import com.ssafy.navigation.DestinationType.CARD_DETAIL
 import com.ssafy.navigation.DestinationType.EXCHANGE
 import com.ssafy.navigation.DestinationType.LOGIN
@@ -57,6 +58,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     }
 
     data object Tips : NoArgumentsDestination(TIPS)
+
+    data object Auth : NoArgumentsDestination(AUTH)
 }
 
 

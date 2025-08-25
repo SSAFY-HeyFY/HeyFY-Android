@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ssafy.account.AccountScreen
+import com.ssafy.auth.AuthScreen
 import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.exchange.ExchangeScreen
@@ -113,6 +114,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.Tips) {
                     TipsScreen()
+                }
+
+                heyFYComposable(Destination.Auth) {
+                    AuthScreen()
                 }
             }
         }
