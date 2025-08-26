@@ -27,7 +27,7 @@ internal fun ExchangeBottomBar(
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Button(
-            onClick = { onClick() },
+            onClick = { if(isEnabled) onClick() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),

@@ -240,11 +240,31 @@ private fun AmountInputSection(
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = "You'll Receive",
-                style = HeyFYTheme.typography.bodyM,
-                color = Color(0xFF374151)
-            )
+            Row {
+                Text(
+                    text = "You'll Receive",
+                    style = HeyFYTheme.typography.bodyM,
+                    color = Color(0xFF374151)
+                )
+
+                val exchangeAmountL = exchangeAmount.toLongOrNull() ?: 0L
+                val color = if (exchangeAmountL % 10 == 0L) Color(0xFF6B7280) else Color(0xFFEF4444)
+
+                Text(
+                    text = if (isUSD) {
+                        "• Trading unit: $10 increments"
+                    } else {
+                        "• Trading unit: ₩10 increments"
+                    },
+                    style = HeyFYTheme.typography.bodyS,
+                    textAlign = TextAlign.End,
+                    color = color,
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .weight(1f)
+                )
+            }
+
 
             OutlinedTextField(
                 value = exchangeAmount,
@@ -274,10 +294,9 @@ private fun AmountInputSection(
                 singleLine = true,
                 placeholder = {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        text = "${if (isUSD) "$" else "₩"} 0",
-                        style = HeyFYTheme.typography.bodyL.copy(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = if (isUSD) "Min $100" else "Min ₩1,000",
+                        style = HeyFYTheme.typography.bodyM.copy(
                             textAlign = TextAlign.End,
                         ),
                         color = Color(0xFF9333EA)

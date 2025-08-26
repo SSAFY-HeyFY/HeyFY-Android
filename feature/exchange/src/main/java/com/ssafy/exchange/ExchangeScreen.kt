@@ -54,6 +54,8 @@ fun ExchangeScreen(
         }
     } ?: 0.0
 
+    val exchangeAmountL = exchangeAmount.toLongOrNull() ?: 0L
+
     // Password
     var showPasswordBottomSheet by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf("") }
@@ -62,6 +64,15 @@ fun ExchangeScreen(
     val correctPassword = "123456"
 
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isExchangeAmountValid: (amount: Long, isUSD: Boolean) -> Boolean =  { amount, isUSD ->
+        if (isUSD) {
+            amount >= 100 && amount % 10 == 0L
+        } else {
+            amount >= 1000 && amount % 10 == 0L
+        }
+    }
+
 
     LaunchedEffect(Unit) {
         if (uiState is ExchangeUiState.Init) {
@@ -103,7 +114,7 @@ fun ExchangeScreen(
         },
         bottomBar = {
             ExchangeBottomBar(
-                isEnabled = receivedAmount > 0,
+                isEnabled = isExchangeAmountValid(exchangeAmountL, isUSD),
                 onClick = {
                     keyboardController?.hide()
                     showPasswordBottomSheet = true
