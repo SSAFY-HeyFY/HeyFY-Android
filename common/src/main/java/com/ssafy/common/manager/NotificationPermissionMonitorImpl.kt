@@ -1,23 +1,26 @@
-package com.ssafy.heyfy.manager
+package com.ssafy.common.manager
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class NotificationPermissionMonitor() {
+class NotificationPermissionMonitorImpl(
+    private val context: Context
+) :NotificationPermissionMonitor {
 
-    fun observePermissionState(context: Context): Flow<Boolean> = flow {
-        var currentPermission = hasNotificationPermission(context)
+    override fun observePermissionState(): Flow<Boolean> = flow {
+        var currentPermission = hasNotificationPermission()
         emit(currentPermission)
 
         while (true) {
-            kotlinx.coroutines.delay(1000) // 1초마다 확인
+            delay(1000) // 1초마다 확인
 
-            val newPermission = hasNotificationPermission(context)
+            val newPermission = hasNotificationPermission()
             if (newPermission != currentPermission) {
                 currentPermission = newPermission
                 emit(newPermission)
@@ -25,7 +28,7 @@ class NotificationPermissionMonitor() {
         }
     }
 
-    private fun hasNotificationPermission(context: Context): Boolean {
+    private fun hasNotificationPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
                 context,

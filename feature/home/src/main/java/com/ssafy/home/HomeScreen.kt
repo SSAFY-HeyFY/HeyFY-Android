@@ -26,6 +26,7 @@ import com.ssafy.home.model.HomeUiEvent
 import com.ssafy.home.model.HomeUiState
 import com.ssafy.navigation.DestinationParamConstants.CLUB
 import com.ssafy.navigation.DestinationParamConstants.MENTO
+import timber.log.Timber
 import com.ssafy.common.R as commonR
 
 @Composable
@@ -36,6 +37,7 @@ fun HomeScreen(
     val studentId by viewModel.studentId.collectAsStateWithLifecycle()
     val normalAccount by viewModel.normalAccount.collectAsStateWithLifecycle()
     val foreignAccount by viewModel.foreignAccount.collectAsStateWithLifecycle()
+    val hasNotificationPermission by viewModel.hasNotificationPermission.collectAsStateWithLifecycle()
     var errorMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
@@ -51,6 +53,14 @@ fun HomeScreen(
             }
 
             else -> {}
+        }
+    }
+
+    LaunchedEffect(hasNotificationPermission) {
+        if (hasNotificationPermission) {
+            viewModel.action(HomeUiEvent.RegisterToken)
+        } else {
+            viewModel.action(HomeUiEvent.DeleteToken)
         }
     }
 

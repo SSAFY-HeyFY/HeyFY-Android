@@ -8,4 +8,7 @@ sealed class HomeUiEvent {
     data class ClickMentoClub(val type: String) : HomeUiEvent()
     data object ClickTips : HomeUiEvent()
     data class ClickExchange(val type: String) : HomeUiEvent()
+    data object RegisterToken : HomeUiEvent()
+    data object DeleteToken : HomeUiEvent()
+
 }

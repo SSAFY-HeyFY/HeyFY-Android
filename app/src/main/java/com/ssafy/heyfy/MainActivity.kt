@@ -8,26 +8,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ssafy.account.AccountScreen
 import com.ssafy.auth.AuthScreen
 import com.ssafy.card.CardDetailScreen
+import com.ssafy.common.manager.NotificationPermissionMonitor
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.exchange.ExchangeScreen
-import com.ssafy.heyfy.manager.FCMTokenManager
-import com.ssafy.heyfy.manager.NotificationPermissionMonitor
 import com.ssafy.heyfy.utils.NotificationPermissionUtil
+
 import com.ssafy.login.LoginScreen
 import com.ssafy.mento_club.MentoClubScreen
 import com.ssafy.navigation.Destination
@@ -43,23 +41,20 @@ import com.ssafy.transaction.TransactionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var fcmTokenManager: FCMTokenManager
-    private lateinit var notificationPermissionMonitor: NotificationPermissionMonitor
+    @Inject lateinit var notificationPermissionMonitor: NotificationPermissionMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED // 세로 모드 고정
         initTimberLog()
+        initPermission()
         enableEdgeToEdge()
-        initDependencies()
-        initFCM()
-
         setContent {
             HeyFYScreen()
         }
@@ -71,12 +66,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun initDependencies() {
-        fcmTokenManager = FCMTokenManager()
-        notificationPermissionMonitor = NotificationPermissionMonitor()
-    }
-
-    private fun initFCM() {
+    private fun initPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!NotificationPermissionUtil.hasNotificationPermission(this)) {
                 NotificationPermissionUtil.requestNotificationPermission(this) { isGranted ->
@@ -97,36 +87,25 @@ class MainActivity : ComponentActivity() {
         heyFYViewModel: HeyFYViewModel = hiltViewModel(),
     ) {
         val navController = rememberNavController()
-
-        val hasNotificationPermission by notificationPermissionMonitor
-            .observePermissionState(LocalContext.current)
-            .collectAsState(initial = false)
-
-        LaunchedEffect(hasNotificationPermission) {
-            if (hasNotificationPermission) {
-                val token = fcmTokenManager.getToken()
-                token?.let {
-                    Timber.d("FCM Token initialized: $it")
-                    // TODO: Send token to your server
-                }
-            } else {
-                fcmTokenManager.deleteToken()
-                // TODO : Send token to your server
-            }
-        }
+        val notificationPermissionState by heyFYViewModel.hasNotificationPermission.collectAsStateWithLifecycle()
 
         NavigationEffects(
             navigationChannel = heyFYViewModel.navigationChannel,
             navHostController = navController
         )
 
+        LaunchedEffect(notificationPermissionState) {
+            if (notificationPermissionState.not()) {
+                heyFYViewModel.deleteToken()
+            }
+        }
+
         HeyFYTheme {
-            Box(modifier = Modifier.background(Color.White)) {
-                HeyFYNavHost(
-                    navController = navController,
-                    startDestination = Destination.Splash,
-                    modifier = Modifier.background(Color.Transparent)
-                ) {
+            HeyFYNavHost(
+                navController = navController,
+                startDestination = Destination.Splash,
+                modifier = Modifier.background(Color.White)
+            ) {
                     heyFYComposableWithFade(Destination.Main) {
                         MainScreen()
                     }
@@ -174,7 +153,6 @@ class MainActivity : ComponentActivity() {
                         AuthScreen()
                     }
                 }
-            }
         }
     }
 

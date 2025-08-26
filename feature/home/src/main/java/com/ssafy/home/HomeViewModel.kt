@@ -2,6 +2,10 @@ package com.ssafy.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.manager.FCMTokenManager
+import com.ssafy.common.manager.NotificationPermissionMonitor
+import com.ssafy.fcm.domain.DeleteFcmTokenUseCase
+import com.ssafy.fcm.domain.RegisterFcmTokenUseCase
 import com.ssafy.home.domain.FetchHomeUseCase
 import com.ssafy.home.domain.model.Home
 import com.ssafy.home.model.HomeUiEvent
@@ -10,13 +14,19 @@ import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYAppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val fetchHomeUseCase: FetchHomeUseCase,
+    private val registerFcmTokenUseCase: RegisterFcmTokenUseCase,
+    private val deleteFcmTokenUseCase: DeleteFcmTokenUseCase,
+    private val fcmTokenManager: FCMTokenManager,
+    private val notificationPermissionMonitor: NotificationPermissionMonitor,
     private val navigator: HeyFYAppNavigator,
 ) : ViewModel() {
 
@@ -31,6 +41,13 @@ class HomeViewModel @Inject constructor(
 
     private val _foreignAccount = MutableStateFlow(Home.FAccount())
     val foreignAccount = _foreignAccount.asStateFlow()
+
+    val hasNotificationPermission = notificationPermissionMonitor.observePermissionState()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false,
+        )
 
     fun action(event: HomeUiEvent) {
         when (event) {
@@ -60,6 +77,26 @@ class HomeViewModel @Inject constructor(
 
             is HomeUiEvent.ClickTransaction -> {
                 goToTransaction(event.type)
+            }
+
+            HomeUiEvent.RegisterToken -> {
+                viewModelScope.launch {
+                    val token = fcmTokenManager.getToken() ?: return@launch
+                    registerFcmTokenUseCase(token)
+                        .onFailure {  }
+
+                }
+            }
+
+            HomeUiEvent.DeleteToken -> {
+                viewModelScope.launch {
+                    val token = fcmTokenManager.getToken() ?: return@launch
+                    deleteFcmTokenUseCase(token)
+                        .onSuccess {
+                            fcmTokenManager.deleteToken()
+                        }
+                        .onFailure {  }
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ object ApiUtils {
         } catch (e: IOException) {
             Result.failure(IOException("Please check your network connection"))
         } catch (e: Exception) {
-            Result.failure(kotlin.Exception("An unexpected error has occurred. Please contact the administrator"))
+            Result.failure(kotlin.Exception("An unexpected error has occurred. Please contact the administrator ${e.message}"))
         }
     }
 
