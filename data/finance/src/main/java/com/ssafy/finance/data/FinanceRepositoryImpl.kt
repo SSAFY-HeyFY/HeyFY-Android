@@ -73,7 +73,9 @@ class FinanceRepositoryImpl @Inject constructor(
                 ExchangeRateHistories.Rate(
                     currency = rate.currency,
                     date = rate.date,
-                    exchangeRate = rate.exchangeRate
+                    rate = rate.rate,
+                    modelName = rate.modelName ?: "",
+                    prediction = rate.prediction
                 )
             }
         )
@@ -83,21 +85,21 @@ class FinanceRepositoryImpl @Inject constructor(
         return ExchangeRateCurrent(
             usd = ExchangeRateCurrent.ExchangeRate(
                 currency = usd.currency,
-                date = usd.date,
-                exchangeRate = usd.exchangeRate,
-                fluctuationRate = usd.fluctuationRate,
+                updatedAt = usd.updatedAt,
+                rate = usd.rate,
+                fluctuation = usd.fluctuation,
             ),
             cny = ExchangeRateCurrent.ExchangeRate(
                 currency = cny.currency,
-                date = cny.date,
-                exchangeRate = cny.exchangeRate,
-                fluctuationRate = usd.fluctuationRate,
+                updatedAt = cny.updatedAt,
+                rate = cny.rate,
+                fluctuation = cny.fluctuation,
             ),
             vnd = ExchangeRateCurrent.ExchangeRate(
-                currency = vnd?.currency ?: "",
-                date = vnd?.date ?: "",
-                exchangeRate = vnd?.exchangeRate ?: 0.0,
-                fluctuationRate = vnd?.fluctuationRate ?: 0.0,
+                currency = vnd.currency,
+                updatedAt = vnd.updatedAt,
+                rate = vnd.rate,
+                fluctuation = vnd.fluctuation,
             )
         )
     }

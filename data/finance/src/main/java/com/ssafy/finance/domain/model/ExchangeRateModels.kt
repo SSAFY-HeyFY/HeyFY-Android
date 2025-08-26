@@ -26,7 +26,9 @@ data class ExchangeRateHistories(
     data class Rate(
         val currency: String = "",
         val date: String = "",
-        val exchangeRate: Double = 0.0,
+        val rate: Double = 0.0,
+        val modelName: String = "",
+        val prediction: Boolean = false,
     )
 }
 
@@ -37,8 +39,8 @@ data class ExchangeRateCurrent(
 ) {
     data class ExchangeRate(
         val currency: String = "",
-        val date: String = "",
-        val exchangeRate: Double = 0.0,
-        val fluctuationRate: Double = 0.0,
+        val updatedAt: String = "",
+        val rate: Double = 0.0,
+        val fluctuation: Double = 0.0,
     )
 }

@@ -14,7 +14,7 @@ interface FcmApi {
     suspend fun registerFcmToken(
         @Body request: FcmTokenRequest
     ): Response<Unit>
-    
+
     @HTTP(method = "DELETE", path = "/api/users/tokens/public", hasBody = true)
     suspend fun deleteFcmToken(
         @Body request: FcmTokenRequest

@@ -35,24 +35,24 @@ internal fun CurrencySection(
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "USD",
-            amount = current.usd.exchangeRate.toString(),
-            change = current.usd.fluctuationRate.toString(),
+            amount = current.usd.rate.toString(),
+            change = current.usd.fluctuation.toString(),
             isPositive = true
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "CNY",
-            amount = current.cny.exchangeRate.toString(),
-            change = current.cny.fluctuationRate.toString(),
+            amount = current.cny.rate.toString(),
+            change = current.cny.fluctuation.toString(),
             isPositive = false
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "VND",
-            amount = current.vnd.exchangeRate.toString(),
-            change = current.vnd.fluctuationRate.toString(),
+            amount = current.vnd.rate.toString(),
+            change = current.vnd.fluctuation.toString(),
             isPositive = true
         )
     }
