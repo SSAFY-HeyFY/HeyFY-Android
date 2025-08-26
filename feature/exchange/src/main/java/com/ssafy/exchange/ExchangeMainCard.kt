@@ -53,8 +53,6 @@ internal fun ExchangeMainCard(
             modifier = Modifier.padding(21.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            WarningAlert()
-
             CurrentExchangeRateSection(
                 currentRate = currentRate,
             )
@@ -68,46 +66,6 @@ internal fun ExchangeMainCard(
             )
 
             ExchangeDetailsSection(receivedAmount = receivedAmount, isUSD = isUSD)
-        }
-    }
-}
-
-@Composable
-private fun WarningAlert(
-    isIncreased: Boolean = true,
-) {
-    val color = if (isIncreased) Color(0xFFD3F3DF) else Color(0xFFFEF2F2)
-    val colorText = if (isIncreased) Color(0xFF10B981) else Color(0xFFB91C1C)
-    val rotate = if (isIncreased) 0f else 180f
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = color
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(17.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                modifier = Modifier
-                    .size(14.dp)
-                    .rotate(rotate),
-                painter = painterResource(id = commonR.drawable.icon_variation),
-                contentDescription = null,
-                tint = colorText,
-            )
-
-            Text(
-                text = "You're exchanging 17 KRW lower than your last exchange",
-                style = HeyFYTheme.typography.bodyM,
-                color = colorText,
-                lineHeight = 20.sp
-            )
         }
     }
 }
