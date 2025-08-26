@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,6 +25,8 @@ import com.ssafy.common.ui.ErrorPopUp
 import com.ssafy.common.ui.HeyFYTopBar
 import com.ssafy.finance.model.FinanceUiEvent
 import com.ssafy.finance.model.FinanceUiState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 
 @Composable
 fun FinanceScreen(
@@ -36,6 +39,7 @@ fun FinanceScreen(
     val prediction by viewModel.prediction.collectAsStateWithLifecycle()
     val tuition by viewModel.tuition.collectAsStateWithLifecycle()
     var errorMessage by remember { mutableStateOf("") }
+    var index by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         if (uiState is FinanceUiState.Init) {
@@ -50,6 +54,13 @@ fun FinanceScreen(
             }
 
             else -> {}
+        }
+    }
+
+    LaunchedEffect(index) {
+        if(index > 0) {
+            delay(500)
+            index = 0
         }
     }
 
@@ -76,6 +87,8 @@ fun FinanceScreen(
             item {
                 ExchangeRateChartSection(
                     histories = histories,
+                    index = index,
+                    updateIndex = { index = it }
                 )
             }
 

@@ -36,24 +36,21 @@ internal fun CurrencySection(
             modifier = Modifier.weight(1f),
             currency = "USD",
             amount = current.usd.rate.toString(),
-            change = current.usd.fluctuation.toString(),
-            isPositive = true
+            change = current.usd.fluctuation,
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "CNY",
             amount = current.cny.rate.toString(),
-            change = current.cny.fluctuation.toString(),
-            isPositive = false
+            change = current.cny.fluctuation,
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "VND",
             amount = current.vnd.rate.toString(),
-            change = current.vnd.fluctuation.toString(),
-            isPositive = true
+            change = current.vnd.fluctuation,
         )
     }
 }
@@ -62,8 +59,7 @@ internal fun CurrencySection(
 private fun CurrencyCard(
     currency: String,
     amount: String,
-    change: String,
-    isPositive: Boolean,
+    change: Double,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -110,20 +106,32 @@ private fun CurrencyCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                val rotate = if (isPositive) 180f else 0f
-                Icon(
-                    painter = painterResource(id = commonR.drawable.icon_vector_bottom),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(12.dp)
-                        .rotate(rotate),
-                    tint = if (isPositive) Color(0xFF10B981) else Color(0xFFEF4444)
-                )
+                val rotate = when {
+                    change > 0.0 -> 180f
+                    change < 0.0 -> 0f
+                    else -> -1f
+                }
+
+                val color = when {
+                    change > 0.0 -> Color(0xFF10B981)
+                    change < 0.0 -> Color(0xFFEF4444)
+                    else -> Color.LightGray
+                }
+                if(rotate > -1f) {
+                    Icon(
+                        painter = painterResource(id = commonR.drawable.icon_vector_bottom),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(12.dp)
+                            .rotate(rotate),
+                        tint = color
+                    )
+                }
 
                 Text(
-                    text = change,
+                    text = change.toString(),
                     style = HeyFYTheme.typography.bodyS,
-                    color = if (isPositive) Color(0xFF10B981) else Color(0xFFEF4444)
+                    color = color
                 )
             }
         }

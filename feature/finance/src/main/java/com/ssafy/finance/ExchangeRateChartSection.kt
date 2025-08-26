@@ -1,6 +1,5 @@
 package com.ssafy.finance
 
-import android.text.Layout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,14 +17,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
@@ -59,6 +54,8 @@ import java.text.DecimalFormat
 internal fun ExchangeRateChartSection(
     modifier: Modifier = Modifier,
     histories: ExchangeRateHistories,
+    index: Int,
+    updateIndex: (Int) -> Unit,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -95,8 +92,6 @@ internal fun ExchangeRateChartSection(
                 }
             }
 
-            var index by remember { mutableIntStateOf(0) }
-
             if (histories.rates.isNotEmpty()) {
                 Box(
                     modifier = Modifier
@@ -105,9 +100,7 @@ internal fun ExchangeRateChartSection(
                 ) {
                     JetpackComposeElectricCarSales(
                         histories = histories.rates,
-                        updateIndex = {
-                            index = it
-                        }
+                        updateIndex = updateIndex
                     )
 
                     if (index > 0) {
@@ -169,24 +162,18 @@ private fun JetpackComposeElectricCarSales1(
     val delegateMarker = remember {
         DefaultCartesianMarker(
             label = TextComponent(),
-            guideline = LineComponent( Fill(android.graphics.Color.LTGRAY)),
+            guideline = LineComponent(Fill(android.graphics.Color.LTGRAY)),
             labelPosition = DefaultCartesianMarker.LabelPosition.BelowPoint,
         )
     }
 
     val cartesianMarker = object : CartesianMarker {
-        override fun drawUnderLayers(
-            context: CartesianDrawingContext,
-            targets: List<CartesianMarker.Target>,
-        ) {
-            updateIndex(targets.first().x.toInt())
-            delegateMarker.drawUnderLayers(context, targets)
-        }
-
         override fun drawOverLayers(
             context: CartesianDrawingContext,
             targets: List<CartesianMarker.Target>,
         ) {
+            updateIndex(targets.first().x.toInt())
+            Timber.tag("pjh").d("updateIndex: ${targets.first().x.toInt()}")
             delegateMarker.drawOverLayers(context, targets)
         }
     }
@@ -226,7 +213,7 @@ private fun JetpackComposeElectricCarSales1(
                                 ),
                         ),
 
-                    ),
+                        ),
                 rangeProvider = rangeProvider,
             ),
             startAxis = VerticalAxis.rememberStart(
