@@ -77,7 +77,7 @@ class AccountViewModel @Inject constructor(
             _uiState.value = AccountUiState.Loading
             checkAccountUseCase(
                 //accountNo = accountNumber.value,
-                accountNo = "0018099651020088",
+                accountNo = "0012938990739664",
                 authCode = verificationCode.value.joinToString(""),
             ).onSuccess {
                 goToMain()
@@ -91,7 +91,7 @@ class AccountViewModel @Inject constructor(
             _uiState.value = AccountUiState.Loading
             getAccountAuthUseCase(
                 //accountNo = accountNumber.value,
-                accountNo = "0018099651020088",
+                accountNo = "0012938990739664",
             ).onSuccess {
                 code = it.code
                 currentStep.value = 2
