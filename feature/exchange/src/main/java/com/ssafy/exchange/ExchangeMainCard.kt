@@ -1,6 +1,7 @@
 package com.ssafy.exchange
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,13 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ssafy.common.text.CurrencyVisualTransformation
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.utils.clickableOnce
@@ -138,19 +139,31 @@ private fun AmountInputSection(
                 color = Color(0xFF374151)
             )
 
-            OutlinedTextField(
-                value = if (isUSD) {
-                    "₩ ${String.format("%,.0f", receivedAmount)}"
-                } else {
-                    "$ ${String.format("%,.2f", receivedAmount)}"
-                },
-                onValueChange = { },
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = true,
-                textStyle = HeyFYTheme.typography.labelL.copy(
-                    textAlign = TextAlign.End,
-                ),
-                suffix = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color(0xFFF9FAFB))
+                    .border(1.dp, Color(0xFF6B7280), RoundedCornerShape(8.dp)),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    val text = if (isUSD) {
+                        "₩ ${String.format("%,.0f", receivedAmount)}"
+                    } else {
+                        "$ ${String.format("%,.2f", receivedAmount)}"
+                    }
+
+                    Text(
+                        text = text,
+                        style = HeyFYTheme.typography.labelL,
+                        color = Color.Black,
+                    )
+
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 4.dp),
@@ -158,19 +171,8 @@ private fun AmountInputSection(
                         style = HeyFYTheme.typography.bodyL,
                         color = Color(0xFF6B7280)
                     )
-                },
-
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF6B7280),
-                    unfocusedBorderColor = Color(0xFF6B7280),
-                    focusedContainerColor = Color(0xFFF9FAFB),
-                    unfocusedContainerColor = Color(0xFFF9FAFB),
-                    cursorColor = Color(0xFF9333EA),
-                ),
-                singleLine = true,
-
-                shape = RoundedCornerShape(8.dp)
-            )
+                }
+            }
         }
 
         Box(
