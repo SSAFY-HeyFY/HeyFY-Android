@@ -40,12 +40,38 @@ object TextFormat {
                 val year = dateString.substring(0, 4)
                 val month = dateString.substring(4, 6).toInt()
                 val day = dateString.substring(6, 8).toInt()
-                
+
                 val monthNames = listOf(
                     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                 )
-                
+
+                val monthName = monthNames.getOrNull(month - 1) ?: "Unknown"
+                "$monthName $day, $year"
+            } else {
+                dateString
+            }
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+
+    /**
+     * 날짜를 영어 표기법으로 포맷팅
+     * 예: "2025-08-25" -> "Aug 25, 2025"
+     */
+    fun formatDateEnglish1(dateString: String): String {
+        return try {
+            if (dateString.length == 10) {
+                val year = dateString.substring(0, 4)
+                val month = dateString.substring(5, 7).toInt()
+                val day = dateString.substring(8, 10).toInt()
+
+                val monthNames = listOf(
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                )
+
                 val monthName = monthNames.getOrNull(month - 1) ?: "Unknown"
                 "$monthName $day, $year"
             } else {
