@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.util.concurrent.atomic.AtomicBoolean
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
@@ -45,6 +46,9 @@ class TransactionViewModel @Inject constructor(
 
     private val _transactions = MutableStateFlow(emptyList<TransactionHistory.Item>())
     val transactions = _transactions.asStateFlow()
+
+    private val didNavigateToAuth = AtomicBoolean(false)
+    private val didNavigateToLogin = AtomicBoolean(false)
 
     fun action(event: TransactionUiEvent) {
         when(event) {
@@ -136,10 +140,14 @@ class TransactionViewModel @Inject constructor(
     private fun handleFailure(throwable: Throwable) {
         when(throwable) {
             is RefreshTokenExpiredError -> {
-                goToLogin()
+                if (didNavigateToLogin.compareAndSet(false, true)) {
+                    goToLogin()
+                }
             }
             is SidExpiredError -> {
-                goToAuth()
+                if (didNavigateToAuth.compareAndSet(false, true)) {
+                    goToAuth()
+                }
             }
             else -> {
                 updateUiState(

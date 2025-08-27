@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.util.concurrent.atomic.AtomicBoolean
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -50,6 +51,9 @@ class HomeViewModel @Inject constructor(
             started = SharingStarted.Eagerly,
             initialValue = false,
         )
+
+    private val didNavigateToAuth = AtomicBoolean(false)
+    private val didNavigateToLogin = AtomicBoolean(false)
 
     fun action(event: HomeUiEvent) {
         when (event) {
@@ -190,11 +194,15 @@ class HomeViewModel @Inject constructor(
     private fun handleFailure(throwable: Throwable) {
         when (throwable) {
             is RefreshTokenExpiredError -> {
-                goToLogin()
+                if (didNavigateToLogin.compareAndSet(false, true)) {
+                    goToLogin()
+                }
             }
 
             is SidExpiredError -> {
-                goToAuth()
+                if (didNavigateToAuth.compareAndSet(false, true)) {
+                    goToAuth()
+                }
             }
 
             else -> {

@@ -29,6 +29,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
+import java.util.concurrent.atomic.AtomicBoolean
 
 @HiltViewModel
 class FinanceViewModel @Inject constructor(
@@ -53,6 +54,9 @@ class FinanceViewModel @Inject constructor(
 
     private val _tuition = MutableStateFlow(ExchangeRateTuition())
     val tuition = _tuition.asStateFlow()
+
+    private val didNavigateToAuth = AtomicBoolean(false)
+    private val didNavigateToLogin = AtomicBoolean(false)
 
     fun action(event: FinanceUiEvent) {
         when (event) {
@@ -168,10 +172,14 @@ class FinanceViewModel @Inject constructor(
     private fun handleFailure(throwable: Throwable) {
         when(throwable) {
             is RefreshTokenExpiredError -> {
-                goToLogin()
+                if (didNavigateToLogin.compareAndSet(false, true)) {
+                    goToLogin()
+                }
             }
             is SidExpiredError -> {
-                goToAuth()
+                if (didNavigateToAuth.compareAndSet(false, true)) {
+                    goToAuth()
+                }
             }
             else -> {
                 updateUiState(

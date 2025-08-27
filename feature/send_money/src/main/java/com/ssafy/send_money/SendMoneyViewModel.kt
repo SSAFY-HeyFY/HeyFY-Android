@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.util.concurrent.atomic.AtomicBoolean
 
 @HiltViewModel
 class SendMoneyViewModel @Inject constructor(
@@ -66,6 +67,9 @@ class SendMoneyViewModel @Inject constructor(
 
     private val _showPasswordBottomSheet = MutableStateFlow(false)
     val showPasswordBottomSheet = _showPasswordBottomSheet.asStateFlow()
+
+    private val didNavigateToAuth = AtomicBoolean(false)
+    private val didNavigateToLogin = AtomicBoolean(false)
 
     fun action(event: SendMoneyUiEvent) {
         when (event) {
@@ -220,10 +224,14 @@ class SendMoneyViewModel @Inject constructor(
     private fun handleFailure(throwable: Throwable) {
         when(throwable) {
             is RefreshTokenExpiredError -> {
-                goToLogin()
+                if (didNavigateToLogin.compareAndSet(false, true)) {
+                    goToLogin()
+                }
             }
             is SidExpiredError -> {
-                goToAuth()
+                if (didNavigateToAuth.compareAndSet(false, true)) {
+                    goToAuth()
+                }
             }
             else -> {
                 updateUiState(
