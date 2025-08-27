@@ -1,8 +1,7 @@
-package com.ssafy.login.api.response
+package com.ssafy.login.domain.model
 
-data class LoginResponse(
+data class Token(
     val accessToken: String,
     val refreshToken: String,
     val sid: String,
 )
-

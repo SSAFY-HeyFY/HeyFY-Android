@@ -15,6 +15,8 @@ class TokenManagerImpl @Inject constructor(
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+        private val TXN_AUTH_TOKEN_KEY = stringPreferencesKey("txn_auth_token")
+        private val SID_KEY = stringPreferencesKey("sid")
     }
 
     override fun getAccessToken(): Flow<String?> {
@@ -28,7 +30,19 @@ class TokenManagerImpl @Inject constructor(
             prefs[REFRESH_TOKEN_KEY]
         }
     }
-    
+
+    override fun getTxnAuthToken(): Flow<String?> {
+        return dataStore.data.map { prefs ->
+            prefs[TXN_AUTH_TOKEN_KEY]
+        }
+    }
+
+    override fun getSid(): Flow<String?> {
+        return dataStore.data.map { prefs ->
+            prefs[SID_KEY]
+        }
+    }
+
     override suspend fun saveAccessToken( token: String) {
         dataStore.edit { prefs ->
             prefs[ACCESS_TOKEN_KEY] = token
@@ -37,6 +51,18 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun saveRefreshToken(token: String) {
         dataStore.edit { prefs ->
             prefs[REFRESH_TOKEN_KEY] = token
+        }
+    }
+
+    override suspend fun saveTxnAuthToken(token: String) {
+        dataStore.edit { prefs ->
+            prefs[TXN_AUTH_TOKEN_KEY] = token
+        }
+    }
+
+    override suspend fun saveSid(token: String) {
+        dataStore.edit { prefs ->
+            prefs[SID_KEY] = token
         }
     }
 
@@ -50,6 +76,18 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun deleteRefreshToken() {
         dataStore.edit { prefs ->
             prefs.remove(REFRESH_TOKEN_KEY)
+        }
+    }
+
+    override suspend fun deleteTxnAuthToken() {
+        dataStore.edit { prefs ->
+            prefs.remove(TXN_AUTH_TOKEN_KEY)
+        }
+    }
+
+    override suspend fun deleteSid() {
+        dataStore.edit { prefs ->
+            prefs.remove(SID_KEY)
         }
     }
 }

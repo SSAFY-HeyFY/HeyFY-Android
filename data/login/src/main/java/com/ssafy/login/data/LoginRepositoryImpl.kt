@@ -1,6 +1,8 @@
 package com.ssafy.login.data
 
 import com.ssafy.login.domain.LoginRepository
+import com.ssafy.login.domain.CheckPin
+import com.ssafy.login.domain.model.Token
 import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
@@ -10,7 +12,7 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun login(
         studentId: String,
         password: String,
-    ): Result<Pair<String, String>> {
+    ): Result<Token> {
         return safeApiCall(
             apiCall = {
                 loginDataSource.login(
@@ -19,7 +21,25 @@ class LoginRepositoryImpl @Inject constructor(
                 )
             },
             convert = { response ->
-                response.accessToken to response.refreshToken
+                Token(response.accessToken, response.refreshToken, response.sid)
+            }
+        )
+    }
+
+    override suspend fun checkPin(
+        pinNumber: String,
+    ): Result<CheckPin> {
+        return safeApiCall(
+            apiCall = {
+                loginDataSource.checkPin(
+                    pinNumber = pinNumber
+                )
+            },
+            convert = { response ->
+                CheckPin(
+                    txnToken = response.txnToken ?: "",
+                    correct = response.correct
+                )
             }
         )
     }

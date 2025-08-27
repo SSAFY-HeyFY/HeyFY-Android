@@ -166,7 +166,6 @@ fun ExchangeScreen(
             isPasswordError = isPasswordError,
             updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
             updatePassword = { password = it },
-            updateIsPasswordError = { isPasswordError = it }
         )
     }
 

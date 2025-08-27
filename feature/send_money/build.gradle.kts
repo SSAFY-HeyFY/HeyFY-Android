@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":data:home"))
     implementation(project(":data:transfer"))
+    implementation(project(":data:login"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

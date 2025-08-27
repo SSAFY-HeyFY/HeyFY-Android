@@ -1,7 +1,9 @@
 package com.ssafy.login.api
 
 import com.ssafy.login.api.request.LoginRequest
+import com.ssafy.login.api.request.CheckPinRequest
 import com.ssafy.login.api.response.LoginResponse
+import com.ssafy.login.api.response.CheckPinResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -12,5 +14,10 @@ interface LoginApi {
     suspend fun login(
         @Body request: LoginRequest,
     ): Response<LoginResponse>
+
+    @POST("/auth/checkpin")
+    suspend fun checkPin(
+        @Body request: CheckPinRequest,
+    ): Response<CheckPinResponse>
 }
 

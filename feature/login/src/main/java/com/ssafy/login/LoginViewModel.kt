@@ -32,9 +32,10 @@ class LoginViewModel @Inject constructor(
             loginUseCase(
                 studentId = "12345678",
                 password = "StrongPassword123!"
-            ).onSuccess { (accessToken, refreshToken) ->
-                tokenManager.saveAccessToken(accessToken)
-                tokenManager.saveRefreshToken(refreshToken)
+            ).onSuccess { token ->
+                tokenManager.saveAccessToken(token.accessToken)
+                tokenManager.saveRefreshToken(token.refreshToken)
+                tokenManager.saveSid(token.sid)
                 goToAccount()
                 updateUiState(LoginUiState.Success)
             }.onFailure(::handleFailure)

@@ -3,7 +3,10 @@ package com.ssafy.send_money
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.data_store.TokenManager
 import com.ssafy.home.domain.FetchHomeUseCase
+import com.ssafy.login.domain.CheckPin
+import com.ssafy.login.domain.CheckPinUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.navigation.HeyFYAppNavigator
@@ -24,6 +27,8 @@ class SendMoneyViewModel @Inject constructor(
     private val fetchHomeUseCase: FetchHomeUseCase,
     private val transferDomesticUseCase: TransferDomesticUseCase,
     private val transferForeignerUseCase: TransferForeignerUseCase,
+    private val checkPinUseCase: CheckPinUseCase,
+    private val tokenManager: TokenManager,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -54,6 +59,12 @@ class SendMoneyViewModel @Inject constructor(
     private val _pinNumber = MutableStateFlow("")
     val pinNumber = _pinNumber.asStateFlow()
 
+    private val _checkPin = MutableStateFlow(true)
+    val checkPin = _checkPin.asStateFlow()
+
+    private val _showPasswordBottomSheet = MutableStateFlow(false)
+    val showPasswordBottomSheet = _showPasswordBottomSheet.asStateFlow()
+
     fun action(event: SendMoneyUiEvent) {
         when (event) {
             SendMoneyUiEvent.Init -> {
@@ -61,11 +72,7 @@ class SendMoneyViewModel @Inject constructor(
             }
 
             is SendMoneyUiEvent.ClickTransfer -> {
-                if (isFXAccount) {
-                    transferForeigner()
-                } else {
-                    transferDomestic()
-                }
+                checkPinNumber()
             }
 
             is SendMoneyUiEvent.UpdateTransferNote -> {
@@ -79,6 +86,13 @@ class SendMoneyViewModel @Inject constructor(
             }
             is SendMoneyUiEvent.UpdatePinNumber -> {
                 _pinNumber.value = event.pinNumber
+            }
+
+            is SendMoneyUiEvent.UpdateCheckPin -> {
+                _checkPin.value = event.checkPin
+            }
+            is SendMoneyUiEvent.UpdateShowPasswordBottomSheet -> {
+                _showPasswordBottomSheet.value = event.isShow
             }
 
             SendMoneyUiEvent.ClickBack -> back()
@@ -101,7 +115,35 @@ class SendMoneyViewModel @Inject constructor(
         }
     }
 
+    private fun checkPinNumber() {
+        viewModelScope.launch {
+            checkPinUseCase(pinNumber.value)
+                .onSuccess { result ->
+                    handlePinCheckResult(result)
+                    updateUiState(SendMoneyUiState.Success)
+                }
+                .onFailure(::handleFailure)
+        }
+    }
+
+    private suspend fun handlePinCheckResult(checkPin: CheckPin) {
+        if (!checkPin.correct) {
+            _checkPin.value = false
+            return
+        }
+
+        if(checkPin.txnToken.isNotEmpty()) {
+            tokenManager.saveTxnAuthToken(checkPin.txnToken)
+        }
+        if (isFXAccount) {
+            transferForeigner()
+        } else {
+            transferDomestic()
+        }
+    }
+
     private fun transferDomestic() {
+        if (uiState.value !is SendMoneyUiState.Success) return
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferDomesticUseCase(
@@ -111,7 +153,9 @@ class SendMoneyViewModel @Inject constructor(
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
             ).onSuccess {
+                _showPasswordBottomSheet.value = false
                 goToSuccess()
+                tokenManager.deleteTxnAuthToken()
             }.onFailure(::handleFailure)
         }
     }
@@ -126,7 +170,9 @@ class SendMoneyViewModel @Inject constructor(
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
             ).onSuccess {
+                _showPasswordBottomSheet.value = false
                 goToSuccess()
+                tokenManager.deleteTxnAuthToken()
             }.onFailure(::handleFailure)
         }
     }

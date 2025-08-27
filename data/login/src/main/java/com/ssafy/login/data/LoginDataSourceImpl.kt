@@ -2,7 +2,9 @@ package com.ssafy.login.data
 
 import com.ssafy.login.api.LoginApi
 import com.ssafy.login.api.request.LoginRequest
+import com.ssafy.login.api.request.CheckPinRequest
 import com.ssafy.login.api.response.LoginResponse
+import com.ssafy.login.api.response.CheckPinResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -17,6 +19,16 @@ class LoginDataSourceImpl @Inject constructor(
             request = LoginRequest(
                 studentId = studentId,
                 password = password,
+            )
+        )
+    }
+
+    override suspend fun checkPin(
+        pinNumber: String,
+    ): Response<CheckPinResponse> {
+        return loginApi.checkPin(
+            request = CheckPinRequest(
+                pinNumber = pinNumber
             )
         )
     }

@@ -38,13 +38,11 @@ fun PasswordBottomSheet(
     isPasswordError: Boolean,
     updateShowPasswordBottomSheet: (Boolean) -> Unit,
     updatePassword: (String) -> Unit,
-    updateIsPasswordError: (Boolean) -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = {
             updateShowPasswordBottomSheet(false)
             updatePassword("")
-            updateIsPasswordError(false)
         },
         sheetState = bottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
@@ -59,7 +57,6 @@ fun PasswordBottomSheet(
                 isError = isPasswordError,
                 onPasswordChange = {
                     updatePassword(it)
-                    updateIsPasswordError(false)
                 },
             )
         }

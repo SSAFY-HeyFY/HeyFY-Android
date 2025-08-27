@@ -1,5 +1,6 @@
 package com.ssafy.login.domain
 
+import com.ssafy.login.domain.model.Token
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
@@ -8,7 +9,7 @@ class LoginUseCase @Inject constructor(
     suspend operator fun invoke(
         studentId: String,
         password: String,
-    ): Result<Pair<String, String>> {
+    ): Result<Token> {
         return loginRepository.login(
             studentId = studentId,
             password = password,

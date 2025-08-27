@@ -35,6 +35,7 @@ import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.R as commonR
 
 data class JobData(
+    @DrawableRes val imageRes: Int,
     val position: String,
     val place: String,
     val hoursPerDay: String,
@@ -47,25 +48,12 @@ fun RecommendJobs(
     onClick: () -> Unit = {},
 ) {
     val jobItems = listOf(
-        JobData("Cafe Staff", "Starbucks Gangnam Branch", "4h/day", "12,000/h"),
-        JobData("Delivery Driver", "Coupang Eats", "6h/day", "15,000/h"),
-        JobData("Tutor", "Math Academy", "3h/day", "25,000/h"),
-        JobData("Store Clerk", "GS25 Hongdae", "5h/day", "10,500/h"),
-        JobData("Restaurant Server", "Pizza Hut", "4h/day", "13,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-        JobData("Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
-
-
-        )
+        JobData(commonR.drawable.icon_cafe,"Cafe Staff", "Starbucks Gangnam Branch", "4h/day", "12,000/h"),
+        JobData(commonR.drawable.icon_tutor,"Tutor", "Math Academy", "3h/day", "25,000/h"),
+        JobData(commonR.drawable.icon_store,"Store Clerk", "GS25 Hongdae", "5h/day", "10,500/h"),
+        JobData(commonR.drawable.icon_restaurant,"Restaurant Server", "Pizza Hut", "4h/day", "13,000/h"),
+        JobData(commonR.drawable.icon_store,"Library Assistant", "Seoul Library", "4h/day", "11,000/h"),
+    )
 
     val pagerState = rememberPagerState(pageCount = { jobItems.size })
 
@@ -106,11 +94,8 @@ fun RecommendJobs(
         ) { page ->
             val job = jobItems[page]
             JobItem(
-                position = job.position,
-                place = job.place,
-                hoursPerDay = job.hoursPerDay,
-                hourlyWage = job.hourlyWage,
                 onApply = onClick,
+                job = job,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
         }
@@ -120,10 +105,7 @@ fun RecommendJobs(
 @Composable
 fun JobItem(
     modifier: Modifier = Modifier,
-    position: String = "Cafe Staff",
-    place: String = "Starbucks Gangnam Branch",
-    hoursPerDay: String = "4h/day",
-    hourlyWage: String = "2,000/h",
+    job: JobData,
     onApply: () -> Unit = {},
 ) {
     Card(
@@ -145,7 +127,7 @@ fun JobItem(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = commonR.drawable.icon_cafe),
+                        painter = painterResource(id = job.imageRes),
                         contentDescription = null,
                     )
                 }
@@ -156,14 +138,14 @@ fun JobItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = position,
+                        text = job.position,
                         style = HeyFYTheme.typography.bodyM,
                         color = Color(0xFF111827),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = place,
+                        text = job.place,
                         style = HeyFYTheme.typography.labelM,
                         color = Color(0xFF6B7280),
                         maxLines = 1,
@@ -195,8 +177,8 @@ fun JobItem(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Spacer(Modifier.weight(1f))
-                InfoChip(imageRes = commonR.drawable.icon_time, text = hoursPerDay)
-                InfoChip(imageRes = commonR.drawable.icon_won, text = hourlyWage)
+                InfoChip(imageRes = commonR.drawable.icon_time, text = job.hoursPerDay)
+                InfoChip(imageRes = commonR.drawable.icon_won, text = job.hourlyWage)
             }
         }
     }
@@ -230,7 +212,14 @@ private fun JobItemPreview() {
     HeyFYTheme {
         JobItem(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(16.dp),
+            job = JobData(
+                imageRes = commonR.drawable.icon_cafe,
+                position = "Cafe Staff",
+                place = "Starbucks Gangnam Branch",
+                hoursPerDay = "4h/day",
+                hourlyWage = "12,000/h",
+            )
         )
     }
 }

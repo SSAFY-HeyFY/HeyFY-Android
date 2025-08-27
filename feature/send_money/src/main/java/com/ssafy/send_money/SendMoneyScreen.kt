@@ -50,6 +50,8 @@ fun SendMoneyScreen(
     val transferNote by viewModel.transferNote.collectAsStateWithLifecycle()
     val transferAmount by viewModel.transferAmount.collectAsStateWithLifecycle()
     val password by viewModel.pinNumber.collectAsStateWithLifecycle()
+    val checkPin by viewModel.checkPin.collectAsStateWithLifecycle()
+    val showPasswordBottomSheet by viewModel.showPasswordBottomSheet.collectAsStateWithLifecycle()
 
     val isFxAccount = viewModel.isFXAccount
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
@@ -63,11 +65,8 @@ fun SendMoneyScreen(
     val transferAmountFocusRequester = remember { FocusRequester() }
     var errorMessage by remember { mutableStateOf("") }
 
-    // Password
-    var showPasswordBottomSheet by remember { mutableStateOf(false) }
     var isPasswordError by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val correctPassword = "123456"
 
     val currency = if (isFxAccount) "USD" else "KRW"
 
@@ -96,13 +95,22 @@ fun SendMoneyScreen(
 
     LaunchedEffect(password) {
         if (password.length < 6) return@LaunchedEffect
-        if (password == correctPassword) {
-            showPasswordBottomSheet = false
-            isPasswordError = false
-            viewModel.action(SendMoneyUiEvent.ClickTransfer)
-        } else {
-            viewModel.action(SendMoneyUiEvent.UpdatePinNumber(""))
+        viewModel.action(SendMoneyUiEvent.ClickTransfer)
+
+    }
+
+    LaunchedEffect(checkPin) {
+        if(checkPin.not()) {
             isPasswordError = true
+        }
+    }
+
+    LaunchedEffect(isPasswordError) {
+        if(isPasswordError) {
+            delay(700)
+            viewModel.action(SendMoneyUiEvent.UpdatePinNumber(""))
+            viewModel.action(SendMoneyUiEvent.UpdateCheckPin(true))
+            isPasswordError = false
         }
     }
 
@@ -119,7 +127,7 @@ fun SendMoneyScreen(
                 isEnabled = accountNumber.isNotEmpty() && transferAmount.isNotEmpty(),
                 onContinue = {
                     keyboardController?.hide()
-                    showPasswordBottomSheet = true
+                    viewModel.action(SendMoneyUiEvent.UpdateShowPasswordBottomSheet(true))
                 }
             )
         },
@@ -215,9 +223,8 @@ fun SendMoneyScreen(
             bottomSheetState = bottomSheetState,
             password = password,
             isPasswordError = isPasswordError,
-            updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
+            updateShowPasswordBottomSheet = { viewModel.action(SendMoneyUiEvent.UpdateShowPasswordBottomSheet(it)) },
             updatePassword = { viewModel.action(SendMoneyUiEvent.UpdatePinNumber(it)) },
-            updateIsPasswordError = { isPasswordError = it }
         )
     }
 }
