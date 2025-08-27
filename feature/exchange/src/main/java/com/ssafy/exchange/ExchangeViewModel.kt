@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.common.data_store.TokenManager
+import com.ssafy.common.error.RefreshTokenExpiredError
+import com.ssafy.common.error.SidExpiredError
 import com.ssafy.exchange.domain.ExchangeForeignUseCase
 import com.ssafy.exchange.domain.ExchangeUseCase
 import com.ssafy.exchange.domain.GetAiPredictionUseCase
@@ -223,21 +225,13 @@ class ExchangeViewModel @Inject constructor(
     }
 
     private fun handleFailure(throwable: Throwable) {
-        when (throwable.message) {
-            "EXPIRED_TOKEN" -> {
-                // TODO : 토큰 만료
-            }
-
-            "EXPIRED_REFRESH_TOKEN" -> {
+        when(throwable) {
+            is RefreshTokenExpiredError -> {
                 goToLogin()
-                // TODO : 리프레쉬 토큰 만료
             }
-
-            "SID_INVALID_OR_EXPIRED" -> {
+            is SidExpiredError -> {
                 goToAuth()
-                // TODO : 세션 만료
             }
-
             else -> {
                 updateUiState(
                     ExchangeUiState.Error(

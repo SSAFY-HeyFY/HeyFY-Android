@@ -1,11 +1,11 @@
 package com.ssafy.network.utils
 
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.ssafy.common.error.RefreshTokenExpiredError
+import com.ssafy.common.error.SidExpiredError
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
-import com.ssafy.network.utils.ErrorResponse
 
 object ApiUtils {
 
@@ -23,11 +23,9 @@ object ApiUtils {
                 val errorResponse = parseErrorResponse(response.errorBody()?.string())
                 Timber.tag("pjh").e("Error Response: $errorResponse")
 
-                when(errorResponse.getErrorCodeOrDefault()) {
-                    "EXPIRED_TOKEN" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
-                    "EXPIRED_REFRESH_TOKEN" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
-                    "SID_INVALID_OR_EXPIRED" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
-                    "UNAUTHORIZED" -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
+                when (errorResponse.getErrorCodeOrDefault()) {
+                    "EXPIRED_REFRESH_TOKEN" -> Result.failure(RefreshTokenExpiredError())
+                    "SID_INVALID_OR_EXPIRED" -> Result.failure(SidExpiredError())
                     else -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
                 }
             }

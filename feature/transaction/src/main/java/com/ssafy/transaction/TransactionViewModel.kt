@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.account.domain.GetForeignTransactionHistoryUseCase
 import com.ssafy.account.domain.GetTransactionHistoryUseCase
 import com.ssafy.account.domain.model.TransactionHistory
+import com.ssafy.common.error.RefreshTokenExpiredError
+import com.ssafy.common.error.SidExpiredError
 import com.ssafy.common.text.TextFormat.formatCurrencyKRW
 import com.ssafy.common.text.TextFormat.formatCurrencyUSD
 import com.ssafy.home.domain.FetchHomeUseCase
@@ -132,17 +134,12 @@ class TransactionViewModel @Inject constructor(
     }
 
     private fun handleFailure(throwable: Throwable) {
-        when(throwable.message) {
-            "EXPIRED_TOKEN" -> {
-                // TODO : 토큰 만료
-            }
-            "EXPIRED_REFRESH_TOKEN" -> {
+        when(throwable) {
+            is RefreshTokenExpiredError -> {
                 goToLogin()
-                // TODO : 리프레쉬 토큰 만료
             }
-            "SID_INVALID_OR_EXPIRED" -> {
+            is SidExpiredError -> {
                 goToAuth()
-                // TODO : 세션 만료
             }
             else -> {
                 updateUiState(
