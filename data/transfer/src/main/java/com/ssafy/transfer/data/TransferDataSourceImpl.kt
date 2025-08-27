@@ -13,12 +13,14 @@ class TransferDataSourceImpl @Inject constructor(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
+        pinNumber: String,
     ): Response<TransferResponse> {
         return transferApi.transferDomestic(
             TransferRequest(
                 depositAccountNo = depositAccountNo,
                 transactionSummary = transactionSummary,
                 amount = amount,
+                pinNumber = pinNumber,
             )
         )
     }
@@ -27,12 +29,14 @@ class TransferDataSourceImpl @Inject constructor(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
+        pinNumber: String,
     ): Response<TransferResponse> {
         return transferApi.transferForeign(
             TransferRequest(
                 depositAccountNo = depositAccountNo,
                 transactionSummary = transactionSummary,
                 amount = amount,
+                pinNumber = pinNumber,
             )
         )
     }

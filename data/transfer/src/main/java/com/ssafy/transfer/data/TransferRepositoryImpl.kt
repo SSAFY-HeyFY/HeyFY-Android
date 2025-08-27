@@ -12,16 +12,18 @@ class TransferRepositoryImpl @Inject constructor(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
-    ): Result<Boolean> {
+        pinNumber: String,
+    ): Result<Unit> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferDomestic(
                     depositAccountNo = depositAccountNo,
                     transactionSummary = transactionSummary,
-                    amount = amount
+                    amount = amount,
+                    pinNumber = pinNumber
                 )
             },
-            convert = { it.success }
+            convert = {  }
         )
     }
 
@@ -29,16 +31,18 @@ class TransferRepositoryImpl @Inject constructor(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
-    ): Result<Boolean> {
+        pinNumber: String,
+    ): Result<Unit> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferForeign(
                     depositAccountNo = depositAccountNo,
                     transactionSummary = transactionSummary,
                     amount = amount,
+                    pinNumber = pinNumber,
                 )
             },
-            convert = { it.success }
+            convert = {  }
         )
     }
 }

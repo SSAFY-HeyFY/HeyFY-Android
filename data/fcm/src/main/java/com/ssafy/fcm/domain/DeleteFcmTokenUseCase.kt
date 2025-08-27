@@ -9,3 +9,4 @@ class DeleteFcmTokenUseCase @Inject constructor(
         return fcmRepository.deleteFcmToken(fcmToken)
     }
 }
+

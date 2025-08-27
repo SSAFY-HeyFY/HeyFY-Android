@@ -11,3 +11,4 @@ interface ExchangeDataSource {
     suspend fun getAiPrediction(): Response<ExchangeAiPredictionResponse>
     suspend fun getHistoricalAnalysis(): Response<ExchangeHistoricalAnalysisResponse>
 }
+

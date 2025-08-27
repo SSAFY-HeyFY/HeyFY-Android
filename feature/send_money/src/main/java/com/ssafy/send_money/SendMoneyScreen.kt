@@ -49,6 +49,7 @@ fun SendMoneyScreen(
     val accountNumber by viewModel.depositAccountNo.collectAsStateWithLifecycle()
     val transferNote by viewModel.transferNote.collectAsStateWithLifecycle()
     val transferAmount by viewModel.transferAmount.collectAsStateWithLifecycle()
+    val password by viewModel.pinNumber.collectAsStateWithLifecycle()
 
     val isFxAccount = viewModel.isFXAccount
     var showInsufficientBalanceError by remember { mutableStateOf(false) }
@@ -64,7 +65,6 @@ fun SendMoneyScreen(
 
     // Password
     var showPasswordBottomSheet by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
     var isPasswordError by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val correctPassword = "123456"
@@ -98,10 +98,10 @@ fun SendMoneyScreen(
         if (password.length < 6) return@LaunchedEffect
         if (password == correctPassword) {
             showPasswordBottomSheet = false
-            password = ""
             isPasswordError = false
             viewModel.action(SendMoneyUiEvent.ClickTransfer)
         } else {
+            viewModel.action(SendMoneyUiEvent.UpdatePinNumber(""))
             isPasswordError = true
         }
     }
@@ -216,7 +216,7 @@ fun SendMoneyScreen(
             password = password,
             isPasswordError = isPasswordError,
             updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
-            updatePassword = { password = it },
+            updatePassword = { viewModel.action(SendMoneyUiEvent.UpdatePinNumber(it)) },
             updateIsPasswordError = { isPasswordError = it }
         )
     }

@@ -9,3 +9,4 @@ class GetHistoricalAnalysisUseCase @Inject constructor(
         return exchangeRepository.getHistoricalAnalysis()
     }
 }
+

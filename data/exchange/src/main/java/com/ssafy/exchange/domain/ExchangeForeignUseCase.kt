@@ -10,3 +10,4 @@ class ExchangeForeignUseCase @Inject constructor(
         return exchangeRepository.exchangeForeign(transactionBalance)
     }
 }
+

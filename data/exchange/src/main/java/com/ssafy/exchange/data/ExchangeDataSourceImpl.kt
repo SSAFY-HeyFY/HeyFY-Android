@@ -36,3 +36,4 @@ class ExchangeDataSourceImpl @Inject constructor(
         return exchangeApi.getHistoricalAnalysis()
     }
 }
+

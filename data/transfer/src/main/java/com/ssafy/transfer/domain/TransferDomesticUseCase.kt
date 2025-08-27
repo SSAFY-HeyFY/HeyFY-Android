@@ -9,7 +9,13 @@ class TransferDomesticUseCase @Inject constructor(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
-    ): Result<Boolean> {
-        return transferRepository.transferDomestic(depositAccountNo, transactionSummary,amount)
+        pinNumber: String,
+    ): Result<Unit> {
+        return transferRepository.transferDomestic(
+            depositAccountNo,
+            transactionSummary,
+            amount,
+            pinNumber
+        )
     }
 }

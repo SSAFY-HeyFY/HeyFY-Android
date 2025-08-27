@@ -8,11 +8,13 @@ interface TransferDataSource {
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
+        pinNumber: String,
     ): Response<TransferResponse>
 
     suspend fun transferForeign(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
+        pinNumber: String,
     ): Response<TransferResponse>
 }

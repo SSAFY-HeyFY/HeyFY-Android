@@ -10,4 +10,5 @@ sealed class SendMoneyUiEvent {
     data class UpdateTransferNote(val note: String) : SendMoneyUiEvent()
     data class UpdateTransferAmount(val amount: String) : SendMoneyUiEvent()
     data class UpdateDepositAccountNo(val accountNo: String) : SendMoneyUiEvent()
+    data class UpdatePinNumber(val pinNumber: String) : SendMoneyUiEvent()
 }

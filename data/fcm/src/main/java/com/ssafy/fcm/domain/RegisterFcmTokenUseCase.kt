@@ -9,3 +9,4 @@ class RegisterFcmTokenUseCase @Inject constructor(
         return fcmRepository.registerFcmToken(fcmToken)
     }
 }
+

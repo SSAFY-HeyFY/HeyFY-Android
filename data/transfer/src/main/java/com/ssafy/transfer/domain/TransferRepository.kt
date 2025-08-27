@@ -6,12 +6,14 @@ interface TransferRepository {
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
-    ): Result<Boolean>
+        pinNumber: String,
+    ): Result<Unit>
 
 
     suspend fun transferForeign(
         depositAccountNo: String,
         transactionSummary: String,
         amount: String,
-    ): Result<Boolean>
+        pinNumber: String,
+    ): Result<Unit>
 }

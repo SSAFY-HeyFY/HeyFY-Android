@@ -5,3 +5,4 @@ data class ExchangeResponse(
     val withdrawalAccountBalance: Double,
     val transactionBalance: Double
 )
+

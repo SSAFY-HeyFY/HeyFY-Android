@@ -8,3 +8,4 @@ interface ExchangeRepository {
     suspend fun getAiPrediction(): Result<String>
     suspend fun getHistoricalAnalysis(): Result<String>
 }
+

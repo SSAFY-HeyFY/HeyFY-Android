@@ -9,3 +9,4 @@ class GetAiPredictionUseCase @Inject constructor(
         return exchangeRepository.getAiPrediction()
     }
 }
+

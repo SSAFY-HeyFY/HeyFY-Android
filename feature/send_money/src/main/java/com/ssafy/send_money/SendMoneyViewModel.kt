@@ -51,6 +51,9 @@ class SendMoneyViewModel @Inject constructor(
     private val _transferAmount = MutableStateFlow("")
     val transferAmount = _transferAmount.asStateFlow()
 
+    private val _pinNumber = MutableStateFlow("")
+    val pinNumber = _pinNumber.asStateFlow()
+
     fun action(event: SendMoneyUiEvent) {
         when (event) {
             SendMoneyUiEvent.Init -> {
@@ -74,6 +77,10 @@ class SendMoneyViewModel @Inject constructor(
             is SendMoneyUiEvent.UpdateDepositAccountNo -> {
                 _depositAccountNo.value = event.accountNo
             }
+            is SendMoneyUiEvent.UpdatePinNumber -> {
+                _pinNumber.value = event.pinNumber
+            }
+
             SendMoneyUiEvent.ClickBack -> back()
         }
     }
@@ -102,6 +109,7 @@ class SendMoneyViewModel @Inject constructor(
                 depositAccountNo = "0014084444636603",
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
+                pinNumber = pinNumber.value,
             ).onSuccess {
                 goToSuccess()
             }.onFailure(::handleFailure)
@@ -116,6 +124,7 @@ class SendMoneyViewModel @Inject constructor(
                 depositAccountNo = "0014433880825658",
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
+                pinNumber = pinNumber.value,
             ).onSuccess {
                 goToSuccess()
             }.onFailure(::handleFailure)

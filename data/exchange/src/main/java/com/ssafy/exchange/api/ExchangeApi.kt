@@ -27,3 +27,4 @@ interface ExchangeApi {
     @GET("/exchange/historical-analysis")
     suspend fun getHistoricalAnalysis(): Response<ExchangeHistoricalAnalysisResponse>
 }
+
