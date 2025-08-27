@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -90,13 +91,18 @@ internal fun ResidenceCard(
 
             Box(
                 modifier = Modifier
-                    .padding(12.dp)
+                    .padding(4.dp)
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     TitleSection()
-                    HorizontalDivider(thickness = 1.dp, color = Color(0xFFF3F4F6))
+
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        thickness = 1.dp,
+                        color = Color(0xFFF3F4F6),
+                        )
                     IdItem(
                         modifier = Modifier.weight(1f),
                         title = "외국인등록번호",
@@ -129,6 +135,7 @@ internal fun ResidenceCard(
 
                 Box(
                     modifier = Modifier
+                        .padding(8.dp)
                         .size(width = 90.dp, height = 110.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(Color.White)
@@ -146,14 +153,19 @@ internal fun ResidenceCard(
 }
 
 @Composable
-private fun TitleSection() {
-    Row(verticalAlignment = Alignment.Bottom) {
+private fun TitleSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .offset(x = 60.dp)
+    ) {
         Text(
             text = "외국인 등록증",
-            style = HeyFYTheme.typography.headlineM,
+            style = HeyFYTheme.typography.labelM,
             color = Color.Black
         )
-        Spacer(Modifier.width(4.dp))
+
         Text(
             text = "RESIDENCE CARD",
             style = HeyFYTheme.typography.bodyS,

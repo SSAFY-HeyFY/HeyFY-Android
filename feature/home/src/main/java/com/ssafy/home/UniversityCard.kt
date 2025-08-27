@@ -146,7 +146,6 @@ internal fun UniversityCard(
         }
     }
 
-    // QR 바텀 시트
     if (showQRBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = { showQRBottomSheet = false },
