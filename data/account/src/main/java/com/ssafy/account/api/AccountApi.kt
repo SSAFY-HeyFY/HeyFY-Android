@@ -13,12 +13,12 @@ import retrofit2.http.POST
 
 interface AccountApi {
 
-    @POST("/transactionhistory")
+    @POST("/inquire/transactionhistory")
     suspend fun getTransactionHistory(
         @Body request: TransactionHistoryRequest
     ): Response<TransactionHistoryResponse>
 
-    @POST("/foreigntransactionhistory")
+    @POST("/inquire/foreigntransactionhistory")
     suspend fun getForeignTransactionHistory(
         @Body request: TransactionHistoryRequest
     ): Response<ForeignTransactionHistoryResponse>

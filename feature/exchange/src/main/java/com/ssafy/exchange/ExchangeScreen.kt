@@ -41,9 +41,12 @@ fun ExchangeScreen(
     val historicalAnalysis by viewModel.historicalAnalysis.collectAsStateWithLifecycle()
     val aiPrediction by viewModel.aiPrediction.collectAsStateWithLifecycle()
     val isUSD by viewModel.isUSD.collectAsStateWithLifecycle()
+    val exchangeAmount by viewModel.exchangeAmount.collectAsStateWithLifecycle()
+    val password by viewModel.pinNumber.collectAsStateWithLifecycle()
+    val checkPin by viewModel.checkPin.collectAsStateWithLifecycle()
+    val showPasswordBottomSheet by viewModel.showPasswordBottomSheet.collectAsStateWithLifecycle()
 
-    var exchangeAmount by remember { mutableStateOf("") }
-    val currentRate = 1347.50
+    val currentRate by viewModel.currentRate.collectAsStateWithLifecycle()
     var errorMessage by remember { mutableStateOf("") }
 
     val receivedAmount = exchangeAmount.toDoubleOrNull()?.let {
@@ -56,12 +59,8 @@ fun ExchangeScreen(
 
     val exchangeAmountL = exchangeAmount.toLongOrNull() ?: 0L
 
-    // Password
-    var showPasswordBottomSheet by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
     var isPasswordError by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val correctPassword = "123456"
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -92,13 +91,22 @@ fun ExchangeScreen(
 
     LaunchedEffect(password) {
         if (password.length < 6) return@LaunchedEffect
-        if (password == correctPassword) {
-            showPasswordBottomSheet = false
-            password = ""
-            isPasswordError = false
-            viewModel.action(ExchangeUiEvent.Exchange(exchangeAmount.toInt()))
-        } else {
+        viewModel.action(ExchangeUiEvent.Exchange)
+
+    }
+
+    LaunchedEffect(checkPin) {
+        if(checkPin.not()) {
             isPasswordError = true
+        }
+    }
+
+    LaunchedEffect(isPasswordError) {
+        if(isPasswordError) {
+            delay(700)
+            viewModel.action(ExchangeUiEvent.UpdatePinNumber(""))
+            viewModel.action(ExchangeUiEvent.UpdateCheckPin(true))
+            isPasswordError = false
         }
     }
 
@@ -117,7 +125,7 @@ fun ExchangeScreen(
                 isEnabled = isExchangeAmountValid(exchangeAmountL, isUSD),
                 onClick = {
                     keyboardController?.hide()
-                    showPasswordBottomSheet = true
+                    viewModel.action(ExchangeUiEvent.UpdateShowPasswordBottomSheet(true))
                 }
             )
         },
@@ -145,7 +153,7 @@ fun ExchangeScreen(
             item {
                 ExchangeMainCard(
                     exchangeAmount = exchangeAmount,
-                    onAmountChange = { exchangeAmount = it },
+                    onAmountChange = { viewModel.action(ExchangeUiEvent.UpdateExchangeAmount(it)) },
                     currentRate = currentRate,
                     receivedAmount = receivedAmount,
                     isUSD = isUSD,
@@ -164,8 +172,8 @@ fun ExchangeScreen(
             bottomSheetState = bottomSheetState,
             password = password,
             isPasswordError = isPasswordError,
-            updateShowPasswordBottomSheet = { showPasswordBottomSheet = it },
-            updatePassword = { password = it },
+            updateShowPasswordBottomSheet = { viewModel.action(ExchangeUiEvent.UpdateShowPasswordBottomSheet(it)) },
+            updatePassword = { viewModel.action(ExchangeUiEvent.UpdatePinNumber(it)) },
         )
     }
 

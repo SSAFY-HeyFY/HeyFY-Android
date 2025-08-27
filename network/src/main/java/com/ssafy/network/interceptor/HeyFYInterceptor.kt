@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
-
 import timber.log.Timber
 import java.net.HttpURLConnection
 import javax.inject.Inject
@@ -21,7 +20,7 @@ class HeyFYInterceptor @Inject constructor(
         if (originalRequest.url.encodedPath == "/auth/refresh") {
             return chain.proceed(originalRequest)
         }
-        
+
         val builder = originalRequest.newBuilder()
         var accessToken = runBlocking { tokenManager.getAccessToken().first() }
 
@@ -51,7 +50,7 @@ class HeyFYInterceptor @Inject constructor(
 
             if (refreshToken.isNullOrEmpty() || accessToken.isNullOrEmpty()) {
                 Timber.d("Both tokens are null or empty, clearing tokens and returning unauthorized response")
-                runBlocking { 
+                runBlocking {
                     tokenManager.deleteAccessToken()
                     tokenManager.deleteRefreshToken()
                 }
@@ -87,14 +86,14 @@ class HeyFYInterceptor @Inject constructor(
                     }
                 } else {
                     Timber.e("Token refresh failed: ${refreshResponse.code()}")
-                    runBlocking { 
+                    runBlocking {
                         tokenManager.deleteAccessToken()
                         tokenManager.deleteRefreshToken()
                     }
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Exception during token refresh")
-                runBlocking { 
+                runBlocking {
                     tokenManager.deleteAccessToken()
                     tokenManager.deleteRefreshToken()
                 }

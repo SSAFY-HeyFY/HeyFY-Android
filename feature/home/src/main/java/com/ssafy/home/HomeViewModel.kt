@@ -64,6 +64,7 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeUiEvent.ClickExchange -> {
+                //goToAuth()
                 goToExchange(event.type)
             }
 
@@ -83,7 +84,7 @@ class HomeViewModel @Inject constructor(
                 viewModelScope.launch {
                     val token = fcmTokenManager.getToken() ?: return@launch
                     registerFcmTokenUseCase(token)
-                        .onFailure {  }
+                        .onFailure { }
 
                 }
             }
@@ -95,7 +96,7 @@ class HomeViewModel @Inject constructor(
                         .onSuccess {
                             fcmTokenManager.deleteToken()
                         }
-                        .onFailure {  }
+                        .onFailure { }
                 }
             }
         }
@@ -162,13 +163,49 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun goToLogin() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Login(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun goToAuth() {
+        viewModelScope.launch {
+            navigator.navigateTo(
+                route = Destination.Auth(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
     private fun updateUiState(state: HomeUiState) {
         _uiState.value = state
     }
 
     private fun handleFailure(throwable: Throwable) {
-        updateUiState(HomeUiState.Error(
-            mag = throwable.message ?: "An unexpected error has occurred. Please contact the administrator"
-        ))
+        when(throwable.message) {
+            "EXPIRED_TOKEN" -> {
+                // TODO : 토큰 만료
+            }
+            "EXPIRED_REFRESH_TOKEN" -> {
+                goToLogin()
+                // TODO : 리프레쉬 토큰 만료
+            }
+            "SID_INVALID_OR_EXPIRED" -> {
+                goToAuth()
+                // TODO : 세션 만료
+            }
+            else -> {
+                updateUiState(
+                    HomeUiState.Error(
+                        mag = throwable.message
+                            ?: "An unexpected error has occurred. Please contact the administrator"
+                    )
+                )
+            }
+        }
     }
 }

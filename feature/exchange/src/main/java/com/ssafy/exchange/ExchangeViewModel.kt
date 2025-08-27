@@ -3,12 +3,16 @@ package com.ssafy.exchange
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.data_store.TokenManager
 import com.ssafy.exchange.domain.ExchangeForeignUseCase
 import com.ssafy.exchange.domain.ExchangeUseCase
 import com.ssafy.exchange.domain.GetAiPredictionUseCase
 import com.ssafy.exchange.domain.GetHistoricalAnalysisUseCase
 import com.ssafy.exchange.model.ExchangeUiEvent
 import com.ssafy.exchange.model.ExchangeUiState
+import com.ssafy.finance.domain.GetCurrentFinanceUseCase
+import com.ssafy.login.domain.CheckPin
+import com.ssafy.login.domain.CheckPinUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.navigation.DestinationParamConstants.FX_ACCOUNT
@@ -25,9 +29,12 @@ import javax.inject.Inject
 class ExchangeViewModel @Inject constructor(
     private val getAiPredictionUseCase: GetAiPredictionUseCase,
     private val getHistoricalAnalysisUseCase: GetHistoricalAnalysisUseCase,
+    private val getCurrentFinanceUseCase: GetCurrentFinanceUseCase,
     private val exchangeUseCase: ExchangeUseCase,
     private val exchangeForeignUseCase: ExchangeForeignUseCase,
+    private val checkPinUseCase: CheckPinUseCase,
     private val heyFYAppNavigator: HeyFYAppNavigator,
+    private val tokenManager: TokenManager,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -45,6 +52,21 @@ class ExchangeViewModel @Inject constructor(
     private val _isUSD = MutableStateFlow(type == FX_ACCOUNT)
     val isUSD: StateFlow<Boolean> = _isUSD.asStateFlow()
 
+    private val _exchangeAmount = MutableStateFlow("")
+    val exchangeAmount = _exchangeAmount.asStateFlow()
+
+    private val _pinNumber = MutableStateFlow("")
+    val pinNumber = _pinNumber.asStateFlow()
+
+    private val _checkPin = MutableStateFlow(true)
+    val checkPin = _checkPin.asStateFlow()
+
+    private val _showPasswordBottomSheet = MutableStateFlow(false)
+    val showPasswordBottomSheet = _showPasswordBottomSheet.asStateFlow()
+
+    private val _currentRate = MutableStateFlow(0.0)
+    val currentRate = _currentRate.asStateFlow()
+
     fun action(event: ExchangeUiEvent) {
         when (event) {
             ExchangeUiEvent.Init -> {
@@ -55,18 +77,37 @@ class ExchangeViewModel @Inject constructor(
                 back()
             }
 
-            is ExchangeUiEvent.Exchange -> {
-                exchange(event.balance)
+            ExchangeUiEvent.Exchange -> {
+                checkPinNumber()
             }
 
             ExchangeUiEvent.UpdateIsUSD -> {
                 _isUSD.value = isUSD.value.not()
+            }
+
+            is ExchangeUiEvent.UpdateExchangeAmount -> {
+                _exchangeAmount.value = event.balance
+            }
+
+            is ExchangeUiEvent.UpdatePinNumber -> {
+                _pinNumber.value = event.pinNumber
+            }
+
+            is ExchangeUiEvent.UpdateCheckPin -> { ->
+                {
+                    _checkPin.value = event.checkPin
+                }
+            }
+
+            is ExchangeUiEvent.UpdateShowPasswordBottomSheet -> {
+                _showPasswordBottomSheet.value = event.isShow
             }
         }
     }
 
     private fun init() {
         fetch()
+        getCurrentFinance()
     }
 
     private fun fetch() {
@@ -90,15 +131,28 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
-    private fun exchange(balance: Int) {
+    private fun getCurrentFinance() {
+        viewModelScope.launch {
+            getCurrentFinanceUseCase()
+                .onSuccess {
+                    _currentRate.value = it.usd.rate
+                    updateUiState(ExchangeUiState.Success)
+                }
+                .onFailure {
+                    handleFailure(it)
+                }
+        }
+    }
+
+    private fun exchange() {
         viewModelScope.launch {
             if (isUSD.value) {
-                exchangeUseCase(balance, "")
+                exchangeUseCase(exchangeAmount.value.toInt(), pinNumber.value)
                     .onSuccess {
                         goToSuccess()
                     }.onFailure(::handleFailure)
             } else {
-                exchangeForeignUseCase(balance, "")
+                exchangeForeignUseCase(exchangeAmount.value.toInt(), pinNumber.value)
                     .onSuccess {
                         goToSuccess()
                     }.onFailure(::handleFailure)
@@ -106,11 +160,53 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
+    private fun checkPinNumber() {
+        viewModelScope.launch {
+            checkPinUseCase(pinNumber.value)
+                .onSuccess { result ->
+                    handlePinCheckResult(result)
+                    updateUiState(ExchangeUiState.Success)
+                }
+                .onFailure(::handleFailure)
+        }
+    }
+
+    private suspend fun handlePinCheckResult(checkPin: CheckPin) {
+        if (!checkPin.correct) {
+            _checkPin.value = false
+            return
+        }
+
+        if (checkPin.txnToken.isNotEmpty()) {
+            tokenManager.saveTxnAuthToken(checkPin.txnToken)
+        }
+
+        exchange()
+    }
+
     private fun goToSuccess() {
         viewModelScope.launch {
             delay(500)
             heyFYAppNavigator.navigateTo(
                 route = Destination.Success(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun goToLogin() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Login(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun goToAuth() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Auth(),
                 isBackStackCleared = true,
             )
         }
@@ -127,11 +223,29 @@ class ExchangeViewModel @Inject constructor(
     }
 
     private fun handleFailure(throwable: Throwable) {
-        updateUiState(
-            ExchangeUiState.Error(
-                mag = throwable.message
-                    ?: "An unexpected error has occurred. Please contact the administrator"
-            )
-        )
+        when (throwable.message) {
+            "EXPIRED_TOKEN" -> {
+                // TODO : 토큰 만료
+            }
+
+            "EXPIRED_REFRESH_TOKEN" -> {
+                goToLogin()
+                // TODO : 리프레쉬 토큰 만료
+            }
+
+            "SID_INVALID_OR_EXPIRED" -> {
+                goToAuth()
+                // TODO : 세션 만료
+            }
+
+            else -> {
+                updateUiState(
+                    ExchangeUiState.Error(
+                        mag = throwable.message
+                            ?: "An unexpected error has occurred. Please contact the administrator"
+                    )
+                )
+            }
+        }
     }
 }

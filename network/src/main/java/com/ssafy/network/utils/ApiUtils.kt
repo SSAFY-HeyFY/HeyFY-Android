@@ -3,9 +3,12 @@ package com.ssafy.network.utils
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
+import com.ssafy.network.utils.ErrorResponse
 
 object ApiUtils {
+
     suspend fun <T, R> safeApiCall(
         apiCall: suspend () -> Response<T>,
         convert: (T) -> R,
@@ -17,8 +20,16 @@ object ApiUtils {
                     Result.success(convert(it))
                 } ?: Result.failure(kotlin.Exception("Response Body is null"))
             } else {
-                val errorMessage = parseErrorMessage(response.errorBody()?.string())
-                Result.failure(kotlin.Exception(errorMessage))
+                val errorResponse = parseErrorResponse(response.errorBody()?.string())
+                Timber.tag("pjh").e("Error Response: $errorResponse")
+
+                when(errorResponse.getErrorCodeOrDefault()) {
+                    "EXPIRED_TOKEN" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
+                    "EXPIRED_REFRESH_TOKEN" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
+                    "SID_INVALID_OR_EXPIRED" -> Result.failure(kotlin.Exception(errorResponse.getErrorCodeOrDefault()))
+                    "UNAUTHORIZED" -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
+                    else -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
+                }
             }
         } catch (e: IOException) {
             Result.failure(IOException("Please check your network connection"))
@@ -27,14 +38,24 @@ object ApiUtils {
         }
     }
 
-    private fun parseErrorMessage(errorBody: String?): String {
+    private fun parseErrorResponse(errorBody: String?): ErrorResponse {
         return try {
             errorBody?.let { body ->
-                val jsonObject = Gson().fromJson(body, JsonObject::class.java)
-                jsonObject.get("message")?.asString ?: body
-            } ?: "Unknown error occurred"
+                Gson().fromJson(body, ErrorResponse::class.java)
+            } ?: ErrorResponse(
+                status = null,
+                httpError = null,
+                errorCode = null,
+                message = "Unknown error occurred"
+            )
         } catch (e: Exception) {
-            errorBody ?: "Unknown error occurred"
+            Timber.e("Failed to parse error response: ${e.message}")
+            ErrorResponse(
+                status = null,
+                httpError = null,
+                errorCode = null,
+                message = errorBody ?: "Unknown error occurred"
+            )
         }
     }
 }

@@ -28,25 +28,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.theme.HeyFYTheme
+import kotlinx.coroutines.delay
 import com.ssafy.common.R as commonR
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    viewModel: AuthViewModel = hiltViewModel()
+) {
 
-    // Password
-    var password by remember { mutableStateOf("") }
-    var isPasswordError by remember { mutableStateOf(false) }
-    val correctPassword = "123456"
+    val password by viewModel.pinNumber.collectAsStateWithLifecycle()
+    val isPasswordError by viewModel.isPasswordError.collectAsStateWithLifecycle()
 
     LaunchedEffect(password) {
         if (password.length < 6) return@LaunchedEffect
-        if (password == correctPassword) {
-            password = ""
-            isPasswordError = false
-            // TODO : 엑세스 토큰 갱신
-        } else {
-            isPasswordError = true
+        viewModel.checkPin()
+    }
+
+    LaunchedEffect(isPasswordError) {
+        if (isPasswordError) {
+            delay(700)
+            viewModel.updatePinNumber("")
+            viewModel.updateIsPasswordError(false)
         }
     }
 
@@ -59,8 +64,7 @@ fun AuthScreen() {
             password = password,
             isError = isPasswordError,
             onPasswordChange = {
-                password = it
-                isPasswordError = false
+                viewModel.updatePinNumber(it)
             }
         )
     }

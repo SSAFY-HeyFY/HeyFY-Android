@@ -2,6 +2,7 @@ package com.ssafy.login.data
 
 import com.ssafy.login.domain.LoginRepository
 import com.ssafy.login.domain.CheckPin
+import com.ssafy.login.domain.RefreshSid
 import com.ssafy.login.domain.model.Token
 import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
@@ -39,6 +40,23 @@ class LoginRepositoryImpl @Inject constructor(
                 CheckPin(
                     txnToken = response.txnToken ?: "",
                     correct = response.correct
+                )
+            }
+        )
+    }
+
+    override suspend fun refreshSid(
+        pinNumber: String,
+    ): Result<RefreshSid> {
+        return safeApiCall(
+            apiCall = {
+                loginDataSource.refreshSid(
+                    pinNumber = pinNumber
+                )
+            },
+            convert = { response ->
+                RefreshSid(
+                    sid = response.sid
                 )
             }
         )

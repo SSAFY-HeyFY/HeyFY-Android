@@ -109,16 +109,49 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    private fun goToLogin() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Login(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun goToAuth() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Auth(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
     private fun updateUiState(state: AccountUiState) {
         _uiState.value = state
     }
 
     private fun handleFailure(throwable: Throwable) {
-        updateUiState(
-            AccountUiState.Error(
-                mag = throwable.message
-                    ?: "An unexpected error has occurred. Please contact the administrator"
-            )
-        )
+        when(throwable.message) {
+            "EXPIRED_TOKEN" -> {
+                // TODO : 토큰 만료
+            }
+            "EXPIRED_REFRESH_TOKEN" -> {
+                goToLogin()
+                // TODO : 리프레쉬 토큰 만료
+            }
+            "SID_INVALID_OR_EXPIRED" -> {
+                goToAuth()
+                // TODO : 세션 만료
+            }
+            else -> {
+                updateUiState(
+                    AccountUiState.Error(
+                        mag = throwable.message
+                            ?: "An unexpected error has occurred. Please contact the administrator"
+                    )
+                )
+            }
+        }
     }
 }

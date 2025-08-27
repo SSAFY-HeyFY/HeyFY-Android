@@ -13,5 +13,9 @@ interface LoginRepository {
         pinNumber: String,
     ): Result<CheckPin>
 
+    suspend fun refreshSid(
+        pinNumber: String,
+    ): Result<RefreshSid>
+
 }
 
