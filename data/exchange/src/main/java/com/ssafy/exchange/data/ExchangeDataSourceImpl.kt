@@ -12,18 +12,20 @@ class ExchangeDataSourceImpl @Inject constructor(
     private val exchangeApi: ExchangeApi
 ) : ExchangeDataSource {
 
-    override suspend fun exchange(transactionBalance: Int): Response<ExchangeResponse> {
+    override suspend fun exchange(transactionBalance: Int, pinNumber: String): Response<ExchangeResponse> {
         return exchangeApi.exchange(
             request = ExchangeRequest(
-                transactionBalance = transactionBalance
+                transactionBalance = transactionBalance,
+                pinNumber = pinNumber
             )
         )
     }
 
-    override suspend fun exchangeForeign(transactionBalance: Int): Response<ExchangeResponse> {
+    override suspend fun exchangeForeign(transactionBalance: Int, pinNumber: String): Response<ExchangeResponse> {
         return exchangeApi.exchangeForeign(
             request = ExchangeRequest(
-                transactionBalance = transactionBalance
+                transactionBalance = transactionBalance,
+                pinNumber = pinNumber
             )
         )
     }

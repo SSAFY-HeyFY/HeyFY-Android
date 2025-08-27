@@ -1,6 +1,7 @@
 package com.ssafy.exchange.api.request
 
 data class ExchangeRequest(
-    val transactionBalance: Int
+    val transactionBalance: Int,
+    val pinNumber: String,
 )
 

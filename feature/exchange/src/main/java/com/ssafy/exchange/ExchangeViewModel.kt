@@ -93,12 +93,12 @@ class ExchangeViewModel @Inject constructor(
     private fun exchange(balance: Int) {
         viewModelScope.launch {
             if (isUSD.value) {
-                exchangeUseCase(balance)
+                exchangeUseCase(balance, "")
                     .onSuccess {
                         goToSuccess()
                     }.onFailure(::handleFailure)
             } else {
-                exchangeForeignUseCase(balance)
+                exchangeForeignUseCase(balance, "")
                     .onSuccess {
                         goToSuccess()
                     }.onFailure(::handleFailure)

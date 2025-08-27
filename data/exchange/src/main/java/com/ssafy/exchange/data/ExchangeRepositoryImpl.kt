@@ -10,16 +10,16 @@ class ExchangeRepositoryImpl @Inject constructor(
     private val exchangeDataSource: ExchangeDataSource,
 ) : ExchangeRepository {
 
-    override suspend fun exchange(transactionBalance: Int): Result<Exchange> {
+    override suspend fun exchange(transactionBalance: Int, pinNumber: String): Result<Exchange> {
         return ApiUtils.safeApiCall(
-            apiCall = { exchangeDataSource.exchange(transactionBalance) },
+            apiCall = { exchangeDataSource.exchange(transactionBalance, pinNumber) },
             convert = { it.toExchange() }
         )
     }
 
-    override suspend fun exchangeForeign(transactionBalance: Int): Result<Exchange> {
+    override suspend fun exchangeForeign(transactionBalance: Int, pinNumber: String): Result<Exchange> {
         return ApiUtils.safeApiCall(
-            apiCall = { exchangeDataSource.exchangeForeign(transactionBalance) },
+            apiCall = { exchangeDataSource.exchangeForeign(transactionBalance, pinNumber) },
             convert = { it.toExchange() }
         )
     }
