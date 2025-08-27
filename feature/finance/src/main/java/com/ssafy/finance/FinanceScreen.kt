@@ -104,6 +104,9 @@ fun FinanceScreen(
             item {
                 TuitionPaymentSection(
                     tuition = tuition,
+                    onClick = {
+                        viewModel.action(FinanceUiEvent.ClickExchange)
+                    }
                 )
             }
 

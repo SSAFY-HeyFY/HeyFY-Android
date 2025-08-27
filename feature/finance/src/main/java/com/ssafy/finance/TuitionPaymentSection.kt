@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.utils.clickableOnce
 import com.ssafy.finance.domain.model.ExchangeRateTuition
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -31,9 +32,12 @@ import com.ssafy.common.R as commonR
 internal fun TuitionPaymentSection(
     modifier: Modifier = Modifier,
     tuition: ExchangeRateTuition,
+    onClick: () -> Unit,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickableOnce(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)

@@ -25,6 +25,7 @@ object ApiUtils {
 
                 when (errorResponse.getErrorCodeOrDefault()) {
                     "EXPIRED_REFRESH_TOKEN" -> Result.failure(RefreshTokenExpiredError())
+                    "UNAUTHORIZED" -> Result.failure(RefreshTokenExpiredError())
                     "SID_INVALID_OR_EXPIRED" -> Result.failure(SidExpiredError())
                     else -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
                 }
