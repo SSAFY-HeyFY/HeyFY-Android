@@ -47,7 +47,6 @@ import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 import com.ssafy.common.text.TextFormat.formatDateEnglish1
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.finance.domain.model.ExchangeRateHistories
-import timber.log.Timber
 import java.text.DecimalFormat
 
 @Composable
@@ -92,6 +91,14 @@ internal fun ExchangeRateChartSection(
                 }
             }
 
+            val historiesRates = histories.rates.filter { it.prediction.not() }.map { it.rate }
+            val oneDayPrediction =
+                histories.rates.filter { it.prediction && it.modelName.contains("1D") }
+                    .map { it.rate }
+            val fiveDayPrediction =
+                histories.rates.filter { it.prediction && it.modelName.contains("5D") }
+                    .map { it.rate }
+
             if (histories.rates.isNotEmpty()) {
                 Box(
                     modifier = Modifier
@@ -99,7 +106,9 @@ internal fun ExchangeRateChartSection(
                         .padding(8.dp)
                 ) {
                     JetpackComposeElectricCarSales(
-                        histories = histories.rates,
+                        historiesRates = historiesRates,
+                        oneDayPrediction = oneDayPrediction,
+                        fiveDayPrediction = fiveDayPrediction,
                         updateIndex = updateIndex
                     )
 
@@ -110,30 +119,37 @@ internal fun ExchangeRateChartSection(
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                                 .align(Alignment.TopStart)
                         ) {
+                            val (idx, color) = when {
+                                historiesRates.size >= index -> {
+                                    index - 1 to Color(0xffa485e0)
+                                }
 
-                            val color = if (histories.rates[index - 1].prediction) {
-                                Color(0xFFFF6B6B)
-                            } else {
-                                Color(0xffa485e0)
+                                historiesRates.size + oneDayPrediction.lastIndex >= index -> {
+                                    index to Color(0xFFFFC107)
+                                }
+
+                                else -> {
+                                    index + 1 to Color(0xFFFF6B6B)
+                                }
                             }
 
                             Text(
-                                text = formatDateEnglish1(histories.rates[index - 1].date),
+                                text = formatDateEnglish1(histories.rates[idx].date),
                                 style = HeyFYTheme.typography.labelS,
                                 color = color
                             )
 
                             Text(
-                                text = "Rate: ${histories.rates[index - 1].rate}",
+                                text = "Rate: ${histories.rates[idx].rate}",
                                 style = HeyFYTheme.typography.labelS,
                                 color = color
                             )
-                            val modelName = histories.rates[index - 1].modelName
+                            val modelName = histories.rates[idx].modelName
 
                             if (modelName.isNotEmpty()) {
                                 Text(
-                                    text = "Prediction: ${histories.rates[index - 1].modelName}",
-                                    style = HeyFYTheme.typography.bodyS,
+                                    text = "Prediction: ${histories.rates[idx].modelName}",
+                                    style = HeyFYTheme.typography.labelS,
                                     color = color
                                 )
                             }
@@ -153,7 +169,8 @@ private fun JetpackComposeElectricCarSales1(
 ) {
 
     val lineColor1 = Color(0xffa485e0)
-    val lineColor2 = Color(0xFFFF6B6B)
+    val lineColor2 = Color(0xFFFFC107)
+    val lineColor3 = Color(0xFFFF6B6B)
 
     val rangeProvider = CartesianLayerRangeProvider.fixed(maxY = 1500.0, minY = 1300.0)
     val yDecimalFormat = DecimalFormat("#.##")
@@ -163,7 +180,7 @@ private fun JetpackComposeElectricCarSales1(
         DefaultCartesianMarker(
             label = TextComponent(),
             guideline = LineComponent(Fill(android.graphics.Color.LTGRAY)),
-            labelPosition = DefaultCartesianMarker.LabelPosition.BelowPoint,
+            labelPosition = DefaultCartesianMarker.LabelPosition.AbovePoint,
         )
     }
 
@@ -173,7 +190,6 @@ private fun JetpackComposeElectricCarSales1(
             targets: List<CartesianMarker.Target>,
         ) {
             updateIndex(targets.first().x.toInt())
-            Timber.tag("pjh").d("updateIndex: ${targets.first().x.toInt()}")
             delegateMarker.drawOverLayers(context, targets)
         }
     }
@@ -213,6 +229,21 @@ private fun JetpackComposeElectricCarSales1(
                                 ),
                         ),
 
+                        LineCartesianLayer.rememberLine(
+                            fill = LineCartesianLayer.LineFill.single(fill(lineColor3)),
+                            areaFill =
+                                LineCartesianLayer.AreaFill.single(
+                                    fill(
+                                        ShaderProvider.verticalGradient(
+                                            arrayOf(
+                                                lineColor3.copy(alpha = 0.4f),
+                                                Color.Transparent
+                                            ),
+                                        )
+                                    )
+                                ),
+                        ),
+
                         ),
                 rangeProvider = rangeProvider,
             ),
@@ -236,21 +267,24 @@ private fun JetpackComposeElectricCarSales1(
 fun JetpackComposeElectricCarSales(
     modifier: Modifier = Modifier,
     updateIndex: (Int) -> Unit,
-    histories: List<ExchangeRateHistories.Rate>,
+    historiesRates: List<Double>,
+    oneDayPrediction: List<Double>,
+    fiveDayPrediction: List<Double>,
 ) {
     val modelProducer = remember { CartesianChartModelProducer() }
 
-    val list1 = histories.filter { it.prediction.not() }.map { it.rate }
-    val list3 = histories.filter { it.prediction }.map { it.rate }
-
-    val temp = (1..list1.size).toList()
-    val temp1 = (list1.size..list1.size + list3.size).toList()
+    val historiesRange = (1..historiesRates.size).toList()
+    val oneDayPredictionRange =
+        (historiesRates.size..historiesRates.size + oneDayPrediction.size - 1).toList()
+    val fiveDayPredictionRange =
+        (historiesRates.size + oneDayPrediction.size - 1..historiesRates.size + oneDayPrediction.size + fiveDayPrediction.size).toList()
 
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
             lineSeries {
-                series(temp, list1)
-                series(temp1, list3)
+                series(historiesRange, historiesRates)
+                series(oneDayPredictionRange, oneDayPrediction)
+                series(fiveDayPredictionRange, fiveDayPrediction)
             }
         }
     }
