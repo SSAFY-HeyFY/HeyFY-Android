@@ -25,8 +25,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
 @HiltViewModel
 class ExchangeViewModel @Inject constructor(
@@ -70,6 +70,9 @@ class ExchangeViewModel @Inject constructor(
     private val _currentRate = MutableStateFlow(0.0)
     val currentRate = _currentRate.asStateFlow()
 
+    private val _fluctuation = MutableStateFlow(0.0)
+    val fluctuation = _fluctuation.asStateFlow()
+
     private val didNavigateToAuth = AtomicBoolean(false)
     private val didNavigateToLogin = AtomicBoolean(false)
 
@@ -99,10 +102,8 @@ class ExchangeViewModel @Inject constructor(
                 _pinNumber.value = event.pinNumber
             }
 
-            is ExchangeUiEvent.UpdateCheckPin -> { ->
-                {
-                    _checkPin.value = event.checkPin
-                }
+            is ExchangeUiEvent.UpdateCheckPin -> {
+                _checkPin.value = event.checkPin
             }
 
             is ExchangeUiEvent.UpdateShowPasswordBottomSheet -> {
@@ -142,6 +143,7 @@ class ExchangeViewModel @Inject constructor(
             getCurrentFinanceUseCase()
                 .onSuccess {
                     _currentRate.value = it.usd.rate
+                    _fluctuation.value = it.usd.fluctuation
                     updateUiState(ExchangeUiState.Success)
                 }
                 .onFailure {
@@ -170,6 +172,7 @@ class ExchangeViewModel @Inject constructor(
         viewModelScope.launch {
             checkPinUseCase(pinNumber.value)
                 .onSuccess { result ->
+                    if (result.correct) _showPasswordBottomSheet.value = false
                     handlePinCheckResult(result)
                     updateUiState(ExchangeUiState.Success)
                 }
@@ -229,17 +232,19 @@ class ExchangeViewModel @Inject constructor(
     }
 
     private fun handleFailure(throwable: Throwable) {
-        when(throwable) {
+        when (throwable) {
             is RefreshTokenExpiredError -> {
                 if (didNavigateToLogin.compareAndSet(false, true)) {
                     goToLogin()
                 }
             }
+
             is SidExpiredError -> {
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
             }
+
             else -> {
                 updateUiState(
                     ExchangeUiState.Error(

@@ -45,8 +45,9 @@ fun ExchangeScreen(
     val password by viewModel.pinNumber.collectAsStateWithLifecycle()
     val checkPin by viewModel.checkPin.collectAsStateWithLifecycle()
     val showPasswordBottomSheet by viewModel.showPasswordBottomSheet.collectAsStateWithLifecycle()
-
     val currentRate by viewModel.currentRate.collectAsStateWithLifecycle()
+    val fluctuation by viewModel.fluctuation.collectAsStateWithLifecycle()
+
     var errorMessage by remember { mutableStateOf("") }
 
     val receivedAmount = exchangeAmount.toDoubleOrNull()?.let {
@@ -155,6 +156,7 @@ fun ExchangeScreen(
                     exchangeAmount = exchangeAmount,
                     onAmountChange = { viewModel.action(ExchangeUiEvent.UpdateExchangeAmount(it)) },
                     currentRate = currentRate,
+                    fluctuation = fluctuation,
                     receivedAmount = receivedAmount,
                     isUSD = isUSD,
                     onToggleCurrency = { viewModel.action(ExchangeUiEvent.UpdateIsUSD) }

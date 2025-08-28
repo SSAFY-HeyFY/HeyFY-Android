@@ -125,6 +125,7 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             checkPinUseCase(pinNumber.value)
                 .onSuccess { result ->
+                    if(result.correct) _showPasswordBottomSheet.value = false
                     handlePinCheckResult(result)
                     updateUiState(SendMoneyUiState.Success)
                 }
@@ -153,13 +154,12 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferDomesticUseCase(
-                // depositAccountNo = depositAccountNo.value,
-                depositAccountNo = "0014084444636603",
+                // depositAccountNo = depositAccountNo.value, TODO : 적용
+                depositAccountNo = "0014084444636603", // TEST
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
             ).onSuccess {
-                _showPasswordBottomSheet.value = false
                 goToSuccess()
                 tokenManager.deleteTxnAuthToken()
             }.onFailure(::handleFailure)
@@ -170,13 +170,12 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferForeignerUseCase(
-                // depositAccountNo = depositAccountNo.value,
-                depositAccountNo = "0014433880825658",
+                // depositAccountNo = depositAccountNo.value, TODO : 적용
+                depositAccountNo = "0014433880825658", // TEST
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
             ).onSuccess {
-                _showPasswordBottomSheet.value = false
                 goToSuccess()
                 tokenManager.deleteTxnAuthToken()
             }.onFailure(::handleFailure)

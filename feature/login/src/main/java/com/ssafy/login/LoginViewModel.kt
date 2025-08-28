@@ -27,11 +27,12 @@ class LoginViewModel @Inject constructor(
         studentId: String,
         password: String,
     ) {
-        // TODO : 하드 코딩 제거
         viewModelScope.launch {
             loginUseCase(
-                studentId = "12345678",
-                password = "StrongPassword123!"
+                // studentId = studentId,
+                // password = password,
+                studentId = "12345678", // TEST
+                password = "StrongPassword123!" // TEST
             ).onSuccess { token ->
                 tokenManager.saveAccessToken(token.accessToken)
                 tokenManager.saveRefreshToken(token.refreshToken)

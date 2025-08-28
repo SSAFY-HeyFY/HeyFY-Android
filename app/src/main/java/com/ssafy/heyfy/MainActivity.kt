@@ -47,7 +47,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var notificationPermissionMonitor: NotificationPermissionMonitor
+    @Inject
+    lateinit var notificationPermissionMonitor: NotificationPermissionMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,53 +107,53 @@ class MainActivity : ComponentActivity() {
                 startDestination = Destination.Splash,
                 modifier = Modifier.background(Color.White)
             ) {
-                    heyFYComposableWithFade(Destination.Main) {
-                        MainScreen()
-                    }
-
-                    heyFYComposable(Destination.CardDetail) {
-                        CardDetailScreen()
-                    }
-
-                    heyFYComposableWithFade(Destination.Splash) {
-                        SplashScreen()
-                    }
-
-                    heyFYComposableWithFade(Destination.Login) {
-                        LoginScreen()
-                    }
-
-                    heyFYComposable(Destination.Account) {
-                        AccountScreen()
-                    }
-
-                    heyFYComposable(Destination.SendMoney) {
-                        SendMoneyScreen()
-                    }
-                    heyFYComposable(Destination.Transaction) {
-                        TransactionScreen()
-                    }
-
-                    heyFYComposable(Destination.MentoClub) {
-                        MentoClubScreen()
-                    }
-
-                    heyFYComposable(Destination.Success) {
-                        SuccessScreen()
-                    }
-
-                    heyFYComposable(Destination.Exchange) {
-                        ExchangeScreen()
-                    }
-
-                    heyFYComposable(Destination.Tips) {
-                        TipsScreen()
-                    }
-
-                    heyFYComposable(Destination.Auth) {
-                        AuthScreen()
-                    }
+                heyFYComposableWithFade(Destination.Main) {
+                    MainScreen()
                 }
+
+                heyFYComposable(Destination.CardDetail) {
+                    CardDetailScreen()
+                }
+
+                heyFYComposableWithFade(Destination.Splash) {
+                    SplashScreen()
+                }
+
+                heyFYComposableWithFade(Destination.Login) {
+                    LoginScreen()
+                }
+
+                heyFYComposable(Destination.Account) {
+                    AccountScreen()
+                }
+
+                heyFYComposable(Destination.SendMoney) {
+                    SendMoneyScreen()
+                }
+                heyFYComposable(Destination.Transaction) {
+                    TransactionScreen()
+                }
+
+                heyFYComposable(Destination.MentoClub) {
+                    MentoClubScreen()
+                }
+
+                heyFYComposable(Destination.Success) {
+                    SuccessScreen()
+                }
+
+                heyFYComposable(Destination.Exchange) {
+                    ExchangeScreen()
+                }
+
+                heyFYComposable(Destination.Tips) {
+                    TipsScreen()
+                }
+
+                heyFYComposable(Destination.Auth) {
+                    AuthScreen()
+                }
+            }
         }
     }
 

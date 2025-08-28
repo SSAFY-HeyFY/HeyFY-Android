@@ -44,7 +44,6 @@ fun IdScreen(
             },
             onConfirm = {
                 isShowPopUp = false
-                // TODO : 송금 완료 처리
                 viewModel.goToSuccess()
             },
             onDismiss = {

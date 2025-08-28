@@ -40,6 +40,7 @@ internal fun ExchangeMainCard(
     exchangeAmount: String,
     onAmountChange: (String) -> Unit,
     currentRate: Double,
+    fluctuation: Double,
     receivedAmount: Double,
     isUSD: Boolean,
     onToggleCurrency: () -> Unit = {},
@@ -56,6 +57,7 @@ internal fun ExchangeMainCard(
         ) {
             CurrentExchangeRateSection(
                 currentRate = currentRate,
+                fluctuation = fluctuation,
             )
 
             AmountInputSection(
@@ -74,7 +76,7 @@ internal fun ExchangeMainCard(
 @Composable
 private fun CurrentExchangeRateSection(
     currentRate: Double,
-    isIncreased: Boolean = false,
+    fluctuation: Double,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -97,8 +99,17 @@ private fun CurrentExchangeRateSection(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            val color = if (isIncreased) Color(0xFF22C55E) else Color(0xFFEF4444)
-            val rotate = if (isIncreased) 180f else 0f
+            val rotate = when {
+                fluctuation > 0.0 -> 180f
+                fluctuation < 0.0 -> 0f
+                else -> -1f
+            }
+
+            val color = when {
+                fluctuation > 0.0 -> Color(0xFF10B981)
+                fluctuation < 0.0 -> Color(0xFFEF4444)
+                else -> Color.LightGray
+            }
 
             Icon(
                 painter = painterResource(id = commonR.drawable.icon_vector_bottom),
@@ -110,11 +121,29 @@ private fun CurrentExchangeRateSection(
             )
 
             Text(
-                text = "+2.3 (0.17%)",
+                text = if (fluctuation == 0.0) {
+                    fluctuation.toString()
+                } else {
+                    makeFluctuationString(currentRate, fluctuation)
+                },
                 style = HeyFYTheme.typography.bodyS,
                 color = color
             )
         }
+    }
+}
+
+private fun makeFluctuationString(
+    currentRate: Double,
+    fluctuation: Double,
+): String {
+    return buildString {
+        if (fluctuation > 0.0) append("+")
+        append(fluctuation.toString())
+        append("(")
+        if (fluctuation > 0.0) append("+")
+        append(String.format("%.2f", (fluctuation / currentRate) * 100))
+        append("%)")
     }
 }
 

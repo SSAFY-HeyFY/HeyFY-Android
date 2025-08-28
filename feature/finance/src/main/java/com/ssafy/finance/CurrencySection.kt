@@ -35,21 +35,21 @@ internal fun CurrencySection(
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "USD",
-            amount = current.usd.rate.toString(),
+            amount = current.usd.rate,
             change = current.usd.fluctuation,
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "CNY",
-            amount = current.cny.rate.toString(),
+            amount = current.cny.rate,
             change = current.cny.fluctuation,
         )
 
         CurrencyCard(
             modifier = Modifier.weight(1f),
             currency = "VND",
-            amount = current.vnd.rate.toString(),
+            amount = current.vnd.rate,
             change = current.vnd.fluctuation,
         )
     }
@@ -58,7 +58,7 @@ internal fun CurrencySection(
 @Composable
 private fun CurrencyCard(
     currency: String,
-    amount: String,
+    amount: Double,
     change: Double,
     modifier: Modifier = Modifier,
 ) {
@@ -97,7 +97,7 @@ private fun CurrencyCard(
             }
 
             Text(
-                text = amount,
+                text = amount.toString(),
                 style = HeyFYTheme.typography.labelL,
                 color = Color(0xFF111827)
             )
@@ -129,7 +129,7 @@ private fun CurrencyCard(
                 }
 
                 Text(
-                    text = change.toString(),
+                    text = if (change > 0.0) "+$change" else change.toString(),
                     style = HeyFYTheme.typography.bodyS,
                     color = color
                 )
