@@ -1,5 +1,7 @@
 package com.ssafy.finance
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,12 +37,13 @@ import com.ssafy.common.R as commonR
 internal fun TuitionPaymentSection(
     modifier: Modifier = Modifier,
     tuition: ExchangeRateTuition,
-    onClick: () -> Unit,
 ) {
+
+    val uriHandler = LocalUriHandler.current
+
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickableOnce(onClick = onClick),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -112,6 +118,45 @@ internal fun TuitionPaymentSection(
                             .size(48.dp)
                             .padding(10.dp),
                         tint = Color(0xFF9333EA)
+                    )
+
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFF9333EA))
+                        .padding(vertical = 12.dp)
+                        .clickableOnce { uriHandler.openUri("https://www.shinhan.com/hpe/index.jsp#041007010000") },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "Tuition Payment",
+                        style = HeyFYTheme.typography.bodyM,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFF9333EA))
+                        .padding(vertical = 12.dp)
+                        .clickableOnce { uriHandler.openUri("https://www.shinhan.com/hpe/index.jsp#041007020000") },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "Tuition History",
+                        style = HeyFYTheme.typography.bodyM,
+                        color = Color.White
                     )
                 }
             }

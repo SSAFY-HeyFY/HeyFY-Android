@@ -104,14 +104,7 @@ fun FinanceScreen(
             item {
                 TuitionPaymentSection(
                     tuition = tuition,
-                    onClick = {
-                        viewModel.action(FinanceUiEvent.ClickExchange)
-                    }
                 )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
