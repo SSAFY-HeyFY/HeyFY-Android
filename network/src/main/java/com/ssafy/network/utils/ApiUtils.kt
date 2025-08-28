@@ -21,7 +21,6 @@ object ApiUtils {
                 } ?: Result.failure(kotlin.Exception("Response Body is null"))
             } else {
                 val errorResponse = parseErrorResponse(response.errorBody()?.string())
-                Timber.tag("pjh").e("Error Response: $errorResponse")
 
                 when (errorResponse.getErrorCodeOrDefault()) {
                     "EXPIRED_REFRESH_TOKEN" -> Result.failure(RefreshTokenExpiredError())

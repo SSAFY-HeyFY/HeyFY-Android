@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val refreshSidUseCase: RefreshSidUseCase,
-    private val checkPinUseCase: CheckPinUseCase,
     private val tokenManager: TokenManager,
     private val heyFYAppNavigator: HeyFYAppNavigator,
 ) : ViewModel() {
@@ -36,26 +35,16 @@ class AuthViewModel @Inject constructor(
         _isPasswordError.value = isError
     }
 
-    fun checkPin() {
-        viewModelScope.launch {
-            checkPinUseCase(pinNumber.value)
-                .onSuccess {
-                    if (it.correct) {
-                        refreshSid()
-                    } else {
-                        updateIsPasswordError(true)
-                    }
-                }
-        }
-    }
-
     fun refreshSid() {
         viewModelScope.launch {
             refreshSidUseCase(pinNumber.value)
                 .onSuccess {
-                    tokenManager.deleteSid()
-                    tokenManager.saveSid(it.sid)
-                    goToHome()
+                    if (it.correct) {
+                        tokenManager.saveSid(it.sid)
+                        goToHome()
+                    } else {
+                        updateIsPasswordError(true) }
+
                 }
         }
     }

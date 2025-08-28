@@ -56,7 +56,8 @@ class LoginRepositoryImpl @Inject constructor(
             },
             convert = { response ->
                 RefreshSid(
-                    sid = response.sid
+                    sid = response.sid,
+                    correct = response.correct
                 )
             }
         )

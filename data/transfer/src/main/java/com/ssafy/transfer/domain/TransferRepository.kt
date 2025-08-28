@@ -7,7 +7,7 @@ interface TransferRepository {
         transactionSummary: String,
         amount: String,
         pinNumber: String,
-    ): Result<Unit>
+    ): Result<Boolean>
 
 
     suspend fun transferForeign(
@@ -15,5 +15,5 @@ interface TransferRepository {
         transactionSummary: String,
         amount: String,
         pinNumber: String,
-    ): Result<Unit>
+    ): Result<Boolean>
 }

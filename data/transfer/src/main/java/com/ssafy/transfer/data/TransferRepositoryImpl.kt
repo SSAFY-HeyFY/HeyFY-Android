@@ -13,7 +13,7 @@ class TransferRepositoryImpl @Inject constructor(
         transactionSummary: String,
         amount: String,
         pinNumber: String,
-    ): Result<Unit> {
+    ): Result<Boolean> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferDomestic(
@@ -23,7 +23,7 @@ class TransferRepositoryImpl @Inject constructor(
                     pinNumber = pinNumber
                 )
             },
-            convert = {  }
+            convert = { it.isCorrect }
         )
     }
 
@@ -32,7 +32,7 @@ class TransferRepositoryImpl @Inject constructor(
         transactionSummary: String,
         amount: String,
         pinNumber: String,
-    ): Result<Unit> {
+    ): Result<Boolean> {
         return safeApiCall(
             apiCall = {
                 transferDataSource.transferForeign(
@@ -42,7 +42,7 @@ class TransferRepositoryImpl @Inject constructor(
                     pinNumber = pinNumber,
                 )
             },
-            convert = {  }
+            convert = { it.isCorrect }
         )
     }
 }

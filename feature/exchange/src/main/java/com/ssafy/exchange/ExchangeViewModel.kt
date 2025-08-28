@@ -13,8 +13,6 @@ import com.ssafy.exchange.domain.GetHistoricalAnalysisUseCase
 import com.ssafy.exchange.model.ExchangeUiEvent
 import com.ssafy.exchange.model.ExchangeUiState
 import com.ssafy.finance.domain.GetCurrentFinanceUseCase
-import com.ssafy.login.domain.CheckPin
-import com.ssafy.login.domain.CheckPinUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.navigation.DestinationParamConstants.FX_ACCOUNT
@@ -35,9 +33,7 @@ class ExchangeViewModel @Inject constructor(
     private val getCurrentFinanceUseCase: GetCurrentFinanceUseCase,
     private val exchangeUseCase: ExchangeUseCase,
     private val exchangeForeignUseCase: ExchangeForeignUseCase,
-    private val checkPinUseCase: CheckPinUseCase,
     private val heyFYAppNavigator: HeyFYAppNavigator,
-    private val tokenManager: TokenManager,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -87,7 +83,7 @@ class ExchangeViewModel @Inject constructor(
             }
 
             ExchangeUiEvent.Exchange -> {
-                checkPinNumber()
+                exchange()
             }
 
             ExchangeUiEvent.UpdateIsUSD -> {
@@ -154,43 +150,31 @@ class ExchangeViewModel @Inject constructor(
 
     private fun exchange() {
         viewModelScope.launch {
+            updateUiState(ExchangeUiState.Loading)
             if (isUSD.value) {
                 exchangeUseCase(exchangeAmount.value.toInt(), pinNumber.value)
                     .onSuccess {
-                        goToSuccess()
+                        if (it.correct) {
+                            _showPasswordBottomSheet.value = false
+                            goToSuccess()
+                        } else {
+                            _checkPin.value = false
+                        }
+                        updateUiState(ExchangeUiState.Success)
                     }.onFailure(::handleFailure)
             } else {
                 exchangeForeignUseCase(exchangeAmount.value.toInt(), pinNumber.value)
                     .onSuccess {
-                        goToSuccess()
+                        if (it.correct) {
+                            _showPasswordBottomSheet.value = false
+                            goToSuccess()
+                        } else {
+                            _checkPin.value = false
+                        }
+                        updateUiState(ExchangeUiState.Success)
                     }.onFailure(::handleFailure)
             }
         }
-    }
-
-    private fun checkPinNumber() {
-        viewModelScope.launch {
-            checkPinUseCase(pinNumber.value)
-                .onSuccess { result ->
-                    if (result.correct) _showPasswordBottomSheet.value = false
-                    handlePinCheckResult(result)
-                    updateUiState(ExchangeUiState.Success)
-                }
-                .onFailure(::handleFailure)
-        }
-    }
-
-    private suspend fun handlePinCheckResult(checkPin: CheckPin) {
-        if (!checkPin.correct) {
-            _checkPin.value = false
-            return
-        }
-
-        if (checkPin.txnToken.isNotEmpty()) {
-            tokenManager.saveTxnAuthToken(checkPin.txnToken)
-        }
-
-        exchange()
     }
 
     private fun goToSuccess() {

@@ -5,5 +5,6 @@ data class TransferResponse(
     val amount: String,
     val currency: String,
     val transactionSummary: String,
-    val completedAt: String
+    val completedAt: String,
+    val isCorrect: Boolean,
 )

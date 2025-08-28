@@ -44,7 +44,7 @@ fun AuthScreen(
 
     LaunchedEffect(password) {
         if (password.length < 6) return@LaunchedEffect
-        viewModel.checkPin()
+        viewModel.refreshSid()
     }
 
     LaunchedEffect(isPasswordError) {

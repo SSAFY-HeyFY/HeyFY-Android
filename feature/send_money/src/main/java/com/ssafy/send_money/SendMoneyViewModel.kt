@@ -7,8 +7,6 @@ import com.ssafy.common.data_store.TokenManager
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.home.domain.FetchHomeUseCase
-import com.ssafy.login.domain.CheckPin
-import com.ssafy.login.domain.CheckPinUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.DestinationParamConstants
 import com.ssafy.navigation.HeyFYAppNavigator
@@ -29,8 +27,6 @@ class SendMoneyViewModel @Inject constructor(
     private val fetchHomeUseCase: FetchHomeUseCase,
     private val transferDomesticUseCase: TransferDomesticUseCase,
     private val transferForeignerUseCase: TransferForeignerUseCase,
-    private val checkPinUseCase: CheckPinUseCase,
-    private val tokenManager: TokenManager,
     private val heyFYAppNavigator: HeyFYAppNavigator,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -78,7 +74,7 @@ class SendMoneyViewModel @Inject constructor(
             }
 
             is SendMoneyUiEvent.ClickTransfer -> {
-                checkPinNumber()
+                transfer()
             }
 
             is SendMoneyUiEvent.UpdateTransferNote -> {
@@ -109,7 +105,7 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             fetchHomeUseCase().onSuccess {
-                if(isFXAccount) {
+                if (isFXAccount) {
                     _account.value = it.foreignAccount.accountNo
                     _balanceF.value = it.foreignAccount.balance
                 } else {
@@ -121,27 +117,7 @@ class SendMoneyViewModel @Inject constructor(
         }
     }
 
-    private fun checkPinNumber() {
-        viewModelScope.launch {
-            checkPinUseCase(pinNumber.value)
-                .onSuccess { result ->
-                    if(result.correct) _showPasswordBottomSheet.value = false
-                    handlePinCheckResult(result)
-                    updateUiState(SendMoneyUiState.Success)
-                }
-                .onFailure(::handleFailure)
-        }
-    }
-
-    private suspend fun handlePinCheckResult(checkPin: CheckPin) {
-        if (!checkPin.correct) {
-            _checkPin.value = false
-            return
-        }
-
-        if(checkPin.txnToken.isNotEmpty()) {
-            tokenManager.saveTxnAuthToken(checkPin.txnToken)
-        }
+    private fun transfer() {
         if (isFXAccount) {
             transferForeigner()
         } else {
@@ -159,9 +135,14 @@ class SendMoneyViewModel @Inject constructor(
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
-            ).onSuccess {
-                goToSuccess()
-                tokenManager.deleteTxnAuthToken()
+            ).onSuccess { correct ->
+                if(correct) {
+                    _showPasswordBottomSheet.value = false
+                    goToSuccess()
+                } else {
+                    _checkPin.value = false
+                }
+                updateUiState(SendMoneyUiState.Success)
             }.onFailure(::handleFailure)
         }
     }
@@ -175,9 +156,13 @@ class SendMoneyViewModel @Inject constructor(
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
-            ).onSuccess {
-                goToSuccess()
-                tokenManager.deleteTxnAuthToken()
+            ).onSuccess { correct ->
+                if(correct) {
+                    _showPasswordBottomSheet.value = false
+                    goToSuccess()
+                } else {
+                    _checkPin.value = false
+                }
             }.onFailure(::handleFailure)
         }
     }

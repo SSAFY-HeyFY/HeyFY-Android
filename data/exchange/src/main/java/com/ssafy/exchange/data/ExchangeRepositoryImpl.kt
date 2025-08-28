@@ -43,6 +43,7 @@ class ExchangeRepositoryImpl @Inject constructor(
             depositAccountBalance = depositAccountBalance,
             withdrawalAccountBalance = withdrawalAccountBalance,
             transactionBalance = transactionBalance,
+            correct = correct
         )
     }
 }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,9 +36,9 @@ internal fun HomeItem(
     onClick: () -> Unit = {},
 ) {
     val (color, buttonText) = when (type) {
-        "Mentoring" -> Pair(Color(0xFF1B45F5), "Match")
-        "Club" -> Pair(Color(0xFF22C55E), "Explore")
-        else -> Pair(Color(0xFF9333EA), "View")
+        "Mentoring" -> Pair(Color(0xFF2563EB), "Match")
+        "Club" -> Pair(Color(0xFFD97706), "Explore")
+        else -> Pair(Color(0xFF16A34A), "View")
     }
 
 
@@ -59,9 +60,10 @@ internal fun HomeItem(
                     .size(48.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
+                Icon(
                     painter = painterResource(id = imageResId),
                     contentDescription = null,
+                    tint = color,
                 )
             }
             Spacer(Modifier.height(12.dp))

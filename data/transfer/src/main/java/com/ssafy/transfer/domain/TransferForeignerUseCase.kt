@@ -10,7 +10,7 @@ class TransferForeignerUseCase @Inject constructor(
         transactionSummary: String,
         amount: String,
         pinNumber: String,
-    ): Result<Unit> {
+    ): Result<Boolean> {
         return transferRepository.transferForeign(
             depositAccountNo,
             transactionSummary,
