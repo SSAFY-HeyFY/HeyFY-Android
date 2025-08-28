@@ -3,7 +3,6 @@ package com.ssafy.exchange
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ssafy.common.data_store.TokenManager
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.exchange.domain.ExchangeForeignUseCase
@@ -152,9 +151,9 @@ class ExchangeViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(ExchangeUiState.Loading)
             if (isUSD.value) {
-                exchangeUseCase(exchangeAmount.value.toInt(), pinNumber.value)
+                exchangeUseCase(exchangeAmount.value.toLong(), pinNumber.value)
                     .onSuccess {
-                        if (it.correct) {
+                        if (it.isCorrect) {
                             _showPasswordBottomSheet.value = false
                             goToSuccess()
                         } else {
@@ -163,9 +162,9 @@ class ExchangeViewModel @Inject constructor(
                         updateUiState(ExchangeUiState.Success)
                     }.onFailure(::handleFailure)
             } else {
-                exchangeForeignUseCase(exchangeAmount.value.toInt(), pinNumber.value)
+                exchangeForeignUseCase(exchangeAmount.value.toLong(), pinNumber.value)
                     .onSuccess {
-                        if (it.correct) {
+                        if (it.isCorrect) {
                             _showPasswordBottomSheet.value = false
                             goToSuccess()
                         } else {

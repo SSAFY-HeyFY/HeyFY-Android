@@ -10,14 +10,14 @@ class ExchangeRepositoryImpl @Inject constructor(
     private val exchangeDataSource: ExchangeDataSource,
 ) : ExchangeRepository {
 
-    override suspend fun exchange(transactionBalance: Int, pinNumber: String): Result<Exchange> {
+    override suspend fun exchange(transactionBalance: Long, pinNumber: String): Result<Exchange> {
         return ApiUtils.safeApiCall(
             apiCall = { exchangeDataSource.exchange(transactionBalance, pinNumber) },
             convert = { it.toExchange() }
         )
     }
 
-    override suspend fun exchangeForeign(transactionBalance: Int, pinNumber: String): Result<Exchange> {
+    override suspend fun exchangeForeign(transactionBalance: Long, pinNumber: String): Result<Exchange> {
         return ApiUtils.safeApiCall(
             apiCall = { exchangeDataSource.exchangeForeign(transactionBalance, pinNumber) },
             convert = { it.toExchange() }
@@ -43,7 +43,7 @@ class ExchangeRepositoryImpl @Inject constructor(
             depositAccountBalance = depositAccountBalance,
             withdrawalAccountBalance = withdrawalAccountBalance,
             transactionBalance = transactionBalance,
-            correct = correct
+            isCorrect = isCorrect
         )
     }
 }

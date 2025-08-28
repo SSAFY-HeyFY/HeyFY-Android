@@ -39,7 +39,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             refreshSidUseCase(pinNumber.value)
                 .onSuccess {
-                    if (it.correct) {
+                    if (it.isCorrect) {
                         tokenManager.saveSid(it.sid)
                         goToHome()
                     } else {

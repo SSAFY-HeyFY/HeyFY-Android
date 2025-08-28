@@ -4,6 +4,6 @@ data class Exchange(
     val depositAccountBalance: Double,
     val withdrawalAccountBalance: Double,
     val transactionBalance: Double,
-    val correct: Boolean,
+    val isCorrect: Boolean,
 )
 

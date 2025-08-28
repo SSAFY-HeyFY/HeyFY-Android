@@ -6,7 +6,7 @@ import javax.inject.Inject
 class ExchangeUseCase @Inject constructor(
     private val exchangeRepository: ExchangeRepository,
 ) {
-    suspend operator fun invoke(transactionBalance: Int, pinNumber: String): Result<Exchange> {
+    suspend operator fun invoke(transactionBalance: Long, pinNumber: String): Result<Exchange> {
         return exchangeRepository.exchange(transactionBalance, pinNumber)
     }
 }

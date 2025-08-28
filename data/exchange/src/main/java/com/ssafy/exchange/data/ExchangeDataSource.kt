@@ -6,8 +6,8 @@ import com.ssafy.exchange.api.response.ExchangeResponse
 import retrofit2.Response
 
 interface ExchangeDataSource {
-    suspend fun exchange(transactionBalance: Int, pinNumber: String): Response<ExchangeResponse>
-    suspend fun exchangeForeign(transactionBalance: Int, pinNumber: String): Response<ExchangeResponse>
+    suspend fun exchange(transactionBalance: Long, pinNumber: String): Response<ExchangeResponse>
+    suspend fun exchangeForeign(transactionBalance: Long, pinNumber: String): Response<ExchangeResponse>
     suspend fun getAiPrediction(): Response<ExchangeAiPredictionResponse>
     suspend fun getHistoricalAnalysis(): Response<ExchangeHistoricalAnalysisResponse>
 }
