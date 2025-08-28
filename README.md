@@ -45,7 +45,8 @@ HeyFY는 한국에 있는 외국인 유학생이 한국 대학에 쉽게 정착�
 - FCM 푸시 알림
 
   ## 모듈 구조
-<img width="22182" height="13581" alt="Group 51" src="https://github.com/user-attachments/assets/3aadaf21-ddbb-4cff-92ad-f5640eb0870f" />
+<img width="29576" height="18108" alt="Frame 8" src="https://github.com/user-attachments/assets/988035bf-5a59-4106-9b79-e04b8d404bbb" />
+
 
 ## 🏗️ 기술 스택
 - **Kotlin**
