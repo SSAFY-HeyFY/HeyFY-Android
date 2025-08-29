@@ -47,7 +47,7 @@ object TextFormat {
                 )
 
                 val monthName = monthNames.getOrNull(month - 1) ?: "Unknown"
-                "$monthName $day, $year"
+                "$monthName. $day, $year"
             } else {
                 dateString
             }
