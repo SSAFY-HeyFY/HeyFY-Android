@@ -3,7 +3,9 @@ package com.ssafy.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.common.data_store.TokenManager
-import com.ssafy.login.domain.CheckPinUseCase
+import com.ssafy.common.error.RefreshInProgressError
+import com.ssafy.common.error.RefreshTokenExpiredError
+import com.ssafy.common.error.SidExpiredError
 import com.ssafy.login.domain.RefreshSidUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYAppNavigator
@@ -43,9 +45,10 @@ class AuthViewModel @Inject constructor(
                         tokenManager.saveSid(it.sid)
                         goToHome()
                     } else {
-                        updateIsPasswordError(true) }
-
+                        updateIsPasswordError(true)
+                    }
                 }
+                .onFailure(::handleFailure)
         }
     }
 
@@ -55,6 +58,35 @@ class AuthViewModel @Inject constructor(
                 route = Destination.Main(),
                 isBackStackCleared = true
             )
+        }
+    }
+
+    private fun goToLogin() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Login(),
+                isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun handleFailure(throwable: Throwable) {
+        when (throwable) {
+            is RefreshTokenExpiredError -> {
+                goToLogin()
+            }
+
+            is SidExpiredError -> {
+                goToLogin()
+            }
+
+            is RefreshInProgressError -> {
+
+            }
+
+            else -> {
+                goToLogin()
+            }
         }
     }
 }
