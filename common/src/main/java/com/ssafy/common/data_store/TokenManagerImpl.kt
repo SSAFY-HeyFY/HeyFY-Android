@@ -31,12 +31,6 @@ class TokenManagerImpl @Inject constructor(
         }
     }
 
-    override fun getTxnAuthToken(): Flow<String?> {
-        return dataStore.data.map { prefs ->
-            prefs[TXN_AUTH_TOKEN_KEY]
-        }
-    }
-
     override fun getSid(): Flow<String?> {
         return dataStore.data.map { prefs ->
             prefs[SID_KEY]
@@ -51,12 +45,6 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun saveRefreshToken(token: String) {
         dataStore.edit { prefs ->
             prefs[REFRESH_TOKEN_KEY] = token
-        }
-    }
-
-    override suspend fun saveTxnAuthToken(token: String) {
-        dataStore.edit { prefs ->
-            prefs[TXN_AUTH_TOKEN_KEY] = token
         }
     }
 
@@ -76,12 +64,6 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun deleteRefreshToken() {
         dataStore.edit { prefs ->
             prefs.remove(REFRESH_TOKEN_KEY)
-        }
-    }
-
-    override suspend fun deleteTxnAuthToken() {
-        dataStore.edit { prefs ->
-            prefs.remove(TXN_AUTH_TOKEN_KEY)
         }
     }
 

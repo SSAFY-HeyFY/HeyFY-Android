@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ssafy.common.theme.HeyFYTheme
+import com.ssafy.common.ui.ErrorPopUp
+import com.ssafy.common.utils.ApiUtils.PIN_ATTEMPTS_EXCEEDED_MESSAGE
 import kotlinx.coroutines.delay
 import com.ssafy.common.R as commonR
 
@@ -41,6 +43,7 @@ fun AuthScreen(
 
     val password by viewModel.pinNumber.collectAsStateWithLifecycle()
     val isPasswordError by viewModel.isPasswordError.collectAsStateWithLifecycle()
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     LaunchedEffect(password) {
         if (password.length < 6) return@LaunchedEffect
@@ -65,6 +68,16 @@ fun AuthScreen(
             isError = isPasswordError,
             onPasswordChange = {
                 viewModel.updatePinNumber(it)
+            }
+        )
+    }
+
+    if (errorMessage.isNotEmpty()) {
+        ErrorPopUp(
+            message = errorMessage,
+            onDismiss = {
+                viewModel.updateErrorMessage("")
+               viewModel.goToLogin()
             }
         )
     }

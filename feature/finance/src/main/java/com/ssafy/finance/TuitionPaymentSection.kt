@@ -118,7 +118,7 @@ internal fun TuitionPaymentSection(
                         onClick = { uriHandler.openUri("https://www.shinhan.com/hpe/index.jsp#041007010000") },
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFC78DEB)
+                            containerColor = Color(0xFF9333EA)
                         ),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                     ) {

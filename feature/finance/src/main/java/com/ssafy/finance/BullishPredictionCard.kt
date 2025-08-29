@@ -72,7 +72,7 @@ internal fun BullishPredictionCard(
                     onClick = { onClick() },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFC78DEB)
+                        containerColor = Color(0xFF9333EA)
                     ),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                 ) {

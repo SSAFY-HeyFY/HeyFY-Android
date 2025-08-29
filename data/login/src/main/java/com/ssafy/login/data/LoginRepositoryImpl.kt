@@ -1,10 +1,10 @@
 package com.ssafy.login.data
 
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.login.domain.LoginRepository
 import com.ssafy.login.domain.CheckPin
 import com.ssafy.login.domain.RefreshSid
 import com.ssafy.login.domain.model.Token
-import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
@@ -56,7 +56,7 @@ class LoginRepositoryImpl @Inject constructor(
             },
             convert = { response ->
                 RefreshSid(
-                    sid = response.sid,
+                    sid = response.sid ?: "",
                     isCorrect = response.isCorrect
                 )
             }

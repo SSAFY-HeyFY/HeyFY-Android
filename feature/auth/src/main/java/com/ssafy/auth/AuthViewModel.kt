@@ -3,6 +3,7 @@ package com.ssafy.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.common.data_store.TokenManager
+import com.ssafy.common.error.PinAttemptsExceeded
 import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
@@ -28,6 +29,9 @@ class AuthViewModel @Inject constructor(
     private val _isPasswordError = MutableStateFlow(false)
     val isPasswordError = _isPasswordError.asStateFlow()
 
+    private val _errorMessage = MutableStateFlow("")
+    val errorMessage = _errorMessage.asStateFlow()
+
 
     fun updatePinNumber(number: String) {
         _pinNumber.value = number
@@ -35,6 +39,10 @@ class AuthViewModel @Inject constructor(
 
     fun updateIsPasswordError(isError: Boolean) {
         _isPasswordError.value = isError
+    }
+
+    fun updateErrorMessage(message: String) {
+        _errorMessage.value = message
     }
 
     fun refreshSid() {
@@ -61,7 +69,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun goToLogin() {
+    fun goToLogin() {
         viewModelScope.launch {
             heyFYAppNavigator.navigateTo(
                 route = Destination.Login(),
@@ -82,6 +90,10 @@ class AuthViewModel @Inject constructor(
 
             is RefreshInProgressError -> {
 
+            }
+
+            is PinAttemptsExceeded -> {
+                _errorMessage.value = throwable.massage
             }
 
             else -> {

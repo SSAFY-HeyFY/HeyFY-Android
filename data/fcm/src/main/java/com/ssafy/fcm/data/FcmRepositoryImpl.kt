@@ -1,7 +1,7 @@
 package com.ssafy.fcm.data
 
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.fcm.domain.FcmRepository
-import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
 class FcmRepositoryImpl @Inject constructor(

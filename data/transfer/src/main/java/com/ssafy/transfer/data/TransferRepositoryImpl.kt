@@ -1,6 +1,6 @@
 package com.ssafy.transfer.data
 
-import com.ssafy.network.utils.ApiUtils.safeApiCall
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.transfer.domain.TransferRepository
 import javax.inject.Inject
 

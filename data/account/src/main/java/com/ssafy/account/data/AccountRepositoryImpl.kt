@@ -10,7 +10,8 @@ import com.ssafy.account.domain.model.AccountCheck
 import com.ssafy.account.domain.model.TransactionHistory
 import com.ssafy.common.text.TextFormat.formatCurrencyKRW
 import com.ssafy.common.text.TextFormat.formatCurrencyUSD
-import com.ssafy.network.utils.ApiUtils
+import com.ssafy.common.utils.ApiUtils
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
@@ -18,28 +19,28 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
     override suspend fun getTransactionHistory(accountNo: String): Result<TransactionHistory> {
-        return ApiUtils.safeApiCall(
+        return safeApiCall(
             apiCall = { accountDataSource.getTransactionHistory(accountNo) },
             convert = { it.toTransactionHistory() }
         )
     }
 
     override suspend fun getForeignTransactionHistory(accountNo: String): Result<TransactionHistory> {
-        return ApiUtils.safeApiCall(
+        return safeApiCall(
             apiCall = { accountDataSource.getForeignTransactionHistory(accountNo) },
             convert = { it.toTransactionHistory() }
         )
     }
 
     override suspend fun getAccountAuth(accountNo: String): Result<AccountAuth> {
-        return ApiUtils.safeApiCall(
+        return safeApiCall(
             apiCall = { accountDataSource.getAccountAuth(accountNo) },
             convert = { it.toAccountAuth() }
         )
     }
 
     override suspend fun checkAccount(accountNo: String, authCode: String): Result<AccountCheck> {
-        return ApiUtils.safeApiCall(
+        return safeApiCall(
             apiCall = { accountDataSource.checkAccount(code = authCode, accountNo = accountNo) },
             convert = { it.toAccountCheck() }
         )

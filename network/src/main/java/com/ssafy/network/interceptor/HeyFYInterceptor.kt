@@ -36,12 +36,6 @@ class HeyFYInterceptor @Inject constructor(
             builder.addHeader(AUTHORIZATION, "Bearer $accessToken")
         }
 
-        val tnxToken = runBlocking { tokenManager.getTxnAuthToken().first() }
-
-        if (tnxToken.isNullOrEmpty().not()) {
-            builder.addHeader(TXN_AUTH_TOKEN, tnxToken)
-        }
-
         val sid = runBlocking { tokenManager.getSid().first() }
 
         if (sid.isNullOrEmpty().not()) {

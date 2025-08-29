@@ -23,6 +23,14 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Init)
     val uiState = _uiState.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            tokenManager.deleteRefreshToken()
+            tokenManager.deleteAccessToken()
+            tokenManager.deleteSid()
+        }
+    }
+
     fun login(
         studentId: String,
         password: String,

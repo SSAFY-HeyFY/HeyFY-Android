@@ -1,5 +1,6 @@
 package com.ssafy.finance.data
 
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.finance.api.response.ExchangeRateCurrentResponse
 import com.ssafy.finance.api.response.ExchangeRateHistoriesResponse
 import com.ssafy.finance.api.response.ExchangeRatePredictionResponse
@@ -9,7 +10,6 @@ import com.ssafy.finance.domain.model.ExchangeRateCurrent
 import com.ssafy.finance.domain.model.ExchangeRateHistories
 import com.ssafy.finance.domain.model.ExchangeRatePrediction
 import com.ssafy.finance.domain.model.ExchangeRateTuition
-import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
 class FinanceRepositoryImpl @Inject constructor(

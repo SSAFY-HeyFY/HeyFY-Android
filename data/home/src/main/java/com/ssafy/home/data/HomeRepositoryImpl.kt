@@ -1,9 +1,9 @@
 package com.ssafy.home.data
 
+import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.home.api.response.HomeResponse
 import com.ssafy.home.domain.HomeRepository
 import com.ssafy.home.domain.model.Home
-import com.ssafy.network.utils.ApiUtils.safeApiCall
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(
