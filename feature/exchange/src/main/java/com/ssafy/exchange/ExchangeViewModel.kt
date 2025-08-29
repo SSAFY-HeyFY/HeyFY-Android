@@ -8,7 +8,6 @@ import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.exchange.domain.ExchangeForeignUseCase
 import com.ssafy.exchange.domain.ExchangeUseCase
-import com.ssafy.exchange.domain.GetAiPredictionUseCase
 import com.ssafy.exchange.domain.GetHistoricalAnalysisUseCase
 import com.ssafy.exchange.model.ExchangeUiEvent
 import com.ssafy.exchange.model.ExchangeUiState
@@ -28,7 +27,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExchangeViewModel @Inject constructor(
-    private val getAiPredictionUseCase: GetAiPredictionUseCase,
     private val getHistoricalAnalysisUseCase: GetHistoricalAnalysisUseCase,
     private val getCurrentFinanceUseCase: GetCurrentFinanceUseCase,
     private val exchangeUseCase: ExchangeUseCase,
@@ -116,16 +114,9 @@ class ExchangeViewModel @Inject constructor(
     private fun fetch() {
         viewModelScope.launch {
             getHistoricalAnalysisUseCase()
-                .onSuccess {
-                    _historicalAnalysis.value = it
-                    updateUiState(ExchangeUiState.Success)
-                }
-                .onFailure {
-                    handleFailure(it)
-                }
-            getAiPredictionUseCase()
-                .onSuccess {
-                    _aiPrediction.value = it
+                .onSuccess { (historicalAnalysis, aiPrediction) ->
+                    _historicalAnalysis.value = historicalAnalysis
+                    _aiPrediction.value = aiPrediction
                     updateUiState(ExchangeUiState.Success)
                 }
                 .onFailure {

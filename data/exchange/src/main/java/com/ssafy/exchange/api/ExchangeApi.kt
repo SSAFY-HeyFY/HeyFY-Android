@@ -21,10 +21,7 @@ interface ExchangeApi {
         @Body request: ExchangeRequest
     ): Response<ExchangeResponse>
 
-    @GET("/exchange/ai-prediction")
-    suspend fun getAiPrediction(): Response<ExchangeAiPredictionResponse>
-
-    @GET("/exchange/historical-analysis")
+    @GET("/exchange/analysis")
     suspend fun getHistoricalAnalysis(): Response<ExchangeHistoricalAnalysisResponse>
 }
 

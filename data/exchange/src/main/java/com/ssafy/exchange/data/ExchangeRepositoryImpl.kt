@@ -24,17 +24,10 @@ class ExchangeRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getAiPrediction(): Result<String> {
-        return safeApiCall(
-            apiCall = { exchangeDataSource.getAiPrediction() },
-            convert = { it.message }
-        )
-    }
-
-    override suspend fun getHistoricalAnalysis(): Result<String> {
+    override suspend fun getHistoricalAnalysis(): Result<Pair<String, String>> {
         return safeApiCall(
             apiCall = { exchangeDataSource.getHistoricalAnalysis() },
-            convert = { it.message }
+            convert = { it.historicalAnalysis.message to it.aiPrediction.message }
         )
     }
 

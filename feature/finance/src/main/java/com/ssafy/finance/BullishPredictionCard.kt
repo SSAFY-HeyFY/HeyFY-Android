@@ -45,7 +45,7 @@ internal fun BullishPredictionCard(
             )
 
             Text(
-                text = prediction.trend,
+                text = prediction.description,
                 style = HeyFYTheme.typography.bodyM,
                 color = Color(0xFF000000)
             )

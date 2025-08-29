@@ -30,12 +30,7 @@ class ExchangeDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getAiPrediction(): Response<ExchangeAiPredictionResponse> {
-        return exchangeApi.getAiPrediction()
-    }
-
     override suspend fun getHistoricalAnalysis(): Response<ExchangeHistoricalAnalysisResponse> {
         return exchangeApi.getHistoricalAnalysis()
     }
 }
-
