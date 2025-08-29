@@ -37,7 +37,6 @@ fun HomeScreen(
     val studentId by viewModel.studentId.collectAsStateWithLifecycle()
     val normalAccount by viewModel.normalAccount.collectAsStateWithLifecycle()
     val foreignAccount by viewModel.foreignAccount.collectAsStateWithLifecycle()
-    val hasNotificationPermission by viewModel.hasNotificationPermission.collectAsStateWithLifecycle()
     var errorMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
@@ -53,14 +52,6 @@ fun HomeScreen(
             }
 
             else -> {}
-        }
-    }
-
-    LaunchedEffect(hasNotificationPermission) {
-        if (hasNotificationPermission) {
-            viewModel.action(HomeUiEvent.RegisterToken)
-        } else {
-            viewModel.action(HomeUiEvent.DeleteToken)
         }
     }
 

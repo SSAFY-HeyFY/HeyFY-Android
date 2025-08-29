@@ -6,6 +6,7 @@ import com.ssafy.account.domain.CheckAccountUseCase
 import com.ssafy.account.domain.GetAccountAuthUseCase
 import com.ssafy.account.model.AccountUiEvent
 import com.ssafy.account.model.AccountUiState
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.navigation.Destination
@@ -148,6 +149,9 @@ class AccountViewModel @Inject constructor(
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
+            }
+            is RefreshInProgressError -> {
+
             }
             else -> {
                 updateUiState(

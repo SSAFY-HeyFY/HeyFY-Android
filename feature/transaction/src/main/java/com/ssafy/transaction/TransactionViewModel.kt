@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.account.domain.GetForeignTransactionHistoryUseCase
 import com.ssafy.account.domain.GetTransactionHistoryUseCase
 import com.ssafy.account.domain.model.TransactionHistory
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.common.text.TextFormat.formatCurrencyKRW
@@ -148,6 +149,9 @@ class TransactionViewModel @Inject constructor(
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
+            }
+            is RefreshInProgressError -> {
+
             }
             else -> {
                 updateUiState(

@@ -179,7 +179,7 @@ private fun AmountInputSection(
 
                 Row(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(16.dp),
                 ) {
                     val text = if (isUSD) {
                         "₩ ${String.format("%,.0f", receivedAmount)}"
@@ -188,9 +188,13 @@ private fun AmountInputSection(
                     }
 
                     Text(
+                        modifier = Modifier
+                            .weight(1f),
                         text = text,
                         style = HeyFYTheme.typography.labelL,
                         color = Color.Black,
+                        maxLines = 1,
+                        textAlign = TextAlign.End
                     )
 
                     Text(
@@ -198,7 +202,8 @@ private fun AmountInputSection(
                             .padding(horizontal = 4.dp),
                         text = if (isUSD) "KRW" else "USD",
                         style = HeyFYTheme.typography.bodyL,
-                        color = Color(0xFF6B7280)
+                        color = Color(0xFF6B7280),
+                        maxLines = 1,
                     )
                 }
             }

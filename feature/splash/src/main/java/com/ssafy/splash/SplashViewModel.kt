@@ -3,6 +3,12 @@ package com.ssafy.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.common.data_store.TokenManager
+import com.ssafy.common.error.RefreshTokenExpiredError
+import com.ssafy.common.error.SidExpiredError
+import com.ssafy.common.manager.FCMTokenManager
+import com.ssafy.common.manager.NotificationPermissionMonitor
+import com.ssafy.fcm.domain.DeleteFcmTokenUseCase
+import com.ssafy.fcm.domain.RegisterFcmTokenUseCase
 import com.ssafy.navigation.Destination
 import com.ssafy.navigation.HeyFYAppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel

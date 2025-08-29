@@ -48,6 +48,7 @@ import com.ssafy.common.text.TextFormat.formatDateEnglish1
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.finance.domain.model.ExchangeRateHistories
 import java.text.DecimalFormat
+import kotlin.math.min
 
 @Composable
 internal fun ExchangeRateChartSection(
@@ -165,6 +166,8 @@ internal fun ExchangeRateChartSection(
 private fun JetpackComposeElectricCarSales1(
     modifier: Modifier = Modifier,
     modelProducer: CartesianChartModelProducer,
+    maxValue: Double,
+    minValue: Double,
     updateIndex: (Int) -> Unit,
 ) {
 
@@ -172,10 +175,9 @@ private fun JetpackComposeElectricCarSales1(
     val lineColor2 = Color(0xFFFFC107)
     val lineColor3 = Color(0xFFFF6B6B)
 
-    val rangeProvider = CartesianLayerRangeProvider.fixed(maxY = 1500.0, minY = 1300.0)
-    val yDecimalFormat = DecimalFormat("#.##")
+    val rangeProvider = CartesianLayerRangeProvider.fixed(maxY = maxValue, minY = minValue)
+    val yDecimalFormat = DecimalFormat("####")
     val startAxisValueFormatter = CartesianValueFormatter.decimal(yDecimalFormat)
-
     val delegateMarker = remember {
         DefaultCartesianMarker(
             label = TextComponent(),
@@ -253,7 +255,10 @@ private fun JetpackComposeElectricCarSales1(
                 guideline = null,
                 tick = null,
                 line = null,
-                verticalLabelPosition = Position.Vertical.Top
+                verticalLabelPosition = Position.Vertical.Top,
+                itemPlacer = VerticalAxis.ItemPlacer.count(
+                    count = { 3 }
+                ),
             ),
             marker = cartesianMarker,
         ),
@@ -279,6 +284,9 @@ fun JetpackComposeElectricCarSales(
     val fiveDayPredictionRange =
         (historiesRates.size + oneDayPrediction.size - 1..historiesRates.size + oneDayPrediction.size + fiveDayPrediction.size).toList()
 
+    val maxValue = ((historiesRates.max().toInt()/10) *10) + 20.0
+    val minValue = ((historiesRates.min().toInt()/10) *10) - 40.0
+
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
             lineSeries {
@@ -291,6 +299,8 @@ fun JetpackComposeElectricCarSales(
     JetpackComposeElectricCarSales1(
         modifier = modifier,
         modelProducer = modelProducer,
+        maxValue = maxValue,
+        minValue = minValue,
         updateIndex = updateIndex,
     )
 }

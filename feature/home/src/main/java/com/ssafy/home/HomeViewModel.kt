@@ -2,6 +2,7 @@ package com.ssafy.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.common.manager.FCMTokenManager
@@ -26,10 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val fetchHomeUseCase: FetchHomeUseCase,
-    private val registerFcmTokenUseCase: RegisterFcmTokenUseCase,
-    private val deleteFcmTokenUseCase: DeleteFcmTokenUseCase,
-    private val fcmTokenManager: FCMTokenManager,
-    private val notificationPermissionMonitor: NotificationPermissionMonitor,
     private val navigator: HeyFYAppNavigator,
 ) : ViewModel() {
 
@@ -44,13 +41,6 @@ class HomeViewModel @Inject constructor(
 
     private val _foreignAccount = MutableStateFlow(Home.FAccount())
     val foreignAccount = _foreignAccount.asStateFlow()
-
-    val hasNotificationPermission = notificationPermissionMonitor.observePermissionState()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = false,
-        )
 
     private val didNavigateToAuth = AtomicBoolean(false)
     private val didNavigateToLogin = AtomicBoolean(false)
@@ -88,21 +78,13 @@ class HomeViewModel @Inject constructor(
 
             HomeUiEvent.RegisterToken -> {
                 viewModelScope.launch {
-                    val token = fcmTokenManager.getToken() ?: return@launch
-                    registerFcmTokenUseCase(token)
-                        .onFailure { }
 
                 }
             }
 
             HomeUiEvent.DeleteToken -> {
                 viewModelScope.launch {
-                    val token = fcmTokenManager.getToken() ?: return@launch
-                    deleteFcmTokenUseCase(token)
-                        .onSuccess {
-                            fcmTokenManager.deleteToken()
-                        }
-                        .onFailure { }
+
                 }
             }
         }
@@ -203,6 +185,10 @@ class HomeViewModel @Inject constructor(
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
+            }
+
+            is RefreshInProgressError -> {
+
             }
 
             else -> {

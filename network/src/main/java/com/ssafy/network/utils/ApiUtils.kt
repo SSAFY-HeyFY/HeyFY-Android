@@ -1,6 +1,7 @@
 package com.ssafy.network.utils
 
 import com.google.gson.Gson
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import retrofit2.Response
@@ -26,6 +27,7 @@ object ApiUtils {
                     "EXPIRED_REFRESH_TOKEN" -> Result.failure(RefreshTokenExpiredError())
                     "UNAUTHORIZED" -> Result.failure(RefreshTokenExpiredError())
                     "SID_INVALID_OR_EXPIRED" -> Result.failure(SidExpiredError())
+                    "TOKEN_REFRESH_IN_PROGRESS" -> Result.failure(RefreshInProgressError())
                     else -> Result.failure(kotlin.Exception(errorResponse.getDisplayMessage()))
                 }
             }

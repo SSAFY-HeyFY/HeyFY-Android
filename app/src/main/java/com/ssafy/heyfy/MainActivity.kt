@@ -96,7 +96,9 @@ class MainActivity : ComponentActivity() {
         )
 
         LaunchedEffect(notificationPermissionState) {
-            if (notificationPermissionState.not()) {
+            if (notificationPermissionState) {
+                heyFYViewModel.registerToken()
+            } else {
                 heyFYViewModel.deleteToken()
             }
         }

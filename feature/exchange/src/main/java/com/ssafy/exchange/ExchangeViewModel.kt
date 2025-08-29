@@ -3,6 +3,7 @@ package com.ssafy.exchange
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.exchange.domain.ExchangeForeignUseCase
@@ -226,6 +227,9 @@ class ExchangeViewModel @Inject constructor(
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
+            }
+            is RefreshInProgressError -> {
+
             }
 
             else -> {

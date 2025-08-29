@@ -39,6 +39,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":navigation"))
+    implementation(project(":data:fcm"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

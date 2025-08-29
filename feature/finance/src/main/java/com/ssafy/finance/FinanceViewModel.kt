@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.common.error.RefreshInProgressError
 import com.ssafy.common.error.RefreshTokenExpiredError
 import com.ssafy.common.error.SidExpiredError
 import com.ssafy.finance.domain.GetCurrentFinanceUseCase
@@ -180,6 +181,9 @@ class FinanceViewModel @Inject constructor(
                 if (didNavigateToAuth.compareAndSet(false, true)) {
                     goToAuth()
                 }
+            }
+            is RefreshInProgressError -> {
+
             }
             else -> {
                 updateUiState(
