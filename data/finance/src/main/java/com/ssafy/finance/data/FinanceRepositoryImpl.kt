@@ -62,7 +62,6 @@ class FinanceRepositoryImpl @Inject constructor(
             description = description,
             changePercent = changePercent,
             periodDays = periodDays,
-            actionLabel = actionLabel
         )
     }
 

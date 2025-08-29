@@ -5,5 +5,4 @@ data class ExchangeRatePredictionResponse(
     val description: String,
     val changePercent: Double,
     val periodDays: Int,
-    val actionLabel: String,
 )

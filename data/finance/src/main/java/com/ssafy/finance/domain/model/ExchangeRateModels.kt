@@ -16,7 +16,6 @@ data class ExchangeRatePrediction(
     val description: String = "",
     val changePercent: Double = 0.0,
     val periodDays: Int = 0,
-    val actionLabel: String = "",
 )
 
 data class ExchangeRateHistories(
