@@ -29,7 +29,7 @@ fun IdScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { HeyFYTopBar() },
-        containerColor = Color.White
+        containerColor = Color(0xFFF3F6FB)
     ) { innerPadding ->
         IdContent(
             modifier = Modifier.padding(innerPadding),

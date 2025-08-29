@@ -31,6 +31,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
@@ -102,7 +104,7 @@ internal fun ResidenceCard(
                         modifier = Modifier.padding(horizontal = 12.dp),
                         thickness = 1.dp,
                         color = Color(0xFFF3F4F6),
-                        )
+                    )
                     IdItem(
                         modifier = Modifier.weight(1f),
                         title = "외국인등록번호",
@@ -154,22 +156,24 @@ internal fun ResidenceCard(
 
 @Composable
 private fun TitleSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .offset(x = 60.dp)
+            .offset(x = 70.dp, y = 5.dp)
     ) {
         Text(
-            text = "외국인 등록증",
-            style = HeyFYTheme.typography.labelM,
-            color = Color.Black
+            text = "외국인등록증",
+            style = HeyFYTheme.typography.labelM.copy(
+                fontFamily = FontFamily(Font(commonR.font.pretendard_extra_bold))
+            ),
+            color = Color(0xFF354299)
         )
 
         Text(
             text = "RESIDENCE CARD",
             style = HeyFYTheme.typography.bodyS,
-            color = Color.Black
+            color = Color(0xFF354299)
         )
     }
 }
@@ -184,7 +188,6 @@ private fun IdItem(
     isBlurred: Boolean = false,
     shouldBlur: Boolean = false,
 ) {
-    val font = HeyFYTheme.typography.bodyS2.copy(lineHeight = 14.sp)
 
     Row(
         modifier = modifier,
@@ -194,8 +197,13 @@ private fun IdItem(
             modifier = Modifier.width(80.dp),
             horizontalAlignment = Alignment.End
         ) {
-            Text(text = title, style = font, color = Color.Black)
-            Text(text = englishTitle, style = font, color = Color.Black)
+            Text(
+                text = title, style = HeyFYTheme.typography.headlineS.copy(
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp
+                ), color = Color.Black
+            )
+            Text(text = englishTitle, style = HeyFYTheme.typography.bodyS2, color = Color.Black)
         }
         Spacer(Modifier.width(8.dp))
 

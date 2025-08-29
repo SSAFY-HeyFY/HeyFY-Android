@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -66,16 +67,20 @@ internal fun BullishPredictionCard(
                 )
 
                 Button(
+                    modifier = Modifier
+                        .width(100.dp),
                     onClick = { onClick() },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF9333EA)
+                        containerColor = Color(0xFFC78DEB)
                     ),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                 ) {
                     Text(
                         text = "Exchange",
-                        style = HeyFYTheme.typography.bodyM,
+                        style = HeyFYTheme.typography.bodyM.copy(
+                            fontWeight = FontWeight.ExtraBold
+                        ),
                         color = Color.White
                     )
                 }

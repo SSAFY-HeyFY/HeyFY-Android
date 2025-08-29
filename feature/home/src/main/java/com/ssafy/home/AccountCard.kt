@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,105 +40,107 @@ internal fun AccountCard(
     goToExchange: () -> Unit = {},
     goToTransaction: () -> Unit = {},
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF7D80EE), Color(0xFFC78DEB)),
-                    start = Offset.Zero,
-                    end = Offset.Infinite,
-                ),
-            )
-            .clickableOnce { goToTransaction() }
-            .padding(20.dp),
+
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Text(
-            text = if (isFX) "FX Account - USD" else "Accout",
-            style = HeyFYTheme.typography.bodyL,
-            color = Color.White
-        )
-
-        Spacer(Modifier.height(2.dp))
-
-        Text(
-            text = formatAccountNumber(account),
-            style = HeyFYTheme.typography.bodyL,
-            color = Color.White
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
+                .clickableOnce { goToTransaction() }
+                .padding(20.dp),
         ) {
-            val currencyUnit = if (isFX) "USD($)" else "KRW(₩)"
+            Text(
+                text = if (isFX) "FX Account - USD" else "Accout",
+                style = HeyFYTheme.typography.labelL,
+                color = Color.Black
+            )
+
+            Spacer(Modifier.height(2.dp))
 
             Text(
-                text = currencyUnit,
-                style = HeyFYTheme.typography.headlineL,
-                color = Color.White
+                text = formatAccountNumber(account),
+                style = HeyFYTheme.typography.bodyL,
+                color = Color(0xFF707070)
             )
 
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.height(8.dp))
 
-            AutoSizeText(
-                text = if (isFX) {
-                    "$ ${formatCurrencyUSD(currencyF)}"
-                } else {
-                    "₩ ${formatCurrencyKRW(currencyN)}"
-                },
-                style = HeyFYTheme.typography.displayL,
-                color = Color.White,
-            )
-        }
-
-        Row(
-            Modifier.weight(1f),
-            verticalAlignment = Alignment.Bottom,
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .clickableOnce { goToSendMoney() },
-                contentAlignment = Alignment.Center,
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                val currencyUnit = if (isFX) "USD" else "KRW"
 
                 Text(
-                    modifier = Modifier
-                        .padding(vertical = 12.dp),
-                    text = "Send Money",
-                    style = HeyFYTheme.typography.labelL,
-                    color = Color(0xFF9784ED)
+                    text = currencyUnit,
+                    style = HeyFYTheme.typography.headlineL,
+                    color = Color.Black
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                AutoSizeText(
+                    text = if (isFX) {
+                        "$ ${formatCurrencyUSD(currencyF)}"
+                    } else {
+                        "₩ ${formatCurrencyKRW(currencyN)}"
+                    },
+                    style = HeyFYTheme.typography.displayL,
+                    color = Color.Black,
                 )
             }
 
-            Spacer(Modifier.width(20.dp))
-
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .clickableOnce { goToExchange() },
-                contentAlignment = Alignment.Center,
+            Row(
+                Modifier.weight(1f),
+                verticalAlignment = Alignment.Bottom,
             ) {
 
-                Text(
+                Box(
                     modifier = Modifier
-                        .padding(vertical = 12.dp),
-                    text = "Exchange",
-                    style = HeyFYTheme.typography.labelL,
-                    color = Color(0xFF9784ED)
-                )
+                        .weight(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFE6F0FC))
+                        .clickableOnce { goToSendMoney() },
+                    contentAlignment = Alignment.Center,
+                ) {
+
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 12.dp),
+                        text = "Send Money",
+                        style = HeyFYTheme.typography.labelL,
+                        color = Color(0xFF0372E8)
+                    )
+                }
+
+                Spacer(Modifier.width(20.dp))
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFE6F0FC))
+                        .clickableOnce { goToExchange() },
+                    contentAlignment = Alignment.Center,
+                ) {
+
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 12.dp),
+                        text = "Exchange",
+                        style = HeyFYTheme.typography.labelL,
+                        color = Color(0xFF0372E8)
+                    )
+                }
             }
         }
     }
+
 }
 
 @Preview(

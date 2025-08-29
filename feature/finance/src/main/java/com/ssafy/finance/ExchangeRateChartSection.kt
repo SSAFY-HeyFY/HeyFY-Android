@@ -79,14 +79,16 @@ internal fun ExchangeRateChartSection(
 
                 Box(
                     modifier = Modifier
-                        .background(Color(0xFF9333EA), CircleShape)
+                        .background(Color(0xFFC78DEB), RoundedCornerShape(6.dp))
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     contentAlignment = Alignment.Center
 
                 ) {
                     Text(
-                        text = "2W",
-                        style = HeyFYTheme.typography.bodyS,
+                        text = "1M",
+                        style = HeyFYTheme.typography.bodyS.copy(
+
+                        ),
                         color = Color.White
                     )
                 }

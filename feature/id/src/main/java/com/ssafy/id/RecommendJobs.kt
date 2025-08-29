@@ -78,7 +78,7 @@ fun RecommendJobs(
                         .width(55.dp)
                         .background(Color(0x409333EA), CircleShape)
                         .padding(horizontal = 12.dp, vertical = 6.dp),
-                    text = "${pagerState.currentPage + 1}/${jobItems.size}",
+                    text = "${pagerState.currentPage + 1} / ${jobItems.size}",
                     style = HeyFYTheme.typography.labelS,
                     color = Color(0xFF9333EA),
                     textAlign = TextAlign.Center

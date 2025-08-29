@@ -1,5 +1,6 @@
 package com.ssafy.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -62,7 +63,7 @@ fun HomeScreen(
             HeyFYTopBar()
         },
 
-        containerColor = Color.White,
+        containerColor = Color(0xFFF3F6FB),
     ) { innerPadding ->
         HomeContent(
             modifier = Modifier.padding(innerPadding),

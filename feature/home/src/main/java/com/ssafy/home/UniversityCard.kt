@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -43,148 +45,154 @@ internal fun UniversityCard(
 ) {
     var showQRBottomSheet by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF7D80EE), Color(0xFFC78DEB)),
-                    start = Offset.Zero,
-                    end = Offset.Infinite,
-                ),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(horizontal = 12.dp, vertical = 12.dp)
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Text(
-            text = "University Card",
-            style = HeyFYTheme.typography.headlineS,
-            color = Color.White
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = "Seoul National University",
-            style = HeyFYTheme.typography.bodyM,
-            color = Color.White
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        Row {
-            Box(
-                modifier = Modifier
-                    .width(80.dp)
-                    .height(100.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-            ) {
-                Image(
-                    painter = painterResource(commonR.drawable.image_persona),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(Color(0xFF7D80EE), Color(0xFFC78DEB)),
+                        start = Offset.Zero,
+                        end = Offset.Infinite,
+                    ),
+                    shape = RoundedCornerShape(16.dp)
                 )
-            }
+                .padding(horizontal = 12.dp, vertical = 12.dp)
+        ) {
+            Text(
+                text = "University Card",
+                style = HeyFYTheme.typography.headlineS,
+                color = Color.White
+            )
 
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.height(4.dp))
 
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Text(
-                        text = "Student ID",
-                        style = HeyFYTheme.typography.bodyM,
-                        color = Color.White
-                    )
+            Text(
+                text = "Seoul National University",
+                style = HeyFYTheme.typography.bodyM,
+                color = Color.White
+            )
 
-                    Spacer(Modifier.width(4.dp))
+            Spacer(Modifier.height(8.dp))
 
-                    Text(
-                        text = studentId,
-                        style = HeyFYTheme.typography.headlineS,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                Text(
-                    text = "Nguyen Thi Hoa",
-                    style = HeyFYTheme.typography.headlineS,
-                    color = Color.White
-                )
-
-                Text(
-                    text = "Computer Science",
-                    style = HeyFYTheme.typography.headlineS,
-                    color = Color.White
-                )
-
-                Spacer(Modifier.height(8.dp))
-
+            Row {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .width(80.dp)
+                        .height(100.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0x809333EA))
-                        .clickable { showQRBottomSheet = true }
-                        .padding(vertical = 8.dp),
-                    contentAlignment = Alignment.Center
+                        .background(Color.White)
                 ) {
-                    Text(
-                        text = "OR",
-                        style = HeyFYTheme.typography.headlineS,
-                        color = Color.White,
+                    Image(
+                        painter = painterResource(commonR.drawable.image_persona),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
                     )
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = "Student ID",
+                            style = HeyFYTheme.typography.bodyM,
+                            color = Color.White
+                        )
+
+                        Spacer(Modifier.width(4.dp))
+
+                        Text(
+                            text = studentId,
+                            style = HeyFYTheme.typography.headlineS,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    Text(
+                        text = "Nguyen Thi Hoa",
+                        style = HeyFYTheme.typography.headlineS,
+                        color = Color.White
+                    )
+
+                    Text(
+                        text = "Computer Science",
+                        style = HeyFYTheme.typography.headlineS,
+                        color = Color.White
+                    )
+
+                    Spacer(Modifier.height(8.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color(0x809333EA))
+                            .clickable { showQRBottomSheet = true }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "OR",
+                            style = HeyFYTheme.typography.headlineS,
+                            color = Color.White,
+                        )
+                    }
+                }
+            }
+        }
+
+        if (showQRBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showQRBottomSheet = false },
+                containerColor = Color.White,
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+
+                    Text(
+                        text = "QR Code",
+                        style = HeyFYTheme.typography.headlineM,
+                        color = Color(0xFF111827)
+                    )
+
+                    Text(
+                        text = "Scan this QR code to verify your student ID",
+                        style = HeyFYTheme.typography.bodyM,
+                        color = Color(0xFF6B7280),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    Image(
+                        painter = painterResource(id = commonR.drawable.image_qr),
+                        contentDescription = "QR Code",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .padding(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
     }
 
-    if (showQRBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showQRBottomSheet = false },
-            containerColor = Color.White,
-            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-
-                Text(
-                    text = "QR Code",
-                    style = HeyFYTheme.typography.headlineM,
-                    color = Color(0xFF111827)
-                )
-
-                Text(
-                    text = "Scan this QR code to verify your student ID",
-                    style = HeyFYTheme.typography.bodyM,
-                    color = Color(0xFF6B7280),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-
-                Image(
-                    painter = painterResource(id = commonR.drawable.image_qr),
-                    contentDescription = "QR Code",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .padding(16.dp)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    }
 }
 
 @Preview(
