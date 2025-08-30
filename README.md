@@ -7,6 +7,11 @@
 ## 빌드 방법
 - 최소 안드로이드 버전 : API 26: Android 8.0 (Oreo)
 - clone 후 local.properties 에 API_PATH="http://114.199.133.118:8081" 추가
+- 테스트 계정
+  - Student ID : 20010655
+  - password : qwer1234!
+- 테스트 계좌 (계좌 등록 화면)
+  - 0011597650851424
 
 ## 📱 프로젝트 개요
 
