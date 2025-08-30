@@ -76,6 +76,7 @@ dependencies {
     implementation(project(":feature:exchange"))
     implementation(project(":feature:tips"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:exchange_history"))
 
     implementation(project(":data:fcm"))
 

@@ -75,18 +75,6 @@ class HomeViewModel @Inject constructor(
             is HomeUiEvent.ClickTransaction -> {
                 goToTransaction(event.type)
             }
-
-            HomeUiEvent.RegisterToken -> {
-                viewModelScope.launch {
-
-                }
-            }
-
-            HomeUiEvent.DeleteToken -> {
-                viewModelScope.launch {
-
-                }
-            }
         }
     }
 

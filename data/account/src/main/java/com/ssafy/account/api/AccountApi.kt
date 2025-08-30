@@ -25,7 +25,7 @@ interface AccountApi {
         @Body request: TransactionHistoryRequest
     ): Response<ForeignTransactionHistoryResponse>
 
-    @GET("/inquire/exchangehistory")
+    @POST("/inquire/exchangehistory")
     suspend fun getExchangeHistory(): Response<ExchangeHistoryResponse>
 
     @POST("/accountauth")

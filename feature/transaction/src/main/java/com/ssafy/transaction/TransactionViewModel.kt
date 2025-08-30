@@ -57,6 +57,10 @@ class TransactionViewModel @Inject constructor(
                 init()
             }
             TransactionUiEvent.Back -> back()
+
+            TransactionUiEvent.CLickExchangeHistory -> {
+                goToExchangeHistory()
+            }
         }
     }
 
@@ -123,6 +127,14 @@ class TransactionViewModel @Inject constructor(
             heyFYAppNavigator.navigateTo(
                 route = Destination.Auth(),
                 isBackStackCleared = true
+            )
+        }
+    }
+
+    private fun goToExchangeHistory() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.ExchangeHistory(),
             )
         }
     }

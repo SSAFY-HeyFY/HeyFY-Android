@@ -72,7 +72,8 @@ fun TransactionScreen(
             item {
                 CurrentBalanceSection(
                     balance = currentBalance,
-                    accountNumber = accountNumber
+                    accountNumber = accountNumber,
+                    goToExchangeHistory = { viewModel.action(TransactionUiEvent.CLickExchangeHistory) }
                 )
             }
 

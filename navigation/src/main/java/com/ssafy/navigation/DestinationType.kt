@@ -13,4 +13,5 @@ object DestinationType {
     const val EXCHANGE = "EXCHANGE"
     const val TIPS = "TIPS"
     const val AUTH = "AUTH"
+    const val EXCHANGE_HISTORY = "EXCHANGE_HISTORY"
 }

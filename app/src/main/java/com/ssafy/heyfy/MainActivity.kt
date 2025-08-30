@@ -24,6 +24,7 @@ import com.ssafy.card.CardDetailScreen
 import com.ssafy.common.manager.NotificationPermissionMonitor
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.exchange.ExchangeScreen
+import com.ssafy.exchange_history.ExchangeHistoryScreen
 import com.ssafy.heyfy.utils.NotificationPermissionUtil
 
 import com.ssafy.login.LoginScreen
@@ -154,6 +155,10 @@ class MainActivity : ComponentActivity() {
 
                 heyFYComposable(Destination.Auth) {
                     AuthScreen()
+                }
+
+                heyFYComposable(Destination.ExchangeHistory) {
+                    ExchangeHistoryScreen()
                 }
             }
         }

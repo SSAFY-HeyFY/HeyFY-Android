@@ -28,6 +28,7 @@ import com.ssafy.common.utils.clickableOnce
 internal fun CurrentBalanceSection(
     balance: String,
     accountNumber: String,
+    goToExchangeHistory: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -73,7 +74,7 @@ internal fun CurrentBalanceSection(
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFFEFD7FF))
-                    .clickableOnce {  },
+                    .clickableOnce { goToExchangeHistory() },
                 contentAlignment = Alignment.Center,
             ) {
 
@@ -100,7 +101,7 @@ internal fun CurrentBalanceSection(
                 Text(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
-                    text = "Exchange",
+                    text = "Exchange Res.",
                     style = HeyFYTheme.typography.labelL,
                     color = Color(0xFF923FEA)
                 )
