@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.text.TextFormat.formatAccountNumber
@@ -56,7 +57,7 @@ internal fun AccountCard(
                 .padding(20.dp),
         ) {
             Text(
-                text = if (isFX) "FX Account - USD" else "Accout",
+                text = if (isFX) "FX Account - USD" else "Account",
                 style = HeyFYTheme.typography.labelL,
                 color = Color.Black
             )
@@ -79,7 +80,7 @@ internal fun AccountCard(
                 Text(
                     text = currencyUnit,
                     style = HeyFYTheme.typography.headlineL,
-                    color = Color.Black
+                    color = Color(0xFF292929)
                 )
 
                 Spacer(Modifier.width(8.dp))
@@ -91,7 +92,7 @@ internal fun AccountCard(
                         "₩ ${formatCurrencyKRW(currencyN)}"
                     },
                     style = HeyFYTheme.typography.displayL,
-                    color = Color.Black,
+                    color = Color(0xFF292929),
                 )
             }
 
@@ -104,7 +105,7 @@ internal fun AccountCard(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0xFFE6F0FC))
+                        .background(Color(0xFFEFD7FF))
                         .clickableOnce { goToSendMoney() },
                     contentAlignment = Alignment.Center,
                 ) {
@@ -114,7 +115,7 @@ internal fun AccountCard(
                             .padding(vertical = 12.dp),
                         text = "Send Money",
                         style = HeyFYTheme.typography.labelL,
-                        color = Color(0xFF0372E8)
+                        color =  Color(0xFF923FEA)
                     )
                 }
 
@@ -124,7 +125,7 @@ internal fun AccountCard(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0xFFE6F0FC))
+                        .background(Color(0xFFEFD7FF))
                         .clickableOnce { goToExchange() },
                     contentAlignment = Alignment.Center,
                 ) {
@@ -134,7 +135,7 @@ internal fun AccountCard(
                             .padding(vertical = 12.dp),
                         text = "Exchange",
                         style = HeyFYTheme.typography.labelL,
-                        color = Color(0xFF0372E8)
+                        color =  Color(0xFF923FEA)
                     )
                 }
             }
