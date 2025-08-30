@@ -6,6 +6,7 @@ import com.ssafy.account.api.request.AccountCheckRequest
 import com.ssafy.account.api.request.TransactionHistoryRequest
 import com.ssafy.account.api.response.AccountAuthResponse
 import com.ssafy.account.api.response.AccountCheckResponse
+import com.ssafy.account.api.response.ExchangeHistoryResponse
 import com.ssafy.account.api.response.ForeignTransactionHistoryResponse
 import com.ssafy.account.api.response.TransactionHistoryResponse
 import retrofit2.Response
@@ -21,6 +22,10 @@ class AccountDataSourceImpl @Inject constructor(
 
     override suspend fun getForeignTransactionHistory(accountNo: String): Response<ForeignTransactionHistoryResponse> {
         return accountApi.getForeignTransactionHistory(TransactionHistoryRequest(accountNo))
+    }
+
+    override suspend fun getExchangeHistory(): Response<ExchangeHistoryResponse> {
+        return accountApi.getExchangeHistory()
     }
 
     override suspend fun getAccountAuth(accountNo: String): Response<AccountAuthResponse> {

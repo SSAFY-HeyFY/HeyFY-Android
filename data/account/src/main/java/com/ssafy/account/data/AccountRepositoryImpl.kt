@@ -2,11 +2,13 @@ package com.ssafy.account.data
 
 import com.ssafy.account.api.response.AccountAuthResponse
 import com.ssafy.account.api.response.AccountCheckResponse
+import com.ssafy.account.api.response.ExchangeHistoryResponse
 import com.ssafy.account.api.response.ForeignTransactionHistoryResponse
 import com.ssafy.account.api.response.TransactionHistoryResponse
 import com.ssafy.account.domain.AccountRepository
 import com.ssafy.account.domain.model.AccountAuth
 import com.ssafy.account.domain.model.AccountCheck
+import com.ssafy.account.domain.model.ExchangeHistory
 import com.ssafy.account.domain.model.TransactionHistory
 import com.ssafy.common.text.TextFormat.formatCurrencyKRW
 import com.ssafy.common.text.TextFormat.formatCurrencyUSD
@@ -29,6 +31,13 @@ class AccountRepositoryImpl @Inject constructor(
         return safeApiCall(
             apiCall = { accountDataSource.getForeignTransactionHistory(accountNo) },
             convert = { it.toTransactionHistory() }
+        )
+    }
+
+    override suspend fun getExchangeHistory(): Result<List<ExchangeHistory>> {
+        return safeApiCall(
+            apiCall = { accountDataSource.getExchangeHistory() },
+            convert = { it.toExchangeHistoryList() }
         )
     }
 
@@ -77,6 +86,25 @@ class AccountRepositoryImpl @Inject constructor(
             date = transactionDate,
             isIncome = transactionType == "1",
             amount = "$${formatCurrencyUSD(transactionBalance.toDouble())}",
+        )
+    }
+
+    private fun ExchangeHistoryResponse.toExchangeHistoryList(): List<ExchangeHistory> {
+        return list.map { it.toExchangeHistory() }
+    }
+
+    private fun ExchangeHistoryResponse.ExchangeHistoryItem.toExchangeHistory(): ExchangeHistory {
+        return ExchangeHistory(
+            fromAccountNo = fromAccountNo,
+            toAccountNo = toAccountNo,
+            currency = currency,
+            currencyName = currencyName,
+            amount = amount,
+            exchangeCurrency = exchangeCurrency,
+            exchangeCurrencyName = exchangeCurrencyName,
+            exchangeAmount = exchangeAmount,
+            exchangeRate = exchangeRate,
+            created = created
         )
     }
 

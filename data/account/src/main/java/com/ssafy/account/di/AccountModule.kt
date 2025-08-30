@@ -5,6 +5,7 @@ import com.ssafy.account.data.AccountDataSource
 import com.ssafy.account.data.AccountDataSourceImpl
 import com.ssafy.account.data.AccountRepositoryImpl
 import com.ssafy.account.domain.AccountRepository
+import com.ssafy.account.domain.GetExchangeHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +33,11 @@ object AccountModule {
     @Singleton
     fun provideAccountRepository(accountDataSource: AccountDataSource): AccountRepository {
         return AccountRepositoryImpl(accountDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetExchangeHistoryUseCase(accountRepository: AccountRepository): GetExchangeHistoryUseCase {
+        return GetExchangeHistoryUseCase(accountRepository)
     }
 }
