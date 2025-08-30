@@ -103,6 +103,10 @@ class ExchangeViewModel @Inject constructor(
             is ExchangeUiEvent.UpdateShowPasswordBottomSheet -> {
                 _showPasswordBottomSheet.value = event.isShow
             }
+
+            ExchangeUiEvent.ClickReservation -> {
+                goToReservation()
+            }
         }
     }
 
@@ -192,6 +196,14 @@ class ExchangeViewModel @Inject constructor(
             heyFYAppNavigator.navigateTo(
                 route = Destination.Auth(),
                 isBackStackCleared = true,
+            )
+        }
+    }
+
+    private fun goToReservation() {
+        viewModelScope.launch {
+            heyFYAppNavigator.navigateTo(
+                route = Destination.Reservation(),
             )
         }
     }

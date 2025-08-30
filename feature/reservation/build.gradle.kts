@@ -39,6 +39,9 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":navigation"))
+    implementation(project(":data:exchange"))
+    implementation(project(":data:login"))
+    implementation(project(":data:finance"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

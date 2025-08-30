@@ -9,4 +9,5 @@ sealed class ExchangeUiEvent {
     data class UpdatePinNumber(val pinNumber: String) : ExchangeUiEvent()
     data class UpdateCheckPin(val checkPin: Boolean) : ExchangeUiEvent()
     data class UpdateShowPasswordBottomSheet(val isShow: Boolean) : ExchangeUiEvent()
+    data object ClickReservation : ExchangeUiEvent()
 }

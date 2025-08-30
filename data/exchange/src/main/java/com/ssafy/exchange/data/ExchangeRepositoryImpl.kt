@@ -2,6 +2,7 @@ package com.ssafy.exchange.data
 
 import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.exchange.api.response.ExchangeResponse
+import com.ssafy.exchange.api.response.ExchangeReservationResponse
 import com.ssafy.exchange.domain.ExchangeRepository
 import com.ssafy.exchange.domain.model.Exchange
 import javax.inject.Inject
@@ -21,6 +22,13 @@ class ExchangeRepositoryImpl @Inject constructor(
         return safeApiCall(
             apiCall = { exchangeDataSource.exchangeForeign(transactionBalance, pinNumber) },
             convert = { it.toExchange() }
+        )
+    }
+
+    override suspend fun exchangeReservation(transactionBalance: Double, currency: String, pinNumber: String, baseExchangeRate: Double): Result<Boolean> {
+        return safeApiCall(
+            apiCall = { exchangeDataSource.exchangeReservation(transactionBalance, currency, pinNumber, baseExchangeRate) },
+            convert = { it.success }
         )
     }
 

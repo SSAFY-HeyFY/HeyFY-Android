@@ -159,7 +159,8 @@ fun ExchangeScreen(
                     fluctuation = fluctuation,
                     receivedAmount = receivedAmount,
                     isUSD = isUSD,
-                    onToggleCurrency = { viewModel.action(ExchangeUiEvent.UpdateIsUSD) }
+                    onToggleCurrency = { viewModel.action(ExchangeUiEvent.UpdateIsUSD) },
+                    goToReservation = { viewModel.action(ExchangeUiEvent.ClickReservation) }
                 )
             }
 

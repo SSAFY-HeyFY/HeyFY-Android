@@ -2,9 +2,11 @@ package com.ssafy.exchange.data
 
 import com.ssafy.exchange.api.ExchangeApi
 import com.ssafy.exchange.api.request.ExchangeRequest
+import com.ssafy.exchange.api.request.ExchangeReservationRequest
 import com.ssafy.exchange.api.response.ExchangeResponse
 import com.ssafy.exchange.api.response.ExchangeAiPredictionResponse
 import com.ssafy.exchange.api.response.ExchangeHistoricalAnalysisResponse
+import com.ssafy.exchange.api.response.ExchangeReservationResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -26,6 +28,17 @@ class ExchangeDataSourceImpl @Inject constructor(
             request = ExchangeRequest(
                 transactionBalance = transactionBalance,
                 pinNumber = pinNumber
+            )
+        )
+    }
+
+    override suspend fun exchangeReservation(transactionBalance: Double, currency: String, pinNumber: String, baseExchangeRate: Double): Response<ExchangeReservationResponse> {
+        return exchangeApi.exchangeReservation(
+            request = ExchangeReservationRequest(
+                transactionBalance = transactionBalance,
+                currency = currency,
+                pinNumber = pinNumber,
+                baseExchangeRate = baseExchangeRate
             )
         )
     }

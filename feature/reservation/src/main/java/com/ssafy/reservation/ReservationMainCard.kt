@@ -1,4 +1,4 @@
-package com.ssafy.exchange
+package com.ssafy.reservation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,23 +32,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ssafy.common.text.CurrencyVisualTransformation
+import com.ssafy.common.text.HeyFYVisualTransformation
 import com.ssafy.common.theme.HeyFYTheme
 import com.ssafy.common.utils.clickableOnce
 import com.ssafy.common.R as commonR
 
 @Composable
-internal fun ExchangeMainCard(
+internal fun ReservationMainCard(
+    modifier: Modifier = Modifier,
     exchangeAmount: String,
     onAmountChange: (String) -> Unit,
-    currentRate: Double,
-    fluctuation: Double,
     receivedAmount: Double,
-    isUSD: Boolean,
-    onToggleCurrency: () -> Unit = {},
-    goToReservation: () -> Unit,
+    targetRate: String,
+    onTargetRateChange: (String) -> Unit,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -57,116 +57,84 @@ internal fun ExchangeMainCard(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             CurrentExchangeRateSection(
-                currentRate = currentRate,
-                fluctuation = fluctuation,
-                goToReservation = goToReservation
+                targetRate = targetRate,
+                onTargetRateChange = onTargetRateChange,
             )
 
             AmountInputSection(
                 exchangeAmount = exchangeAmount,
                 onAmountChange = onAmountChange,
-                receivedAmount = receivedAmount,
-                isUSD = isUSD,
-                onToggleCurrency = onToggleCurrency,
             )
 
-            ExchangeDetailsSection(receivedAmount = receivedAmount, isUSD = isUSD)
+            ExchangeDetailsSection(receivedAmount = receivedAmount)
         }
     }
 }
 
 @Composable
 private fun CurrentExchangeRateSection(
-    currentRate: Double,
-    fluctuation: Double,
-    goToReservation: () -> Unit,
+    targetRate: String,
+    onTargetRateChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         Text(
-            text = "Current Exchange Rate",
+            text = "Target Exchange Rate",
             style = HeyFYTheme.typography.bodyM,
             color = Color(0xFF6B7280)
         )
 
-
-        Text(
-            text = "1 USD = ${String.format("%,.2f", currentRate)} KRW",
-            style = HeyFYTheme.typography.headlineL,
-            color = Color(0xFF111827)
-        )
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.Center
         ) {
-            val rotate = when {
-                fluctuation > 0.0 -> 180f
-                fluctuation < 0.0 -> 0f
-                else -> -1f
-            }
-
-            val color = when {
-                fluctuation > 0.0 -> Color(0xFF10B981)
-                fluctuation < 0.0 -> Color(0xFFEF4444)
-                else -> Color.LightGray
-            }
-
-            Icon(
-                painter = painterResource(id = commonR.drawable.icon_vector_bottom),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(12.dp)
-                    .rotate(rotate),
-                tint = color
-            )
-
             Text(
-                text = if (fluctuation == 0.0) {
-                    fluctuation.toString()
-                } else {
-                    makeFluctuationString(currentRate, fluctuation)
+                text = "1 USD = ",
+                style = HeyFYTheme.typography.headlineL,
+                color = Color(0xFF111827)
+            )
+            
+            OutlinedTextField(
+                value = targetRate,
+                onValueChange = { value ->
+                    if(value.length < 7) {
+                        onTargetRateChange(value)
+                    }
+
                 },
-                style = HeyFYTheme.typography.bodyS,
-                color = color
+                modifier = Modifier.width(120.dp),
+                textStyle = HeyFYTheme.typography.headlineL.copy(
+                    textAlign = TextAlign.End,
+                ),
+                visualTransformation = HeyFYVisualTransformation("0000.00", '0'),
+                singleLine = true,
+                placeholder = {
+                    Text(
+                        text = "0000.00",
+                        style = HeyFYTheme.typography.headlineL,
+                        color = Color(0xFF6B7280),
+                        textAlign = TextAlign.End
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF111827),
+                    unfocusedBorderColor = Color(0xFF111827),
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp)
             )
-        }
-
-        Box(
-            modifier = Modifier
-                .align(Alignment.End)
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color(0xFFC78DEB))
-                .padding(vertical = 8.dp, horizontal = 12.dp)
-                .clickableOnce { goToReservation() },
-            contentAlignment = Alignment.Center
-        ) {
+            
             Text(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd),
-                text = "Exchange Res.",
-                style = HeyFYTheme.typography.labelS,
-                color = Color.White
+                text = " KRW",
+                style = HeyFYTheme.typography.headlineL,
+                color = Color(0xFF111827)
             )
         }
-    }
-}
-
-private fun makeFluctuationString(
-    currentRate: Double,
-    fluctuation: Double,
-): String {
-    return buildString {
-        if (fluctuation > 0.0) append("+")
-        append(fluctuation.toString())
-        append("(")
-        if (fluctuation > 0.0) append("+")
-        append(String.format("%.2f", (fluctuation / currentRate) * 100))
-        append("%)")
     }
 }
 
@@ -174,86 +142,10 @@ private fun makeFluctuationString(
 private fun AmountInputSection(
     exchangeAmount: String,
     onAmountChange: (String) -> Unit,
-    receivedAmount: Double,
-    isUSD: Boolean,
-    onToggleCurrency: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = if (isUSD) "Amount to Exchange (USD)" else "Amount to Exchange (KRW)",
-                style = HeyFYTheme.typography.bodyM,
-                color = Color(0xFF374151)
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFF9FAFB))
-                    .border(1.dp, Color(0xFF6B7280), RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-
-                Row(
-                    modifier = Modifier
-                        .padding(16.dp),
-                ) {
-                    val text = if (isUSD) {
-                        "₩ ${String.format("%,.0f", receivedAmount)}"
-                    } else {
-                        "$ ${String.format("%,.2f", receivedAmount)}"
-                    }
-
-                    Text(
-                        modifier = Modifier
-                            .weight(1f),
-                        text = text,
-                        style = HeyFYTheme.typography.labelL,
-                        color = Color.Black,
-                        maxLines = 1,
-                        textAlign = TextAlign.End
-                    )
-
-                    Text(
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp),
-                        text = if (isUSD) "KRW" else "USD",
-                        style = HeyFYTheme.typography.bodyL,
-                        color = Color(0xFF6B7280),
-                        maxLines = 1,
-                    )
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color(0xFFF3F4F6), CircleShape)
-                    .clickableOnce { onToggleCurrency() },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = commonR.drawable.icon_rotation),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(16.dp)
-                        .rotate(90f),
-                    tint = Color(0xFF6B7280)
-                )
-            }
-        }
-
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -268,11 +160,7 @@ private fun AmountInputSection(
                 val color = if (exchangeAmountL % 10 == 0L) Color(0xFF6B7280) else Color(0xFFEF4444)
 
                 Text(
-                    text = if (isUSD) {
-                        "• Trading unit: $10 increments"
-                    } else {
-                        "• Trading unit: ₩10 increments"
-                    },
+                    text = "• Trading unit: ₩10 increments",
                     style = HeyFYTheme.typography.bodyS,
                     textAlign = TextAlign.End,
                     color = color,
@@ -293,7 +181,7 @@ private fun AmountInputSection(
 
                     onAmountChange(value)
                 },
-                visualTransformation = CurrencyVisualTransformation(if (isUSD) "USD" else "KRW"),
+                visualTransformation = CurrencyVisualTransformation("KRW"),
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = HeyFYTheme.typography.labelL.copy(
                     textAlign = TextAlign.End,
@@ -303,7 +191,7 @@ private fun AmountInputSection(
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 4.dp),
-                        text = if (isUSD) "USD" else "KRW",
+                        text = "KRW",
                         style = HeyFYTheme.typography.bodyL,
                         color = Color(0xFF9333EA)
                     )
@@ -312,7 +200,7 @@ private fun AmountInputSection(
                 placeholder = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = if (isUSD) "Min $100" else "Min ₩1,000",
+                        text = "Min ₩1,000",
                         style = HeyFYTheme.typography.bodyM.copy(
                             textAlign = TextAlign.End,
                         ),
@@ -336,7 +224,6 @@ private fun AmountInputSection(
 @Composable
 private fun ExchangeDetailsSection(
     receivedAmount: Double,
-    isUSD: Boolean = true,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -361,12 +248,8 @@ private fun ExchangeDetailsSection(
             )
 
             DetailRow(
-                label = "Total Amount",
-                value = if (isUSD) {
-                    "${String.format("%,.0f", receivedAmount)} KRW"
-                } else {
-                    "${String.format("%,.2f", receivedAmount)} USD"
-                },
+                label = "Amount to Exchange",
+                value = "${String.format("%,.2f", receivedAmount)} USD",
                 valueColor = Color(0xFF1B45F5)
             )
         }

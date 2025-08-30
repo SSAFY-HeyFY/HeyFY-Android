@@ -5,6 +5,7 @@ import com.ssafy.exchange.data.ExchangeDataSource
 import com.ssafy.exchange.data.ExchangeDataSourceImpl
 import com.ssafy.exchange.data.ExchangeRepositoryImpl
 import com.ssafy.exchange.domain.ExchangeRepository
+import com.ssafy.exchange.domain.ExchangeReservationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +33,12 @@ object ExchangeModule {
     @Singleton
     fun provideExchangeRepository(exchangeDataSource: ExchangeDataSource): ExchangeRepository {
         return ExchangeRepositoryImpl(exchangeDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExchangeReservationUseCase(exchangeRepository: ExchangeRepository): ExchangeReservationUseCase {
+        return ExchangeReservationUseCase(exchangeRepository)
     }
 }
 

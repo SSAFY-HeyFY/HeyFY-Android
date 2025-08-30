@@ -12,6 +12,7 @@ import com.ssafy.navigation.DestinationType.EXCHANGE_HISTORY
 import com.ssafy.navigation.DestinationType.LOGIN
 import com.ssafy.navigation.DestinationType.MAIN
 import com.ssafy.navigation.DestinationType.MENTO_CLUB
+import com.ssafy.navigation.DestinationType.RESERVATION
 import com.ssafy.navigation.DestinationType.SEND_MONEY
 import com.ssafy.navigation.DestinationType.SPLASH
 import com.ssafy.navigation.DestinationType.SUCCESS
@@ -63,6 +64,8 @@ sealed class Destination(protected val route: String, vararg params: String) {
     data object Auth : NoArgumentsDestination(AUTH)
 
     data object ExchangeHistory : NoArgumentsDestination(EXCHANGE_HISTORY)
+
+    data object Reservation : NoArgumentsDestination(RESERVATION)
 }
 
 
