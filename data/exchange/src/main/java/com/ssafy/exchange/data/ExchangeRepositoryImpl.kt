@@ -3,8 +3,10 @@ package com.ssafy.exchange.data
 import com.ssafy.common.utils.ApiUtils.safeApiCall
 import com.ssafy.exchange.api.response.ExchangeResponse
 import com.ssafy.exchange.api.response.ExchangeReservationResponse
+import com.ssafy.exchange.api.response.ExchangeReservationHistoryResponse
 import com.ssafy.exchange.domain.ExchangeRepository
 import com.ssafy.exchange.domain.model.Exchange
+import com.ssafy.exchange.domain.model.ExchangeReservationHistory
 import javax.inject.Inject
 
 class ExchangeRepositoryImpl @Inject constructor(
@@ -32,6 +34,20 @@ class ExchangeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getReservationHistory(): Result<List<ExchangeReservationHistory>> {
+        return safeApiCall(
+            apiCall = { exchangeDataSource.getReservationHistory() },
+            convert = { it.toExchangeReservationHistoryList() }
+        )
+    }
+
+    override suspend fun cancelReservation(reservationId: Int, pinNumber: String): Result<Boolean> {
+        return safeApiCall(
+            apiCall = { exchangeDataSource.cancelReservation(reservationId, pinNumber) },
+            convert = { it.success }
+        )
+    }
+
     override suspend fun getHistoricalAnalysis(): Result<Pair<String, String>> {
         return safeApiCall(
             apiCall = { exchangeDataSource.getHistoricalAnalysis() },
@@ -45,6 +61,22 @@ class ExchangeRepositoryImpl @Inject constructor(
             withdrawalAccountBalance = withdrawalAccountBalance,
             transactionBalance = transactionBalance,
             isCorrect = isCorrect
+        )
+    }
+
+    private fun ExchangeReservationHistoryResponse.toExchangeReservationHistoryList(): List<ExchangeReservationHistory> {
+        return data.map { it.toExchangeReservationHistory() }
+    }
+
+    private fun ExchangeReservationHistoryResponse.ExchangeReservationHistoryItem.toExchangeReservationHistory(): ExchangeReservationHistory {
+        return ExchangeReservationHistory(
+            reservationId = reservationId,
+            currency = currency,
+            amount = amount,
+            baseExchangeRate = baseExchangeRate,
+            createdAt = createdAt,
+            exchangeCompleted = exchangeCompleted,
+            canceled = canceled
         )
     }
 }

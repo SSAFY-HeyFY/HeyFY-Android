@@ -78,6 +78,7 @@ dependencies {
     implementation(project(":feature:auth"))
     implementation(project(":feature:exchange_history"))
     implementation(project(":feature:reservation"))
+    implementation(project(":feature:reservation_history"))
 
     implementation(project(":data:fcm"))
 

@@ -6,6 +6,8 @@ import com.ssafy.exchange.data.ExchangeDataSourceImpl
 import com.ssafy.exchange.data.ExchangeRepositoryImpl
 import com.ssafy.exchange.domain.ExchangeRepository
 import com.ssafy.exchange.domain.ExchangeReservationUseCase
+import com.ssafy.exchange.domain.GetReservationHistoryUseCase
+import com.ssafy.exchange.domain.CancelReservationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +41,18 @@ object ExchangeModule {
     @Singleton
     fun provideExchangeReservationUseCase(exchangeRepository: ExchangeRepository): ExchangeReservationUseCase {
         return ExchangeReservationUseCase(exchangeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetReservationHistoryUseCase(exchangeRepository: ExchangeRepository): GetReservationHistoryUseCase {
+        return GetReservationHistoryUseCase(exchangeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCancelReservationUseCase(exchangeRepository: ExchangeRepository): CancelReservationUseCase {
+        return CancelReservationUseCase(exchangeRepository)
     }
 }
 

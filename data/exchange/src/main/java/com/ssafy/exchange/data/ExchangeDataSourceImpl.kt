@@ -3,10 +3,11 @@ package com.ssafy.exchange.data
 import com.ssafy.exchange.api.ExchangeApi
 import com.ssafy.exchange.api.request.ExchangeRequest
 import com.ssafy.exchange.api.request.ExchangeReservationRequest
-import com.ssafy.exchange.api.response.ExchangeResponse
-import com.ssafy.exchange.api.response.ExchangeAiPredictionResponse
+import com.ssafy.exchange.api.request.ExchangeReservationCancelRequest
 import com.ssafy.exchange.api.response.ExchangeHistoricalAnalysisResponse
 import com.ssafy.exchange.api.response.ExchangeReservationResponse
+import com.ssafy.exchange.api.response.ExchangeReservationHistoryResponse
+import com.ssafy.exchange.api.response.ExchangeResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -39,6 +40,19 @@ class ExchangeDataSourceImpl @Inject constructor(
                 currency = currency,
                 pinNumber = pinNumber,
                 baseExchangeRate = baseExchangeRate
+            )
+        )
+    }
+
+    override suspend fun getReservationHistory(): Response<ExchangeReservationHistoryResponse> {
+        return exchangeApi.getReservationHistory()
+    }
+
+    override suspend fun cancelReservation(reservationId: Int, pinNumber: String): Response<ExchangeReservationResponse> {
+        return exchangeApi.cancelReservation(
+            request = ExchangeReservationCancelRequest(
+                reservationId = reservationId,
+                pinNumber = pinNumber
             )
         )
     }

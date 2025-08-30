@@ -83,7 +83,7 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = AccountUiState.Loading
             checkAccountUseCase(
-                // accountNo = accountNumber.value,
+                //accountNo = accountNumber.value,
                 accountNo = "0012938990739664", // TEST
                 authCode = verificationCode.value.joinToString(""),
             ).onSuccess {

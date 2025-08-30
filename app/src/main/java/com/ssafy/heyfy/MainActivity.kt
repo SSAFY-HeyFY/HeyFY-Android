@@ -35,6 +35,7 @@ import com.ssafy.navigation.NavigationIntent
 import com.ssafy.navigation.heyFYComposable
 import com.ssafy.navigation.heyFYComposableWithFade
 import com.ssafy.reservation.ReservationScreen
+import com.ssafy.reservation_history.ReservationHistoryScreen
 import com.ssafy.send_money.SendMoneyScreen
 import com.ssafy.splash.SplashScreen
 import com.ssafy.success.SuccessScreen
@@ -163,6 +164,9 @@ class MainActivity : ComponentActivity() {
                 }
                 heyFYComposable(Destination.Reservation) {
                     ReservationScreen()
+                }
+                heyFYComposable(Destination.ReservationHistory) {
+                    ReservationHistoryScreen()
                 }
             }
         }

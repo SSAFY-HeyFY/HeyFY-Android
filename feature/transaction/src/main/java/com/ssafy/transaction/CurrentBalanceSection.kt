@@ -29,6 +29,7 @@ internal fun CurrentBalanceSection(
     balance: String,
     accountNumber: String,
     goToExchangeHistory: () -> Unit = {},
+    goToReservationHistory: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -94,7 +95,7 @@ internal fun CurrentBalanceSection(
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFFEFD7FF))
-                    .clickableOnce {  },
+                    .clickableOnce { goToReservationHistory() },
                 contentAlignment = Alignment.Center,
             ) {
 
