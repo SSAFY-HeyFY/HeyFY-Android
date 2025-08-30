@@ -90,7 +90,7 @@ class AccountRepositoryImpl @Inject constructor(
     }
 
     private fun ExchangeHistoryResponse.toExchangeHistoryList(): List<ExchangeHistory> {
-        return list.map { it.toExchangeHistory() }
+        return exchangeHistorys.map { it.toExchangeHistory() }
     }
 
     private fun ExchangeHistoryResponse.ExchangeHistoryItem.toExchangeHistory(): ExchangeHistory {

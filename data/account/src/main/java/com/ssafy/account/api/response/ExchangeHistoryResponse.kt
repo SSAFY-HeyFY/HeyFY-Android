@@ -1,7 +1,7 @@
 package com.ssafy.account.api.response
 
 data class ExchangeHistoryResponse(
-    val list: List<ExchangeHistoryItem>
+    val exchangeHistorys: List<ExchangeHistoryItem>
 ) {
     data class ExchangeHistoryItem(
         val fromAccountNo: String,
