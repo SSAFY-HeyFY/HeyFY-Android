@@ -6,7 +6,7 @@
 
 ## 빌드 방법
 - 최소 안드로이드 버전 : API 26: Android 8.0 (Oreo)
-- clone 후 local.properties 에 API_PATH="http://114.199.133.118:8081 추가
+- clone 후 local.properties 에 API_PATH="http://114.199.133.118:8081" 추가
 
 ## 📱 프로젝트 개요
 
