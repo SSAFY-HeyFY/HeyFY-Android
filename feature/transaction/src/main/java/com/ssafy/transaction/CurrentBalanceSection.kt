@@ -74,18 +74,9 @@ internal fun CurrentBalanceSection(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFEFD7FF))
-                    .clickableOnce { goToExchangeHistory() },
+                    .background(Color(0xFFEFD7FF)),
                 contentAlignment = Alignment.Center,
             ) {
-
-                Text(
-                    modifier = Modifier
-                        .padding(vertical = 12.dp),
-                    text = "Exchange Hist.",
-                    style = HeyFYTheme.typography.labelL,
-                    color = Color(0xFF923FEA)
-                )
             }
 
             Spacer(Modifier.width(20.dp))

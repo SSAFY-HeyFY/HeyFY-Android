@@ -131,8 +131,8 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferDomesticUseCase(
-                // depositAccountNo = depositAccountNo.value, TODO : 적용
-                depositAccountNo = "0014084444636603", // TEST
+                depositAccountNo = depositAccountNo.value, //TODO : 적용
+                //depositAccountNo = "0014084444636603", // TEST
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,
@@ -152,8 +152,8 @@ class SendMoneyViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState(SendMoneyUiState.Loading)
             transferForeignerUseCase(
-                // depositAccountNo = depositAccountNo.value, TODO : 적용
-                depositAccountNo = "0014433880825658", // TEST
+                 depositAccountNo = depositAccountNo.value, //TODO : 적용
+                //depositAccountNo = "0014433880825658", // TEST
                 transactionSummary = transferNote.value,
                 amount = transferAmount.value,
                 pinNumber = pinNumber.value,

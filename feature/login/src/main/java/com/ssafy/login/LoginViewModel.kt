@@ -37,10 +37,10 @@ class LoginViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             loginUseCase(
-                //studentId = studentId,
-                //password = password,
-                studentId = "12345678", // TEST
-                password = "StrongPassword123!" // TEST
+                studentId = studentId,
+                password = password,
+                //studentId = "12345678", // TEST
+                //password = "StrongPassword123!" // TEST
             ).onSuccess { token ->
                 tokenManager.saveAccessToken(token.accessToken)
                 tokenManager.saveRefreshToken(token.refreshToken)
